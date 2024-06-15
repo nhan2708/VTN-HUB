@@ -99,7 +99,7 @@ function AllowRunServiceBind.OnInvoke(args)
     CoreGui:SetCore("SendNotification", {
         Title = "Farm Chest",
         Text = "made by VTN ",
-        Icon = "rbxassetid://17813701448",
+        Icon = "rbxassetid://17861954132",
         Duration = math.huge,
         Callback = AllowRunServiceBind,
         Button1 = "ON",
@@ -124,7 +124,7 @@ local CoreGui = game:GetService("StarterGui")
 CoreGui:SetCore("SendNotification", {
     Title = "Farm Chest",
     Text = "made by VTN",
-    Icon = "rbxassetid://17813701448",
+    Icon = "rbxassetid://17861954132",
     Duration = math.huge,
     Callback = AllowRunServiceBind,
     Button1 = "ON",
