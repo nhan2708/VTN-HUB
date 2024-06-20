@@ -111,7 +111,7 @@ end
 task.spawn(function()
     while task.wait() do
         task.spawn(function()
-            if godsChalicSniper == true then
+            if godsChaliceSniper == true then
                 if stuff then
                     AllowRunService = false
                 end
