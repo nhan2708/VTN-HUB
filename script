@@ -1,4 +1,4 @@
---VTN v10
+--VTN v11
 
 local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
@@ -4594,7 +4594,7 @@ if Second_Sea then
                                         topos(CFrame.new(448.46756, 199.356781, -441.389252))                                  
                                         game:GetService("VirtualUser"):CaptureController()
                                         game:GetService("VirtualUser"):Button1Down(Vector2.new(1280,672))
-                                    until v.Humanoid.Health <= 0 or _G.AutoFactory == false
+                                    until _G.AutoFactory == false
                                 end
                             end
                         else
@@ -6786,7 +6786,7 @@ end)
 local ToggleAutokilltrial = Tabs.Race:AddToggle("ToggleAutokilltrial", {Title = "Auto kill after trial",Description = "", Default = false })
 ToggleAutokilltrial:OnChanged(function(Value)
     _G.KillAfterTrials = value
-    StopTween(_G.KillAfterTrials)
+    --StopTween(_G.KillAfterTrials)
 end)
 Options.ToggleAutokilltrial:SetValue(false)
 spawn(function()
