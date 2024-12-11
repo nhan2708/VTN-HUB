@@ -94,7 +94,7 @@ if game.PlaceId == 2753915549 then
         World3 = true
     end
 
-function MaterialMon()
+function CheckLevel()
 			if _G.SelectMaterial == "Radioactive Material" then
 				MMon = "Factory Staff"
 				MPos = CFrame.new(-507.7895202636719, 72.99479675292969, -126.45632934570312)
