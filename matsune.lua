@@ -312,7 +312,7 @@ function MaterialMon()
                 NameMon = "Fishman Warrior"
                 CFrameQuest = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
                 CFrameMon = CFrame.new(60878.30078125, 18.482830047607422, 1543.7574462890625)
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
                 end
             elseif MyLevel == 400 or MyLevel <= 449 then
@@ -322,7 +322,7 @@ function MaterialMon()
                 NameMon = "Fishman Commando"
                 CFrameQuest = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
                 CFrameMon = CFrame.new(61922.6328125, 18.482830047607422, 1493.934326171875)
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
                 end
             elseif MyLevel == 450 or MyLevel <= 474 then
@@ -332,7 +332,7 @@ function MaterialMon()
                 NameMon = "God's Guard"
                 CFrameQuest = CFrame.new(-4721.88867, 843.874695, -1949.96643, 0.996191859, -0, -0.0871884301, 0, 1, -0, 0.0871884301, 0, 0.996191859)
                 CFrameMon = CFrame.new(-4710.04296875, 845.2769775390625, -1927.3079833984375)
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-4607.82275, 872.54248, -1667.55688))
                 end
             elseif MyLevel == 475 or MyLevel <= 524 then
@@ -342,7 +342,7 @@ function MaterialMon()
                 NameMon = "Shanda"
                 CFrameQuest = CFrame.new(-7859.09814, 5544.19043, -381.476196, -0.422592998, 0, 0.906319618, 0, 1, 0, -0.906319618, 0, -0.422592998)
                 CFrameMon = CFrame.new(-7678.48974609375, 5566.40380859375, -497.2156066894531)
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
                 end
             elseif MyLevel == 525 or MyLevel <= 549 then
@@ -480,7 +480,7 @@ function MaterialMon()
                 NameMon = "Ship Deckhand"
                 CFrameQuest = CFrame.new(1037.80127, 125.092171, 32911.6016)         
                 CFrameMon = CFrame.new(1212.0111083984375, 150.79205322265625, 33059.24609375)    
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
                 end
             elseif MyLevel == 1275 or MyLevel <= 1299 then
@@ -490,7 +490,7 @@ function MaterialMon()
                 NameMon = "Ship Engineer"
                 CFrameQuest = CFrame.new(1037.80127, 125.092171, 32911.6016)   
                 CFrameMon = CFrame.new(919.4786376953125, 43.54401397705078, 32779.96875)   
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
                 end             
             elseif MyLevel == 1300 or MyLevel <= 1324 then
@@ -500,7 +500,7 @@ function MaterialMon()
                 NameMon = "Ship Steward"
                 CFrameQuest = CFrame.new(968.80957, 125.092171, 33244.125)         
                 CFrameMon = CFrame.new(919.4385375976562, 129.55599975585938, 33436.03515625)      
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
                 end
             elseif MyLevel == 1325 or MyLevel <= 1349 then
@@ -510,7 +510,7 @@ function MaterialMon()
                 NameMon = "Ship Officer"
                 CFrameQuest = CFrame.new(968.80957, 125.092171, 33244.125)
                 CFrameMon = CFrame.new(1036.0179443359375, 181.4390411376953, 33315.7265625)
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
                 end
             elseif MyLevel == 1350 or MyLevel <= 1374 then
@@ -520,7 +520,7 @@ function MaterialMon()
                 NameMon = "Arctic Warrior"
                 CFrameQuest = CFrame.new(5667.6582, 26.7997818, -6486.08984, -0.933587909, 0, -0.358349502, 0, 1, 0, 0.358349502, 0, -0.933587909)
                 CFrameMon = CFrame.new(5966.24609375, 62.97002029418945, -6179.3828125)
-                if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                if _G.AutoLevel and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-6508.5581054688, 5000.034996032715, -132.83953857422))
                 end
             elseif MyLevel == 1375 or MyLevel <= 1424 then
@@ -2176,7 +2176,7 @@ end
 spawn(function()
     while task.wait() do
         pcall(function()
-            if _G.AutoAdvanceDungeon or _G.AutoDoughtBoss or _G.Auto_DungeonMobAura or _G.AutoFarmChest or _G.CakePrinc or _G.AutoFarmBossHallow or _G.AutoFarmSwanGlasses or _G.AutoLongSword or _G.AutoBlackSpikeycoat or _G.AutoElectricClaw or _G.AutoFarmGunMastery or _G.AutoHolyTorch or _G.AutoLawRaid or _G.AutoFarmBoss or _G.AutoTwinHooks or _G.AutoOpenSwanDoor or _G.AutoDragon_Trident or AutoSaber or _G.NOCLIP or _G.AutoFarmFruitMastery or _G.AutoFarmGunMastery or _G.TeleportIsland or _G.Auto_EvoRace or _G.AutoFarmAllMsBypassType or _G.AutoObservationv2 or _G.AutoMusketeerHat or _G.AutoEctoplasm or _G.AutoRengoku or _G.Auto_Rainbow_Haki or Get_Cursed or Yama_Quest or Tushita_Quest or _G.AutoObservation or _G.KillFishCrew or _G.KillTerrorShark or _G.TrainGear or _G.KillShark or SoulGuitar or _G.KillGhostShip or _G.bjirFishBoat or _G.MatsuAutoDriveBoat or _G.KillPiranha or _G.RipIndraKill or _G.Safe_Mode or _G.MasteryFruit or _G.AutoBudySword or _G.AutoOderSword or _G.AutoBounty or _G.AutoAllBoss or _G.Auto_Bounty or _G.AutoSharkman or _G.Auto_Mastery_Fruit or _G.Auto_Mastery_Gun or _G.Auto_Dungeon or _G.Auto_Cavender or _G.AutoSeaBest or _G.AutoChestMirage or _G.Miragenpc or _G.Auto_Pole or _G.Auto_Kill_Ply or _G.Auto_Factory or _G.AutoSecondSea or _G.TeleportPly or _G.AutoBartilo or Auto_Quest_Soul_Guitar or _G.Auto_DarkBoss or _G.CursedCaptain or _G.GrabChest or _G.AutoFarmBounty or _G.Holy_Torch or _G.AutoFarm or _G.Clip or _G.AutoElitehunter or _G.AutoThirdSea or _G.Auto_Bone or PirateShip or _G.Autoheart or _G.Autodoughking or _G.AutoMaterial or _G.QuestSoulGuitar or _G.Auto_Dragon_Trident or _G.Autotushita or _G.d or _G.Autowaden or _G.Autogay or _G.Autopole or _G.Autosaw or _G.AutoObservationHakiV2 or _G.AutoFarmNearest or AutoFarmChest or _G.AutoCarvender or _G.AutoTwinHook or AutoMobAura or _G.Tweenfruit or _G.AutoKai or _G.TeleportNPC or _G.Leather or _G.Auto_Wing or _G.Umm or _G.Makori_gay or Radioactive or Fish or Gunpowder or Dragon_Scale or Cocoafarm or Scrap or MiniHee or _G.AutoFarmSeabaest or AutoCursedDualKatana or Auto_Cursed_Dual_Katana or _G.AutoFarmMob or _G.AutoMysticIsland or _G.AutoFarmDungeon or _G.AutoRaidPirate or _G.AutoQuestRace or _G.TweenMGear or _G.TweenToKitsune or _G.AutoAzuerEmber or getgenv().AutoFarm or _G.RaidPirate or _G.AutoPlayerHunter or _G.AutoFactory or Grab_Chest or Tween_Fruit or ProjectTrialPro or KillPlayer or KillPlayerSpam or _G.SeaBeasts1 then
+            if _G.AutoAdvanceDungeon or _G.AutoDoughtBoss or _G.Auto_DungeonMobAura or _G.AutoLevelChest or _G.CakePrinc or _G.AutoLevelBossHallow or _G.AutoLevelSwanGlasses or _G.AutoLongSword or _G.AutoBlackSpikeycoat or _G.AutoElectricClaw or _G.AutoLevelGunMastery or _G.AutoHolyTorch or _G.AutoLawRaid or _G.AutoLevelBoss or _G.AutoTwinHooks or _G.AutoOpenSwanDoor or _G.AutoDragon_Trident or AutoSaber or _G.NOCLIP or _G.AutoLevelFruitMastery or _G.AutoLevelGunMastery or _G.TeleportIsland or _G.Auto_EvoRace or _G.AutoLevelAllMsBypassType or _G.AutoObservationv2 or _G.AutoMusketeerHat or _G.AutoEctoplasm or _G.AutoRengoku or _G.Auto_Rainbow_Haki or Get_Cursed or Yama_Quest or Tushita_Quest or _G.AutoObservation or _G.KillFishCrew or _G.KillTerrorShark or _G.TrainGear or _G.KillShark or SoulGuitar or _G.KillGhostShip or _G.bjirFishBoat or _G.MatsuAutoDriveBoat or _G.KillPiranha or _G.RipIndraKill or _G.Safe_Mode or _G.MasteryFruit or _G.AutoBudySword or _G.AutoOderSword or _G.AutoBounty or _G.AutoAllBoss or _G.Auto_Bounty or _G.AutoSharkman or _G.Auto_Mastery_Fruit or _G.Auto_Mastery_Gun or _G.Auto_Dungeon or _G.Auto_Cavender or _G.AutoSeaBest or _G.AutoChestMirage or _G.Miragenpc or _G.Auto_Pole or _G.Auto_Kill_Ply or _G.Auto_Factory or _G.AutoSecondSea or _G.TeleportPly or _G.AutoBartilo or Auto_Quest_Soul_Guitar or _G.Auto_DarkBoss or _G.CursedCaptain or _G.GrabChest or _G.AutoLevelBounty or _G.Holy_Torch or _G.AutoLevel or _G.Clip or _G.AutoElitehunter or _G.AutoThirdSea or _G.Auto_Bone or PirateShip or _G.Autoheart or _G.Autodoughking or _G.AutoMaterial or _G.QuestSoulGuitar or _G.Auto_Dragon_Trident or _G.Autotushita or _G.d or _G.Autowaden or _G.Autogay or _G.Autopole or _G.Autosaw or _G.AutoObservationHakiV2 or _G.AutoLevelNearest or AutoFarmChest or _G.AutoCarvender or _G.AutoTwinHook or AutoMobAura or _G.Tweenfruit or _G.AutoKai or _G.TeleportNPC or _G.Leather or _G.Auto_Wing or _G.Umm or _G.Makori_gay or Radioactive or Fish or Gunpowder or Dragon_Scale or Cocoafarm or Scrap or MiniHee or _G.AutoLevelSeabaest or AutoCursedDualKatana or Auto_Cursed_Dual_Katana or _G.AutoLevelMob or _G.AutoMysticIsland or _G.AutoLevelDungeon or _G.AutoRaidPirate or _G.AutoQuestRace or _G.TweenMGear or _G.TweenToKitsune or _G.AutoAzuerEmber or getgenv().AutoFarm or _G.RaidPirate or _G.AutoPlayerHunter or _G.AutoFactory or Grab_Chest or Tween_Fruit or ProjectTrialPro or KillPlayer or KillPlayerSpam or _G.SeaBeasts1 then
                 if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
                     local Noclip = Instance.new("BodyVelocity")
                     Noclip.Name = "BodyClip"
@@ -2194,7 +2194,7 @@ end)
 spawn(function()
     pcall(function()
         game:GetService("RunService").Stepped:Connect(function()
-            if _G.AutoAdvanceDungeon or _G.AutoDoughtBoss or _G.Auto_DungeonMobAura or _G.AutoFarmChest or _G.CakePrinc or _G.AutoFarmBossHallow or _G.AutoFarmSwanGlasses or _G.AutoLongSword or _G.AutoBlackSpikeycoat or _G.AutoElectricClaw or _G.AutoFarmGunMastery or _G.AutoHolyTorch or _G.AutoLawRaid or _G.AutoFarmBoss or _G.AutoTwinHooks or _G.AutoOpenSwanDoor or _G.AutoDragon_Trident or AutoSaber or _G.NOCLIP or _G.AutoFarmFruitMastery or _G.AutoFarmGunMastery or _G.TeleportIsland or _G.Auto_EvoRace or _G.AutoFarmAllMsBypassType or _G.AutoObservationv2 or _G.AutoMusketeerHat or _G.AutoEctoplasm or _G.KillGhostShip or _G.bjirFishBoat or _G.KillFishCrew or SoulGuitar or Get_Cursed or Yama_Quest or Tushita_Quest or _G.KillTerrorShark or _G.TrainGear or _G.KillShark or _G.AutoChestMirage or _G.Miragenpc or _G.KillPiranha or _G.MatsuAutoDriveBoat or _G.AutoRengoku or _G.Auto_Rainbow_Haki or _G.AutoObservation or _G.RipIndraKill or _G.Safe_Mode or _G.MasteryFruit or _G.AutoBudySword or _G.AutoOderSword or _G.AutoBounty or _G.AutoAllBoss or _G.Auto_Bounty or _G.AutoSharkman or _G.Auto_Mastery_Fruit or _G.Auto_Mastery_Gun or _G.Auto_Dungeon or _G.Auto_Cavender or _G.AutoSeaBest or _G.Auto_Pole or _G.Auto_Kill_Ply or _G.Auto_Factory or _G.AutoSecondSea or _G.TeleportPly or _G.AutoBartilo or _G.Auto_DarkBoss or _G.GrabChest or _G.AutoFarmBounty or _G.Holy_Torch or _G.AutoFarm or _G.Clip or _G.AutoElitehunter or _G.AutoThirdSea or _G.CursedCaptain or _G.Auto_Bone or _G.Autoheart or PirateShip or _G.Autodoughking or _G.AutoMaterial or _G.QuestSoulGuitar or _G.Auto_Dragon_Trident or _G.Autotushita or _G.d or _G.Autowaden or _G.Autogay or _G.Autopole or _G.Autosaw or _G.AutoObservationHakiV2 or _G.AutoFarmNearest or AutoFarmChest or _G.AutoCarvender or _G.AutoTwinHook or AutoMobAura or _G.Tweenfruit or _G.AutoKai or Auto_Quest_Soul_Guitar or _G.TeleportNPC or _G.Leather or _G.Auto_Wing or _G.Umm or _G.Makori_gay or Radioactive or Fish or Gunpowder or Dragon_Scale or Cocoafarm or Scrap or MiniHee or _G.AutoFarmSeabaest or AutoCursedDualKatana or Auto_Cursed_Dual_Katana or _G.AutoFarmMob or _G.AutoMysticIsland or _G.TweenToKitsune or _G.AutoAzuerEmber or _G.AutoFarmDungeon or _G.AutoRaidPirate or _G.AutoQuestRace or _G.TweenMGear or getgenv().AutoFarm or _G.RaidPirate or _G.AutoPlayerHunter or _G.AutoFactory or Grab_Chest or Tween_Fruit or ProjectTrialPro or KillPlayer or KillPlayerSpam or _G.SeaBeasts1 then
+            if _G.AutoAdvanceDungeon or _G.AutoDoughtBoss or _G.Auto_DungeonMobAura or _G.AutoLevelChest or _G.CakePrinc or _G.AutoLevelBossHallow or _G.AutoLevelSwanGlasses or _G.AutoLongSword or _G.AutoBlackSpikeycoat or _G.AutoElectricClaw or _G.AutoLevelGunMastery or _G.AutoHolyTorch or _G.AutoLawRaid or _G.AutoLevelBoss or _G.AutoTwinHooks or _G.AutoOpenSwanDoor or _G.AutoDragon_Trident or AutoSaber or _G.NOCLIP or _G.AutoLevelFruitMastery or _G.AutoLevelGunMastery or _G.TeleportIsland or _G.Auto_EvoRace or _G.AutoLevelAllMsBypassType or _G.AutoObservationv2 or _G.AutoMusketeerHat or _G.AutoEctoplasm or _G.KillGhostShip or _G.bjirFishBoat or _G.KillFishCrew or SoulGuitar or Get_Cursed or Yama_Quest or Tushita_Quest or _G.KillTerrorShark or _G.TrainGear or _G.KillShark or _G.AutoChestMirage or _G.Miragenpc or _G.KillPiranha or _G.MatsuAutoDriveBoat or _G.AutoRengoku or _G.Auto_Rainbow_Haki or _G.AutoObservation or _G.RipIndraKill or _G.Safe_Mode or _G.MasteryFruit or _G.AutoBudySword or _G.AutoOderSword or _G.AutoBounty or _G.AutoAllBoss or _G.Auto_Bounty or _G.AutoSharkman or _G.Auto_Mastery_Fruit or _G.Auto_Mastery_Gun or _G.Auto_Dungeon or _G.Auto_Cavender or _G.AutoSeaBest or _G.Auto_Pole or _G.Auto_Kill_Ply or _G.Auto_Factory or _G.AutoSecondSea or _G.TeleportPly or _G.AutoBartilo or _G.Auto_DarkBoss or _G.GrabChest or _G.AutoLevelBounty or _G.Holy_Torch or _G.AutoLevel or _G.Clip or _G.AutoElitehunter or _G.AutoThirdSea or _G.CursedCaptain or _G.Auto_Bone or _G.Autoheart or PirateShip or _G.Autodoughking or _G.AutoMaterial or _G.QuestSoulGuitar or _G.Auto_Dragon_Trident or _G.Autotushita or _G.d or _G.Autowaden or _G.Autogay or _G.Autopole or _G.Autosaw or _G.AutoObservationHakiV2 or _G.AutoLevelNearest or AutoFarmChest or _G.AutoCarvender or _G.AutoTwinHook or AutoMobAura or _G.Tweenfruit or _G.AutoKai or Auto_Quest_Soul_Guitar or _G.TeleportNPC or _G.Leather or _G.Auto_Wing or _G.Umm or _G.Makori_gay or Radioactive or Fish or Gunpowder or Dragon_Scale or Cocoafarm or Scrap or MiniHee or _G.AutoLevelSeabaest or AutoCursedDualKatana or Auto_Cursed_Dual_Katana or _G.AutoLevelMob or _G.AutoMysticIsland or _G.TweenToKitsune or _G.AutoAzuerEmber or _G.AutoLevelDungeon or _G.AutoRaidPirate or _G.AutoQuestRace or _G.TweenMGear or getgenv().AutoFarm or _G.RaidPirate or _G.AutoPlayerHunter or _G.AutoFactory or Grab_Chest or Tween_Fruit or ProjectTrialPro or KillPlayer or KillPlayerSpam or _G.SeaBeasts1 then
                 for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
                     if v:IsA("BasePart") then
                         v.CanCollide = false
@@ -3399,13 +3399,13 @@ task.spawn(function()
 Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Farm nearest", Default = false })
 
     Toggle:OnChanged(function(Value)
-        _G.AutoFarmNearest = Value
-		StopTween(_G.AutoFarmNearest)		
+        _G.AutoLevelNearest = Value
+		StopTween(_G.AutoLevelNearest)		
     end)
 
 spawn(function()
 	while wait() do
-		if _G.AutoFarmNearest then
+		if _G.AutoLevelNearest then
 			for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                 if v.Name and v:FindFirstChild("Humanoid") then
 			        if v.Humanoid.Health > 0 then
@@ -3425,7 +3425,7 @@ spawn(function()
 				       	    game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 672), game.Workspace.CurrentCamera.CFrame)
 				       	    AutoFarmNearestMagnet = true
 				       	    PosMon = v.HumanoidRootPart.CFrame
-			            until not _G.AutoFarmNearest or not v.Parent or v.Humanoid.Health <= 0 
+			            until not _G.AutoLevelNearest or not v.Parent or v.Humanoid.Health <= 0 
 			            AutoFarmNearestMagnet = false
 			            NeedAttacking = true
 			        end
@@ -3458,9 +3458,9 @@ ModeMastery = {
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Farm Mastery Fruit", Default = false })
 
     Toggle:OnChanged(function(Value)
-        _G.AutoFarmFruitMastery = value
-        StopTween(_G.AutoFarmFruitMastery)
-        if _G.AutoFarmFruitMastery == false then
+        _G.AutoLevelFruitMastery = value
+        StopTween(_G.AutoLevelFruitMastery)
+        if _G.AutoLevelFruitMastery == false then
                 UseSkill = false 
              Skillaimbot = false
          end
@@ -3468,7 +3468,7 @@ ModeMastery = {
 
     spawn(function()
     while wait() do
-        if  SelectedMasteryMode == "Normal" and _G.AutoFarmFruitMastery then
+        if  SelectedMasteryMode == "Normal" and _G.AutoLevelFruitMastery then
             pcall(function()
                 CheckQuest()
                 local QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
@@ -3478,7 +3478,7 @@ ModeMastery = {
                 if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                     repeat wait()
                         topos(CFrameQuest)
-                    until (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 3 or not _G.AutoFarmFruitMastery
+                    until (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 3 or not _G.AutoLevelFruitMastery
                     if (CFrameQuest.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5 then
                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,LevelQuest)
                     end
@@ -3511,7 +3511,7 @@ ModeMastery = {
                                             v.Head.CanCollide = false
                                             StartBring = true
                                             NormalAttack()
-                                        until not _G.AutoFarmFruitMastery or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                                        until not _G.AutoLevelFruitMastery or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
                                         StartBring = false
                                         UseSkill = false
                                         Skillaimbot = false
@@ -3532,7 +3532,7 @@ end)
 
  spawn(function()
      while wait() do
-         if SelectedMasteryMode == "Nearest" and _G.AutoFarmFruitMastery then
+         if SelectedMasteryMode == "Nearest" and _G.AutoLevelFruitMastery then
              pcall(function()
                  for i, v in pairs(game.Workspace.Enemies:GetChildren()) do
                      if v.Name and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") then
@@ -3557,7 +3557,7 @@ end)
                                      MonFarm = v.Name
                                      NormalAttack()
                                  end
-                             until not _G.AutoFarmFruitMastery or not SelectedMasteryMode == "Nearest" or
+                             until not _G.AutoLevelFruitMastery or not SelectedMasteryMode == "Nearest" or
                                  not v.Parent or
                                  v.Humanoid.Health == 0 or
                                  not SelectedMasteryMode == "Nearest"
@@ -3574,14 +3574,14 @@ end)
 local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Farm Mastery gun", Default = false })
 
     Toggle:OnChanged(function(Value)
-        _G.AutoFarmGunMastery = Value
-        StopTween(_G.AutoFarmGunMastery)
+        _G.AutoLevelGunMastery = Value
+        StopTween(_G.AutoLevelGunMastery)
     end)
 
 spawn(function()
     pcall(function()
         while wait() do
-            if _G.AutoFarmGunMastery then
+            if _G.AutoLevelGunMastery then
                 local QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
                 if not string.find(QuestTitle, NameMon) then
                     Magnet = false                                      
@@ -3649,7 +3649,7 @@ spawn(function()
                                             StartMasteryGunMagnet = false
                                             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
                                         end
-                                    until v.Humanoid.Health <= 0 or not _G.AutoFarmGunMastery or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                                    until v.Humanoid.Health <= 0 or not _G.AutoLevelGunMastery or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
                                     StartMasteryGunMagnet = false
                                 end
                             end
@@ -3676,7 +3676,7 @@ end)
 
 spawn(function()
     pcall(function()
-        if _G.AutoFarmGunMastery then
+        if _G.AutoLevelGunMastery then
             while wait() do
                 for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
                     if v:IsA("Tool") then
@@ -3791,13 +3791,13 @@ end)
 
     Toggle:OnChanged(function(Value)
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-		_G.AutoFarmBossHallow = Value
-		StopTween(_G.AutoFarmBossHallow)
+		_G.AutoLevelBossHallow = Value
+		StopTween(_G.AutoLevelBossHallow)
 		end)
 		
 		spawn(function()
     while wait() do
-        if _G.AutoFarmBossHallow then
+        if _G.AutoLevelBossHallow then
             pcall(function()
                 if game:GetService("Workspace").Enemies:FindFirstChild("Soul Reaper") then
                     for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
@@ -3811,7 +3811,7 @@ end)
                                 game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 670))
                                 v.HumanoidRootPart.Transparency = 1
                                 -- sethiddenproperty(game.Players.LocalPlayer,"SimulationRadius",math.huge)
-                            until v.Humanoid.Health <= 0 or _G.AutoFarmBossHallow == false
+                            until v.Humanoid.Health <= 0 or _G.AutoLevelBossHallow == false
                         end
                     end
                 elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Hallow Essence") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Hallow Essence") then
@@ -4092,13 +4092,13 @@ end)
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Farm Boss", Default = false })
 
     Toggle:OnChanged(function(Value)
-        _G.AutoFarmBoss = Value
-		StopTween(_G.AutoFarmBoss)
+        _G.AutoLevelBoss = Value
+		StopTween(_G.AutoLevelBoss)
     end)
     
     spawn(function()
         while wait() do
-            if _G.AutoFarmBoss then
+            if _G.AutoLevelBoss then
                 pcall(function()
                     if game:GetService("Workspace").Enemies:FindFirstChild(_G.SelectBoss) then
                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
@@ -4112,7 +4112,7 @@ end)
                                         v.HumanoidRootPart.Size = Vector3.new(80,80,80)                             
                                         topos(v.HumanoidRootPart.CFrame * CFrame.new(PosX,PosY,PosZ))
                                         sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.huge)
-                                    until not _G.AutoFarmBoss or not v.Parent or v.Humanoid.Health <= 0
+                                    until not _G.AutoLevelBoss or not v.Parent or v.Humanoid.Health <= 0
                                 end
                             end
                         end
@@ -4340,7 +4340,7 @@ spawn(function()
  if _G.AutoSecondSea then
  pcall(function()
   if game.Players.LocalPlayer.Data.Level.Value >= 700 and World1 then
-  _G.AutoFarm = false
+  _G.AutoLevel = false
   if game.Workspace.Map.Ice.Door.CanCollide == true and game.Workspace.Map.Ice.Door.Transparency == 0 then
   repeat wait() topos(CFrame.new(4851.8720703125, 5.6514348983765, 718.47094726563)) until (CFrame.new(4851.8720703125, 5.6514348983765, 718.47094726563).Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 3 or not _G.AutoSecondSea
   wait(1)
@@ -4487,7 +4487,7 @@ local Toggle = Tabs.Qs:AddToggle("MyToggle", {Title = " new Sea 3", Default = fa
 					if _G.AutoThirdSea then
 						if game.Players.LocalPlayer.Data.Level.Value >= 1500 then
 							if Auto_Farm_Level then
-								_G.AutoFarm = false
+								_G.AutoLevel = false
 							end
 							if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress","Bartilo") == 3 then
 								if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetUnlockables").FlamingoAccess ~= nil then
@@ -5246,13 +5246,13 @@ Tabs.Qs:AddSection("Auto Boss Raid")
     local Toggle = Tabs.Qs:AddToggle("MyToggle", {Title = "Auto Kill Soul Reaper Sea3", Default = false })
 
     Toggle:OnChanged(function(Value)
-        _G.AutoFarmBossHallow = Value
-		StopTween(_G.AutoFarmBossHallow)
+        _G.AutoLevelBossHallow = Value
+		StopTween(_G.AutoLevelBossHallow)
     end)
     
     spawn(function()
         while wait() do
-            if _G.AutoFarmBossHallow then
+            if _G.AutoLevelBossHallow then
                 pcall(function()
                     if game:GetService("Workspace").Enemies:FindFirstChild("Soul Reaper") then
                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
@@ -5266,7 +5266,7 @@ Tabs.Qs:AddSection("Auto Boss Raid")
                                         v.HumanoidRootPart.Size = Vector3.new(80,80,80)                             
                                         topos(v.HumanoidRootPart.CFrame * CFrame.new(PosX,PosY,PosZ))
                                         sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.huge)
-                                    until not _G.AutoFarmBossHallow or not v.Parent or v.Humanoid.Health <= 0
+                                    until not _G.AutoLevelBossHallow or not v.Parent or v.Humanoid.Health <= 0
                                 end
                             end
                         end
