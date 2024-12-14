@@ -3133,13 +3133,22 @@ local StatusBone = Tabs.Main:AddParagraph({
     Title = "Bone Status",
     Content = ""
 })
-	spawn(function()
-		pcall(function()
-			while wait() do
-				StatusBone:Set("Bone You Have : "..(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Bones","Check")))
-			end
-		end)
-	end)
+spawn(function()
+    pcall(function()
+        while wait() do
+            local success, result = pcall(function()
+                return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Bones", "Check")
+            end)
+
+            if success and result then
+                StatusBone:SetDesc("You Have: " .. tostring(result) .. " Bones")
+            else
+                StatusBone:SetDesc("Unable to retrieve Bones count.")
+            end
+        end
+    end)
+end)
+
 
 
 
