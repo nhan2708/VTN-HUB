@@ -1,33 +1,32 @@
 --VTN v21
 
-local player = game.Players.LocalPlayer
-local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
+-- Create ImageButton with UICorner
+local ScreenGui = Instance.new("ScreenGui")
+local ImageButton = Instance.new("ImageButton")
+local UICorner = Instance.new("UICorner")
 
--- Create a new ScreenGui for the button
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "MyButtonGui"
-screenGui.Parent = gui
+ScreenGui.Name = "FloatingButtonGui"
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- Create a new TextButton
-local button = Instance.new("TextButton")
-button.Name = "MyButton"
-button.Size = UDim2.new(0, 100, 0, 50) -- Set size
-button.Position = UDim2.new(0, 10, 0.5, -25) -- Position on the left
-button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Set background color to red
-button.Text = "" -- No text on the button
-button.Parent = screenGui -- Set parent to screenGui
+-- ImageButton properties
+ImageButton.Parent = ScreenGui
+ImageButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Background color matching Fluent's theme
+ImageButton.BorderSizePixel = 0
+ImageButton.Position = UDim2.new(0.1, 0, 0.1, 0) -- Default position, can be adjusted
+ImageButton.Size = UDim2.new(0, 50, 0, 50) -- Button size
+ImageButton.Draggable = true -- Make button draggable
+ImageButton.Image = "rbxassetid://18648609696" -- Replace with a valid image ID
 
--- Function to handle button click
-local function onClick()
-    -- Ensure the character exists
-    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        local target = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-        -- Perform an action when the button is clicked (add functionality here)
-    end
-end
+-- Add rounded corners to the button
+UICorner.Parent = ImageButton
+UICorner.CornerRadius = UDim.new(0.5, 0) -- Fully rounded
 
--- Connect the button click event
-button.MouseButton1Click:Connect(onClick)
+-- Functionality for button click
+ImageButton.MouseButton1Down:Connect(function()
+    -- Simulate pressing "End" key (to minimize Fluent UI)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
+end)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 -- Load Fluent Library and Addons
@@ -42,7 +41,7 @@ local Window = Fluent:CreateWindow({
     Size = UDim2.fromOffset(500, 320),
     Acrylic = true,
     Theme = "Black",
-    MinimizeKey = Enum.KeyCode.End
+    MinimizeKey = Enum.KeyCode.End -- This matches the ImageButton's functionality
 })
 
 -- Add Tabs to the Fluent Window
@@ -64,6 +63,7 @@ local Tabs = {
 
 -- Access Fluent Options if needed
 local Options = Fluent.Options
+
 
 do
 --------------------------------------------------------------------------------------------------------------------------------------------
