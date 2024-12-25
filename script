@@ -1770,55 +1770,64 @@ Tabs.Main:AddButton({
 })
 
 
-    Tabs.Main:AddButton({
-        Title = "Fps Booster",
-        Description = "",
-        Callback = function()
-            FPSBooster()
-        end
-    })
+Tabs.Main:AddButton({
+    Title = "Fps Booster",
+    Description = "",
+    Callback = function()
+        FPSBooster()
+    end
+})
 
-    function FPSBooster()
-        local decalsyeeted = true
-        local g = game
-        local w = g.Workspace
-        local l = g.Lighting
-        local t = w.Terrain
-        sethiddenproperty(l,"Technology",2)
-        sethiddenproperty(t,"Decoration",false)
-        t.WaterWaveSize = 0
-        t.WaterWaveSpeed = 0
-        t.WaterReflectance = 0
-        t.WaterTransparency = 0
-        l.GlobalShadows = false
-        l.FogEnd = 9e9
-        l.Brightness = 0
-        settings().Rendering.QualityLevel = "Level01"
-        for i, v in pairs(g:GetDescendants()) do
-            if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
-                v.Material = "Plastic"
-                v.Reflectance = 0
-            elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
-                v.Transparency = 1
-            elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
-                v.Lifetime = NumberRange.new(0)
-            elseif v:IsA("Explosion") then
-                v.BlastPressure = 1
-                v.BlastRadius = 1
-            elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
-                v.Enabled = false
-            elseif v:IsA("MeshPart") then
-                v.Material = "Plastic"
-                v.Reflectance = 0
-                v.TextureID = 10385902758728957
+function FPSBooster()
+    local decalsyeeted = true
+    local g = game
+    local w = g.Workspace
+    local l = g.Lighting
+    local t = w.Terrain
+    
+    -- Tắt một số tính năng render trong Lighting và Terrain để tối ưu FPS
+    sethiddenproperty(l, "Technology", 2)  -- Thiết lập công nghệ chiếu sáng
+    sethiddenproperty(t, "Decoration", false)  -- Tắt decoration trong Terrain
+    t.WaterWaveSize = 0
+    t.WaterWaveSpeed = 0
+    t.WaterReflectance = 0
+    t.WaterTransparency = 0
+    l.GlobalShadows = false  -- Tắt bóng toàn cầu
+    l.FogEnd = 9e9  -- Tắt sương mù
+    l.Brightness = 0  -- Giảm độ sáng xuống 0
+    settings().Rendering.QualityLevel = "Level01"  -- Chế độ render thấp nhất
+
+    -- Duyệt qua tất cả các đối tượng trong Workspace để giảm thiểu chi phí render
+    for _, v in pairs(g:GetDescendants()) do
+        if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+            v.Material = "Plastic"  -- Chuyển tất cả các vật thể thành Plastic để giảm chi phí render
+            v.Reflectance = 0  -- Tắt phản chiếu
+        elseif v:IsA("Decal") or v:IsA("Texture") then
+            if decalsyeeted then
+                v.Transparency = 1  -- Ẩn tất cả decals và textures
             end
-        end
-        for i, e in pairs(l:GetChildren()) do
-            if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
-                e.Enabled = false
-            end
+        elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+            v.Lifetime = NumberRange.new(0)  -- Tắt tất cả các particle emitter và trail
+        elseif v:IsA("Explosion") then
+            v.BlastPressure = 1  -- Giảm sức mạnh nổ xuống mức thấp nhất
+            v.BlastRadius = 1  -- Giảm bán kính nổ xuống mức thấp nhất
+        elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+            v.Enabled = false  -- Tắt hiệu ứng Fire, Smoke, Spotlight và Sparkles
+        elseif v:IsA("MeshPart") then
+            v.Material = "Plastic"  -- Tương tự như các Part khác, chuyển MeshPart thành Plastic
+            v.Reflectance = 0  -- Tắt phản chiếu trên MeshPart
+            v.TextureID = 10385902758728957  -- Thay đổi texture ID, có thể làm đơn giản và tối ưu hơn
         end
     end
+
+    -- Tắt các hiệu ứng đồ họa trong Lighting
+    for _, e in pairs(l:GetChildren()) do
+        if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+            e.Enabled = false  -- Tắt tất cả các hiệu ứng đồ họa này để giảm tải hệ thống
+        end
+    end
+end
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Mastery
