@@ -1721,23 +1721,27 @@ return false
 end
 
 ---Method Farm
-Type1 = 1
-spawn(function()
-    while wait(.1) do
-        if Type == 1 then
-            Pos = CFrame.new(10,40,10)
-        elseif Type == 2 then
-            Pos = CFrame.new(-30,10,-30)
-        elseif Type == 3 then
-            Pos = CFrame.new(10,10,-40)
-        elseif Type == 4 then
-            Pos = CFrame.new(-40,10,10)	
-        end
-        end
-    end)
+local Type = 1
+local Pos = CFrame.new(10, 40, 10) -- Khởi tạo giá trị Pos ban đầu
 
+-- Hàm để thay đổi Pos theo giá trị của Type
 spawn(function()
-    while wait(.1) do
+    while wait(0.1) do
+        if Type == 1 then
+            Pos = CFrame.new(10, 40, 10)
+        elseif Type == 2 then
+            Pos = CFrame.new(-30, 10, -30)
+        elseif Type == 3 then
+            Pos = CFrame.new(10, 10, -40)
+        elseif Type == 4 then
+            Pos = CFrame.new(-40, 10, 10)
+        end
+    end
+end)
+
+-- Hàm để thay đổi giá trị của Type
+spawn(function()
+    while wait(1) do
         Type = 1
         wait(1)
         Type = 2
@@ -1748,6 +1752,7 @@ spawn(function()
         wait(1)
     end
 end)
+
 --auto turn haki
   function AutoHaki()
     if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
