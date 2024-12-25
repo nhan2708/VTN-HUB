@@ -1,4 +1,4 @@
---VTN v20
+--VTN v21
 
 local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
@@ -86,13 +86,14 @@ First_Sea = false
 Second_Sea = false
 Third_Sea = false
 local placeId = game.PlaceId
-if placeId == 2753915549 then
-First_Sea = true
-elseif placeId == 4442272183 then
-Second_Sea = true
-elseif placeId == 7449423635 then
-Third_Sea = true
+if placeId == 2753915549 then -- Starter Sea
+    First_Sea = true
+elseif placeId == 6732215145 then -- Second Sea
+    Second_Sea = true
+elseif placeId == 11137954327 then -- Third Sea
+    Third_Sea = true
 end
+
 --// Check Quest
 function CheckLevel()
 local Lv = game:GetService("Players").LocalPlayer.Data.Level.Value
