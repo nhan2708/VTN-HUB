@@ -1,24 +1,34 @@
---VTN v20
+--VTN v21
 
 local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
 
+-- Create a new ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MyButtonGui"
 screenGui.Parent = gui
 
-local button = Instance.new("TextButton") -- Use TextButton instead of ImageButton
+-- Create a new TextButton
+local button = Instance.new("TextButton")
 button.Name = "MyButton"
-button.Font = Enum.Font.SourceSansBold
 button.Size = UDim2.new(0, 100, 0, 50) -- Set size
-button.Position = UDim2.new(0, 10, 0.5, -25) -- Set position to the left with an X offset of 10 pixel
-button.BackgroundColor3 = Color3.fromRGB(255,255,255) -- Set button background color to red
+button.Position = UDim2.new(0, 10, 0.5, -25) -- Position on the left
+button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Set background color to red
+button.Text = "" -- No text on the button
+button.Parent = screenGui -- Set parent to screenGui
 
+-- Function to handle button click
 local function onClick()
-    toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local target = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        -- Replace 'toTarget' with your actual functionality
+        -- Example: toTarget(target)
+    end
 end
 
+-- Connect the button click event
 button.MouseButton1Click:Connect(onClick)
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
