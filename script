@@ -58,10 +58,10 @@ local id = game.PlaceId
 if id == 2753915549 then
     First_Sea = true
     print("Welcome to First Sea")
-elseif id == 6732215145 then
+elseif id == 4442272183 then
     Second_Sea = true
     print("Welcome to Second Sea")
-elseif id == 11137954327 then
+elseif id == 7449423635 then
     Third_Sea = true
     print("Welcome to Third Sea")
 -- Thay vì shutdown, in ra lỗi và dừng
@@ -104,9 +104,9 @@ Third_Sea = false
 local placeId = game.PlaceId
 if placeId == 2753915549 then -- Starter Sea
     First_Sea = true
-elseif placeId == 6732215145 then -- Second Sea
+elseif placeId == 4442272183 then -- Second Sea
     Second_Sea = true
-elseif placeId == 11137954327 then -- Third Sea
+elseif placeId == 7449423635 then -- Third Sea
     Third_Sea = true
 end
 
