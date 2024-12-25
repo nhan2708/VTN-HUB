@@ -1,34 +1,23 @@
 --VTN v21
+local player = game.Players.LocalPlayer
+local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
 
--- Kiểm tra xem ScreenGui đã tồn tại chưa
-local existingScreenGui = game:GetService("CoreGui"):FindFirstChild("FloatingButtonGui")
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MyButtonGui"
+screenGui.Parent = gui
 
--- Nếu chưa tồn tại, tạo mới
-if not existingScreenGui then
-    local ScreenGui = Instance.new("ScreenGui")
-    local ImageButton = Instance.new("ImageButton")
+local button = Instance.new("TextButton") -- Use TextButton instead of ImageButton
+button.Name = "MyButton"
+button.Font = Enum.Font.SourceSansBold
+button.Size = UDim2.new(0, 100, 0, 50) -- Set size
+button.Position = UDim2.new(0, 10, 0.5, -25) -- Set position to the left with an X offset of 10 pixel
+button.BackgroundColor3 = Color3.fromRGB(255,255,255) -- Set button background color to red
 
-    ScreenGui.Name = "FloatingButtonGui"
-    ScreenGui.Parent = game:GetService("CoreGui")
-    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-    -- ImageButton properties
-    ImageButton.Parent = ScreenGui
-    ImageButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Màu nền
-    ImageButton.BorderSizePixel = 0
-    ImageButton.Position = UDim2.new(0.1, 0, 0.1, 0) -- Vị trí mặc định
-    ImageButton.Size = UDim2.new(0, 50, 0, 50) -- Kích thước button
-    ImageButton.Draggable = true -- Cho phép kéo button
-    ImageButton.Image = "rbxassetid://18648609696" -- Thay thế với ID hình ảnh hợp lệ
-
-    -- Tính năng khi nhấn vào button
-    ImageButton.MouseButton1Down:Connect(function()
-        -- Mô phỏng phím Ctrl (bên trái hoặc bên phải)
-        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game) -- hoặc Enum.KeyCode.RightControl
-    end)
+local function onClick()
+    toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
 end
 
-
+button.MouseButton1Click:Connect(onClick)
 ----------------------------------------------------------------------------------------------------------------------------------------------
 -- Load Fluent Library and Addons
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
