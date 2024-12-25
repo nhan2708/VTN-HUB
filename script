@@ -64,10 +64,9 @@ elseif id == 6732215145 then
 elseif id == 11137954327 then
     Third_Sea = true
     print("Welcome to Third Sea")
-else
-    warn("PlaceId không hợp lệ. Đang thoát trò chơi...")
-    wait(3) -- Đợi 3 giây trước khi tắt game
-    game:Shutdown()
+-- Thay vì shutdown, in ra lỗi và dừng
+if not (First_Sea or Second_Sea or Third_Sea) then
+    error("PlaceId không hợp lệ. Vui lòng kiểm tra lại!")
 end
 
 
