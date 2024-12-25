@@ -1,4 +1,9 @@
--- Create ImageButton with UICorner
+-- Khai báo biến global AutoLevel
+if _G.AutoLevel == nil then
+    _G.AutoLevel = false -- Thiết lập giá trị mặc định cho AutoLevel
+end
+
+-- Tạo ScreenGui và ImageButton chỉ một lần
 local ScreenGui = Instance.new("ScreenGui")
 local ImageButton = Instance.new("ImageButton")
 local UICorner = Instance.new("UICorner")
@@ -7,608 +12,67 @@ ScreenGui.Name = "FloatingButtonGui"
 ScreenGui.Parent = game:GetService("CoreGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- ImageButton properties
+-- Cài đặt thuộc tính cho ImageButton
 ImageButton.Parent = ScreenGui
-ImageButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Background color matching Fluent's theme
+ImageButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Màu nền phù hợp với theme Fluent UI
 ImageButton.BorderSizePixel = 0
-ImageButton.Position = UDim2.new(0.1, 0, 0.1, 0) -- Default position, can be adjusted
-ImageButton.Size = UDim2.new(0, 50, 0, 50) -- Button size
-ImageButton.Draggable = true -- Make button draggable
-ImageButton.Image = "rbxassetid://18648609696" -- Replace with a valid image ID
+ImageButton.Position = UDim2.new(0.1, 0, 0.1, 0) -- Vị trí mặc định, có thể thay đổi
+ImageButton.Size = UDim2.new(0, 50, 0, 50) -- Kích thước của nút
+ImageButton.Draggable = true -- Cho phép kéo thả
+ImageButton.Image = "rbxassetid://18648609696" -- Thay bằng ID hình ảnh hợp lệ
 
--- Add rounded corners to the button
+-- Thêm góc bo tròn cho nút
 UICorner.Parent = ImageButton
-UICorner.CornerRadius = UDim.new(0.5, 0) -- Fully rounded
+UICorner.CornerRadius = UDim.new(0.5, 0) -- Bo tròn góc hoàn toàn
 
--- Functionality for button click
+-- Xử lý sự kiện khi người dùng nhấn nút
 ImageButton.MouseButton1Down:Connect(function()
-    -- Simulate pressing "End" key (to minimize Fluent UI)
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
-end)
--- Load Fluent Library and Addons
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-----------------------------------------------------------------------------------------------------------------------------------------------
--- Create Fluent Window
-local Window = Fluent:CreateWindow({
-    Title = "VTN HUB",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(500, 320),
-    Acrylic = true,
-    Theme = "Black",
-    MinimizeKey = Enum.KeyCode.End -- This matches the ImageButton's functionality
-})
-
--- Add Tabs to the Fluent Window
-local Tabs = {
-    Main = Window:AddTab({ Title = "Main Farm", Icon = "home" }),
-}
-
--- Access Fluent Options if needed
-local Options = Fluent.Options
-
-
-do
---------------------------------------------------------------------------------------------------------------------------------------------
---// Place Id Check
-local id = game.PlaceId
-if id == 2753915549 then First_Sea = true; elseif id == 4442272183 then Second_Sea = true; elseif id == 7449423635 then Third_Sea = true; else game:Shutdown() end;
---------------------------------------------------------------------------------------------------------------------------------------------
---// Flag Player
-function AntiBan()
-    for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-        if v:IsA("LocalScript") then
-            if v.Name == "General" or v.Name == "Shiftlock"  or v.Name == "FallDamage" or v.Name == "4444" or v.Name == "CamBob" or v.Name == "JumpCD" or v.Name == "Looking" or v.Name == "Run" then
-                v:Destroy()
-            end
-        end
-     end
-     for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerScripts:GetDescendants()) do
-        if v:IsA("LocalScript") then
-            if v.Name == "RobloxMotor6DBugFix" or v.Name == "Clans"  or v.Name == "Codes" or v.Name == "CustomForceField" or v.Name == "MenuBloodSp"  or v.Name == "PlayerList" then
-                v:Destroy()
-            end
-        end
-     end
-    end
-    AntiBan()
---------------------------------------------------------------------------------------------------------------------------------------------
---// Anti AFK
-game:GetService("Players").LocalPlayer.Idled:connect(function()
-	game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-	wait(1)
-	game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-end)
-
---[[
-function TP1(Pos)
-    -- Tính khoảng cách
-    local Distance = (Pos.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-
-    -- Hủy trạng thái ngồi
-    if game.Players.LocalPlayer.Character.Humanoid.Sit then
-        game.Players.LocalPlayer.Character.Humanoid.Sit = false
-    end
-
-    -- Tạo và chạy tween
-    local tween = game:GetService("TweenService"):Create(
-        game.Players.LocalPlayer.Character.HumanoidRootPart,
-        TweenInfo.new(Distance / 210, Enum.EasingStyle.Linear),
-        {CFrame = Pos}
-    )
-    tween:Play()
-
-    -- Kiểm tra điều kiện để hủy hoặc áp dụng trực tiếp
-    if Distance <= 250 then
-        tween:Cancel()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
-    end
-
-    if _G.StopTween then
-        tween:Cancel()
-        _G.Clip = false
-    end
-end
-
-function Tween2(P1)
-    -- Tính khoảng cách
-    local Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    local Speed = 350
-
-    -- Tạo và chạy tween
-    local tween = game:GetService("TweenService"):Create(
-        game.Players.LocalPlayer.Character.HumanoidRootPart,
-        TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear),
-        {CFrame = P1}
-    )
-    tween:Play()
-
-    -- Kiểm tra điều kiện để hủy tween
-    if _G.CancelTween2 then
-        tween:Cancel()
-    end
-
-    _G.Clip2 = true
-    wait(Distance / Speed)
-    _G.Clip2 = false
-end
-
--- [Function (Abandoned Quest , Others)]
-
-
---BTP
--- Teleport và thiết lập điểm hồi sinh
-function BTP(Position)
-    -- Phá hủy phần "Head" để làm mới nhân vật
-    if game.Players.LocalPlayer.Character:FindFirstChild("Head") then
-        game.Players.LocalPlayer.Character.Head:Destroy()
-    end
-
-    -- Dịch chuyển nhân vật đến vị trí mục tiêu
-    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-    humanoidRootPart.CFrame = Position
-    task.wait(0.5)
-    humanoidRootPart.CFrame = Position
-
-    -- Thiết lập điểm hồi sinh
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetSpawnPoint")
-end
-
--- Teleport đơn giản đến vị trí chỉ định
-function BTPZ(Point)
-    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-
-    -- Dịch chuyển đến vị trí mục tiêu
-    humanoidRootPart.CFrame = Point
-    task.wait(0.1) -- Chờ một thời gian ngắn
-    humanoidRootPart.CFrame = Point
-end
-
-------Bypass TP 2
-
-
-----------------------------------------------------------------------------------------------------------------------------------------------
--- Tốc độ tween
-local TweenSpeed = 350
-
--- Hàm Tween (dịch chuyển mượt mà đến vị trí chỉ định)
-function Tween(P1)
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-
-    if humanoidRootPart then
-        -- Tính khoảng cách và thời gian tween
-        local Distance = (P1.Position - humanoidRootPart.Position).Magnitude
-        local Speed = TweenSpeed
-
-        -- Tạo tween
-        local tween = game:GetService("TweenService"):Create(
-            humanoidRootPart,
-            TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear),
-            {CFrame = P1}
-        )
-
-        -- Phát tween
-        tween:Play()
-
-        -- Hủy tween nếu cờ _G.StopTween được bật
-        if _G.StopTween then
-            tween:Cancel()
-        end
-    end
-end
-
--- Hàm hủy Tween (dừng dịch chuyển và đặt lại vị trí)
-function CancelTween()
-    _G.StopTween = true  -- Bật cờ để hủy Tween hiện tại
-    wait(0.1)            -- Chờ ngắn để đảm bảo tween được dừng
-
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-
-    if humanoidRootPart then
-        -- Đặt lại vị trí hiện tại
-        Tween(humanoidRootPart.CFrame)
-    end
-
-    wait(0.1)            -- Chờ ngắn trước khi tắt cờ
-    _G.StopTween = false -- Tắt cờ
-end
-
-----------------------------------------------------------------------------------------------------------------------------------------------
-
-    --function TP to Boat/Ship
-
--- Select Weapon
-function EquipTool(ToolSe)
-    local player = game.Players.LocalPlayer
-    local backpack = player.Backpack
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:FindFirstChild("Humanoid")
-
-    if backpack:FindFirstChild(ToolSe) and humanoid then
-        local tool = backpack:FindFirstChild(ToolSe)
-        task.wait(0.5)
-        humanoid:EquipTool(tool)
-    end
-end
-
--- Aimbot Mastery (Equip Gun)
-spawn(function()
-    pcall(function()
-        while task.wait() do
-            for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                if tool:IsA("Tool") and tool:FindFirstChild("RemoteFunctionShoot") then
-                    CurrentEquipGun = tool.Name
-                end
-            end
-        end
+    -- Mô phỏng việc nhấn phím "End" (để thu nhỏ Fluent UI)
+    local success, _ = pcall(function()
+        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
     end)
 end)
 
--- Body Gyro for NoClip
-spawn(function()
-    while task.wait() do
-        pcall(function()
-            local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-            if _G.TeleportPly or _G.AutoLevel or _G.Clip2 or _G.AutoBone then
-                if not hrp:FindFirstChild("BodyClip") then
-                    local bodyClip = Instance.new("BodyVelocity", hrp)
-                    bodyClip.Name = "BodyClip"
-                    bodyClip.MaxForce = Vector3.new(100000, 100000, 100000)
-                    bodyClip.Velocity = Vector3.zero
-                end
-            else
-                local bodyClip = hrp:FindFirstChild("BodyClip")
-                if bodyClip then
-                    bodyClip:Destroy()
-                end
-            end
-        end)
-    end
-end)
+-- Tạo các tùy chọn vũ khí và trạng thái chọn vũ khí
+local ChooseWeapon = nil
+local DropdownSelectWeapon = Instance.new("TextButton")
+DropdownSelectWeapon.Size = UDim2.new(0, 200, 0, 50) -- Kích thước nút chọn vũ khí
+DropdownSelectWeapon.Position = UDim2.new(0.2, 0, 0.2, 0) -- Vị trí của dropdown
+DropdownSelectWeapon.Parent = ScreenGui
+DropdownSelectWeapon.Text = "Chọn vũ khí"
 
--- NoClip Auto Farm
-spawn(function()
-    pcall(function()
-        game:GetService("RunService").Stepped:Connect(function()
-            if _G.NoClipActive then
-                for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = false
-                    end
-                end
-            end
-        end)
+-- Lắng nghe sự thay đổi lựa chọn vũ khí
+DropdownSelectWeapon.MouseButton1Click:Connect(function()
+    local success, weapon = pcall(function()
+        return game:GetService("Players").LocalPlayer.Backpack:FindFirstChildOfClass("Tool") -- Tìm công cụ trong ba lô
     end)
-end)
-
--- Stun Player Handling
-task.spawn(function()
-    local stun = game.Players.LocalPlayer.Character:FindFirstChild("Stun")
-    if stun then
-        stun.Changed:Connect(function()
-            pcall(function()
-                if stun then
-                    stun.Value = 0
-                end
-            end)
-        end)
+    
+    if success and weapon then
+        ChooseWeapon = weapon.Name
     end
 end)
 
---Check Material
-
-
------------------------------------------------------------------------------------------------------------------------------------------------
---- Attack No Cooldown
-local plr = game.Players.LocalPlayer
-local CbFw = debug.getupvalues(require(plr.PlayerScripts.CombatFramework))
-local CbFw2 = CbFw[2]
-
--- Lấy vũ khí hiện tại
-function GetCurrentBlade()
-    local controller = CbFw2.activeController
-    if not controller or not controller.blades or not controller.blades[1] then return nil end
-
-    local blade = controller.blades[1]
-    while blade and blade.Parent ~= plr.Character do
-        blade = blade.Parent
-    end
-    return blade
-end
-
--- Hàm tấn công không có thời gian hồi chiêu
-function AttackNoCoolDown()
-    local AC = CbFw2.activeController
-    if not AC then return end
-
-    local bladeHits = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-        plr.Character,
-        {plr.Character.HumanoidRootPart},
-        60
-    )
-
-    -- Lọc các đối tượng hợp lệ để tấn công
-    local validHits = {}
-    local hitTracker = {}
-
-    for _, hit in pairs(bladeHits) do
-        local humanoidRootPart = hit.Parent:FindFirstChild("HumanoidRootPart")
-        if humanoidRootPart and not hitTracker[hit.Parent] then
-            table.insert(validHits, humanoidRootPart)
-            hitTracker[hit.Parent] = true
-        end
-    end
-
-    if #validHits > 0 then
-        -- Lấy giá trị và tính toán
-        local u8 = debug.getupvalue(AC.attack, 5)
-        local u9 = debug.getupvalue(AC.attack, 6)
-        local u7 = debug.getupvalue(AC.attack, 4)
-        local u10 = debug.getupvalue(AC.attack, 7)
-
-        local u12 = (u8 * 798405 + u7 * 727595) % u9
-        local u13 = u7 * 798405
-
-        u12 = (u12 * u9 + u13) % 1099511627776
-        u8 = math.floor(u12 / u9)
-        u7 = u12 - u8 * u9
-        u10 = u10 + 1
-
-        -- Cập nhật giá trị
-        debug.setupvalue(AC.attack, 5, u8)
-        debug.setupvalue(AC.attack, 6, u9)
-        debug.setupvalue(AC.attack, 4, u7)
-        debug.setupvalue(AC.attack, 7, u10)
-
-        -- Chạy hoạt ảnh và kích hoạt sự kiện tấn công
-        pcall(function()
-            for _, anim in pairs(AC.animator.anims.basic) do
-                anim:Play()
-            end
-        end)
-
-        if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
-            game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(GetCurrentBlade()))
-            game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
-            game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", validHits, 1, "")
+-- Tạo tự động tăng level nếu _G.AutoLevel là true
+local function autoLevel()
+    if _G.AutoLevel then
+        while _G.AutoLevel do
+            -- Giả lập hành động tăng level (thực hiện các hành động tự động ở đây)
+            task.wait(5) -- Chờ 5 giây trước khi tăng level tiếp
         end
     end
 end
 
--- Attack Mastery
-function NormalAttack()
-    if not _G.NormalAttack then
-        local Module = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework)
-        local CombatFramework = debug.getupvalues(Module)[2]
-        local CamShake = require(game.ReplicatedStorage.Util.CameraShaker)
-        CamShake:Stop()
-        CombatFramework.activeController.attacking = false
-        CombatFramework.activeController.timeToNextAttack = 0
-        CombatFramework.activeController.hitboxMagnitude = 180
-        game:GetService("VirtualUser"):CaptureController()
-        game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 672))
-    end
-end
+-- Xử lý sự kiện khi thay đổi trạng thái AutoLevel
+local AutoLevelButton = Instance.new("TextButton")
+AutoLevelButton.Size = UDim2.new(0, 200, 0, 50) -- Kích thước nút AutoLevel
+AutoLevelButton.Position = UDim2.new(0.2, 0, 0.3, 0) -- Vị trí của nút AutoLevel
+AutoLevelButton.Parent = ScreenGui
+AutoLevelButton.Text = _G.AutoLevel and "Tắt AutoLevel" or "Bật AutoLevel"
 
--- Sword Weapon
-function GetWeaponInventory(WeaponName)
-    for _, v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-        if type(v) == "table" and v.Type == "Sword" and v.Name == WeaponName then
-            return true
-        end
-    end
-    return false
-end
-
--- Method Farm
-local Type = 1
-local Pos = CFrame.new()
-
-spawn(function()
-    while task.wait(0.1) do
-        if Type == 1 then
-            Pos = CFrame.new(10, 40, 10)
-        elseif Type == 2 then
-            Pos = CFrame.new(-30, 10, -30)
-        elseif Type == 3 then
-            Pos = CFrame.new(10, 10, -40)
-        elseif Type == 4 then
-            Pos = CFrame.new(-40, 10, 10)
-        end
+AutoLevelButton.MouseButton1Click:Connect(function()
+    _G.AutoLevel = not _G.AutoLevel
+    AutoLevelButton.Text = _G.AutoLevel and "Tắt AutoLevel" or "Bật AutoLevel"
+    if _G.AutoLevel then
+        autoLevel() -- Bắt đầu tự động tăng level
     end
 end)
-
-spawn(function()
-    while task.wait(0.1) do
-        Type = 1
-        task.wait(1)
-        Type = 2
-        task.wait(1)
-        Type = 3
-        task.wait(1)
-        Type = 4
-        task.wait(1)
-    end
-end)
-
---auto turn haki
-function AutoHaki()
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
-end
-]]
----Bypass Teleport
-
---------------------------------------------------------------------------------------------------------------------------------------------
----Close UI
-local ScreenGui = Instance.new("ScreenGui")
-local ImageButton = Instance.new("ImageButton")
-local UICorner = Instance.new("UICorner")
-
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-ImageButton.Parent = ScreenGui
-ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ImageButton.BorderSizePixel = 0
-ImageButton.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
-ImageButton.Size = UDim2.new(0, 50, 0, 50)
-ImageButton.Draggable = true
-ImageButton.Image = "rbxassetid://18648609696"
-ImageButton.MouseButton1Down:connect(function()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.End,false,game)
-end)
---------------------------------------------------------------------------------------------------------------------------------------------
---Remove Effect
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Hehe
---------------------------------------------------------------------------------------------------------------------------------------------
---Create Tabs
-local Farming = Tabs.Main:AddSection("Farming")
-
--- Danh sách các giá trị cho dropdown
-local listfastattack = {'Slow', 'Normal', 'Super'}
-
--- Tạo dropdown cho việc chọn tốc độ tấn công
-local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-    Title = "Select Fast Attack",
-    Values = listfastattack,
-    Multi = false,
-    Default = "Normal",  -- Mặc định là 'Normal'
-})
-
--- Đặt giá trị mặc định cho dropdown
-DropdownDelayAttack:SetValue("Normal")
-
--- Lắng nghe sự thay đổi giá trị trong dropdown và thay đổi độ trễ
-DropdownDelayAttack:OnChanged(function(Value)
-    _G.FastAttack = Value  -- Lưu giá trị vào biến toàn cục
-
-    -- Cập nhật độ trễ dựa trên lựa chọn
-    if _G.FastAttack == "Slow" then
-        _G.Fast_Delay = 0.15  -- Độ trễ chậm
-    elseif _G.FastAttack == "Normal" then
-        _G.Fast_Delay = 0.125  -- Độ trễ bình thường
-    elseif _G.FastAttack == "Super" then
-        _G.Fast_Delay = 0.1  -- Độ trễ siêu nhanh
-    else
-        print("Invalid fast attack option:", Value)
-    end
-end)
-
-
-    local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
-        Title = "Weapon",
-        Description = "",
-        Values = {'Melee','Sword','Blox Fruit'},
-        Multi = false,
-        Default = 1,
-    })
-    DropdownSelectWeapon:SetValue('Melee')
-    DropdownSelectWeapon:OnChanged(function(Value)
-        ChooseWeapon = Value
-    end)
-    task.spawn(function()
-        while wait() do
-            pcall(function()
-                if ChooseWeapon == "Melee" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == "Sword" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Sword" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == "Blox Fruit" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Blox Fruit" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                else
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                end
-            end)
-        end
-    end)
-
-
-    local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
-        Title = "Auto Farm Level",
-        Description = "",
-        Default = false })
-    ToggleLevel:OnChanged(function(Value)
-        _G.AutoLevel = Value
-        if Value == false then
-            wait()
-            toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-            wait()
-        end
-    end)
-    Options.ToggleLevel:SetValue(false)
-    spawn(function()
-        while task.wait() do
-        if _G.AutoLevel then
-        pcall(function()
-          CheckLevel()
-          if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
-          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-          toTarget(CFrameQ)
-          if (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5 then
-          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,QuestLv)
-          end
-          elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-          for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-          if v.Name == Ms then
-          repeat wait(_G.Fast_Delay)
-          AttackNoCoolDown()
-          bringmob = true
-          AutoHaki()
-          EquipTool(SelectWeapon)
-          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
-          v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-          v.HumanoidRootPart.Transparency = 1
-          v.Humanoid.JumpPower = 0
-          v.Humanoid.WalkSpeed = 0
-          v.HumanoidRootPart.CanCollide = false
-          FarmPos = v.HumanoidRootPart.CFrame
-          MonFarm = v.Name
-          until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
-          bringmob = false
-        end   
-          end
-          end
-          for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
-          if string.find(v.Name,NameMon) then
-          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude >= 10 then
-            Tween(v.CFrame * CFrame.new(posX,posY,posZ))
-          end
-          end
-          end
-          end
-          end)
-        end
-        end
-        end)
