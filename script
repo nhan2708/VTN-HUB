@@ -1637,32 +1637,8 @@ spawn(function()
     end)
   end)
   --//Stun Player
-  task.spawn(function()
-    if game.Players.LocalPlayer.Character:FindFirstChild("Stun") then
-    game.Players.LocalPlayer.Character.Stun.Changed:connect(function()
-      pcall(function()
-        if game.Players.LocalPlayer.Character:FindFirstChild("Stun") then
-        game.Players.LocalPlayer.Character.Stun.Value = 0
-        end
-        end)
-      end)
-    end
-    end)
-  
 
 --Check Material
-function CheckMaterial(matname)
-for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-if type(v) == "table" then
-if v.Type == "Material" then
-if v.Name == matname then
-return v.Count
-end
-end
-end
-end
-return 0
-end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
