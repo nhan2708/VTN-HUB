@@ -746,257 +746,7 @@ AreaList = {
 end
 
 --// Check Boss Quest
-function CheckBossQuest()
-if First_Sea then
-if SelectBoss == "The Gorilla King" then
-BossMon = "The Gorilla King"
-NameBoss = 'The Gorrila King'
-NameQuestBoss = "JungleQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$2,000\n7,000 Exp."
-CFrameQBoss = CFrame.new(-1601.6553955078, 36.85213470459, 153.38809204102)
-CFrameBoss = CFrame.new(-1088.75977, 8.13463783, -488.559906, -0.707134247, 0, 0.707079291, 0, 1, 0, -0.707079291, 0, -0.707134247)
-elseif SelectBoss == "Bobby" then
-BossMon = "Bobby"
-NameBoss = 'Bobby'
-NameQuestBoss = "BuggyQuest1"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$8,000\n35,000 Exp."
-CFrameQBoss = CFrame.new(-1140.1761474609, 4.752049446106, 3827.4057617188)
-CFrameBoss = CFrame.new(-1087.3760986328, 46.949409484863, 4040.1462402344)
-elseif SelectBoss == "The Saw" then
-BossMon = "The Saw"
-NameBoss = 'The Saw'
-CFrameBoss = CFrame.new(-784.89715576172, 72.427383422852, 1603.5822753906)
-elseif SelectBoss == "Yeti" then
-BossMon = "Yeti"
-NameBoss = 'Yeti'
-NameQuestBoss = "SnowQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$10,000\n180,000 Exp."
-CFrameQBoss = CFrame.new(1386.8073730469, 87.272789001465, -1298.3576660156)
-CFrameBoss = CFrame.new(1218.7956542969, 138.01184082031, -1488.0262451172)
-elseif SelectBoss == "Mob Leader" then
-BossMon = "Mob Leader"
-NameBoss = 'Mob Leader'
-CFrameBoss = CFrame.new(-2844.7307128906, 7.4180502891541, 5356.6723632813)
-elseif SelectBoss == "Vice Admiral" then
-BossMon = "Vice Admiral"
-NameBoss = 'Vice Admiral'
-NameQuestBoss = "MarineQuest2"
-QuestLvBoss = 2
-RewardBoss = "Reward:\n$10,000\n180,000 Exp."
-CFrameQBoss = CFrame.new(-5036.2465820313, 28.677835464478, 4324.56640625)
-CFrameBoss = CFrame.new(-5006.5454101563, 88.032081604004, 4353.162109375)
-elseif SelectBoss == "Saber Expert" then
-NameBoss = 'Saber Expert'
-BossMon = "Saber Expert"
-CFrameBoss = CFrame.new(-1458.89502, 29.8870335, -50.633564)
-elseif SelectBoss == "Warden" then
-BossMon = "Warden"
-NameBoss = 'Warden'
-NameQuestBoss = "ImpelQuest"
-QuestLvBoss = 1
-RewardBoss = "Reward:\n$6,000\n850,000 Exp."
-CFrameBoss = CFrame.new(5278.04932, 2.15167475, 944.101929, 0.220546961, -4.49946401e-06, 0.975376427, -1.95412576e-05, 1, 9.03162072e-06, -0.975376427, -2.10519756e-05, 0.220546961)
-CFrameQBoss = CFrame.new(5191.86133, 2.84020686, 686.438721, -0.731384635, 0, 0.681965172, 0, 1, 0, -0.681965172, 0, -0.731384635)
-elseif SelectBoss == "Chief Warden" then
-BossMon = "Chief Warden"
-NameBoss = 'Chief Warden'
-NameQuestBoss = "ImpelQuest"
-QuestLvBoss = 2
-RewardBoss = "Reward:\n$10,000\n1,000,000 Exp."
-CFrameBoss = CFrame.new(5206.92578, 0.997753382, 814.976746, 0.342041343, -0.00062915677, 0.939684749, 0.00191645394, 0.999998152, -2.80422337e-05, -0.939682961, 0.00181045406, 0.342041939)
-CFrameQBoss = CFrame.new(5191.86133, 2.84020686, 686.438721, -0.731384635, 0, 0.681965172, 0, 1, 0, -0.681965172, 0, -0.731384635)
-elseif SelectBoss == "Swan" then
-BossMon = "Swan"
-NameBoss = 'Swan'
-NameQuestBoss = "ImpelQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$15,000\n1,600,000 Exp."
-CFrameBoss = CFrame.new(5325.09619, 7.03906584, 719.570679, -0.309060812, 0, 0.951042235, 0, 1, 0, -0.951042235, 0, -0.309060812)
-CFrameQBoss = CFrame.new(5191.86133, 2.84020686, 686.438721, -0.731384635, 0, 0.681965172, 0, 1, 0, -0.681965172, 0, -0.731384635)
-elseif SelectBoss == "Magma Admiral" then
-BossMon = "Magma Admiral"
-NameBoss = 'Magma Admiral'
-NameQuestBoss = "MagmaQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$15,000\n2,800,000 Exp."
-CFrameQBoss = CFrame.new(-5314.6220703125, 12.262420654297, 8517.279296875)
-CFrameBoss = CFrame.new(-5765.8969726563, 82.92064666748, 8718.3046875)
-elseif SelectBoss == "Fishman Lord" then
-BossMon = "Fishman Lord"
-NameBoss = 'Fishman Lord'
-NameQuestBoss = "FishmanQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$15,000\n4,000,000 Exp."
-CFrameQBoss = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
-CFrameBoss = CFrame.new(61260.15234375, 30.950881958008, 1193.4329833984)
-elseif SelectBoss == "Wysper" then
-BossMon = "Wysper"
-NameBoss = 'Wysper'
-NameQuestBoss = "SkyExp1Quest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$15,000\n4,800,000 Exp."
-CFrameQBoss = CFrame.new(-7861.947265625, 5545.517578125, -379.85974121094)
-CFrameBoss = CFrame.new(-7866.1333007813, 5576.4311523438, -546.74816894531)
-elseif SelectBoss == "Thunder God" then
-BossMon = "Thunder God"
-NameBoss = 'Thunder God'
-NameQuestBoss = "SkyExp2Quest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$20,000\n5,800,000 Exp."
-CFrameQBoss = CFrame.new(-7903.3828125, 5635.9897460938, -1410.923828125)
-CFrameBoss = CFrame.new(-7994.984375, 5761.025390625, -2088.6479492188)
-elseif SelectBoss == "Cyborg" then
-BossMon = "Cyborg"
-NameBoss = 'Cyborg'
-NameQuestBoss = "FountainQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$20,000\n7,500,000 Exp."
-CFrameQBoss = CFrame.new(5258.2788085938, 38.526931762695, 4050.044921875)
-CFrameBoss = CFrame.new(6094.0249023438, 73.770050048828, 3825.7348632813)
-elseif SelectBoss == "Ice Admiral" then
-BossMon = "Ice Admiral"
-NameBoss = 'Ice Admiral'
-CFrameBoss = CFrame.new(1266.08948, 26.1757946, -1399.57678, -0.573599219, 0, -0.81913656, 0, 1, 0, 0.81913656, 0, -0.573599219)
-elseif SelectBoss == "Greybeard" then
-BossMon = "Greybeard"
-NameBoss = 'Greybeard'
-CFrameBoss = CFrame.new(-5081.3452148438, 85.221641540527, 4257.3588867188)
-end
-end
-if Second_Sea then
-if SelectBoss == "Diamond" then
-BossMon = "Diamond"
-NameBoss = 'Diamond'
-NameQuestBoss = "Area1Quest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$25,000\n9,000,000 Exp."
-CFrameQBoss = CFrame.new(-427.5666809082, 73.313781738281, 1835.4208984375)
-CFrameBoss = CFrame.new(-1576.7166748047, 198.59265136719, 13.724286079407)
-elseif SelectBoss == "Jeremy" then
-BossMon = "Jeremy"
-NameBoss = 'Jeremy'
-NameQuestBoss = "Area2Quest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$25,000\n11,500,000 Exp."
-CFrameQBoss = CFrame.new(636.79943847656, 73.413787841797, 918.00415039063)
-CFrameBoss = CFrame.new(2006.9261474609, 448.95666503906, 853.98284912109)
-elseif SelectBoss == "Fajita" then
-BossMon = "Fajita"
-NameBoss = 'Fajita'
-NameQuestBoss = "MarineQuest3"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$25,000\n15,000,000 Exp."
-CFrameQBoss = CFrame.new(-2441.986328125, 73.359344482422, -3217.5324707031)
-CFrameBoss = CFrame.new(-2172.7399902344, 103.32216644287, -4015.025390625)
-elseif SelectBoss == "Don Swan" then
-BossMon = "Don Swan"
-NameBoss = 'Don Swan'
-CFrameBoss = CFrame.new(2286.2004394531, 15.177839279175, 863.8388671875)
-elseif SelectBoss == "Smoke Admiral" then
-BossMon = "Smoke Admiral"
-NameBoss = 'Smoke Admiral'
-NameQuestBoss = "IceSideQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$20,000\n25,000,000 Exp."
-CFrameQBoss = CFrame.new(-5429.0473632813, 15.977565765381, -5297.9614257813)
-CFrameBoss = CFrame.new(-5275.1987304688, 20.757257461548, -5260.6669921875)
-elseif SelectBoss == "Awakened Ice Admiral" then
-BossMon = "Awakened Ice Admiral"
-NameBoss = 'Awakened Ice Admiral'
-NameQuestBoss = "FrostQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$20,000\n36,000,000 Exp."
-CFrameQBoss = CFrame.new(5668.9780273438, 28.519989013672, -6483.3520507813)
-CFrameBoss = CFrame.new(6403.5439453125, 340.29766845703, -6894.5595703125)
-elseif SelectBoss == "Tide Keeper" then
-BossMon = "Tide Keeper"
-NameBoss = 'Tide Keeper'
-NameQuestBoss = "ForgottenQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$12,500\n38,000,000 Exp."
-CFrameQBoss = CFrame.new(-3053.9814453125, 237.18954467773, -10145.0390625)
-CFrameBoss = CFrame.new(-3795.6423339844, 105.88877105713, -11421.307617188)
-elseif SelectBoss == "Darkbeard" then
-BossMon = "Darkbeard"
-NameBoss = 'Darkbeard'
-CFrameMon = CFrame.new(3677.08203125, 62.751937866211, -3144.8332519531)
-elseif SelectBoss == "Cursed Captain" then
-BossMon = "Cursed Captain"
-NameBoss = 'Cursed Captain'
-CFrameBoss = CFrame.new(916.928589, 181.092773, 33422)
-elseif SelectBoss == "Order" then
-BossMon = "Order"
-NameBoss = 'Order'
-CFrameBoss = CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875)
-end
-end
-if Third_Sea then
-if SelectBoss == "Stone" then
-BossMon = "Stone"
-NameBoss = 'Stone'
-NameQuestBoss = "PiratePortQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$25,000\n40,000,000 Exp."
-CFrameQBoss = CFrame.new(-289.76705932617, 43.819011688232, 5579.9384765625)
-CFrameBoss = CFrame.new(-1027.6512451172, 92.404174804688, 6578.8530273438)
-elseif SelectBoss == "Island Empress" then
-BossMon = "Island Empress"
-NameBoss = 'Island Empress'
-NameQuestBoss = "AmazonQuest2"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$30,000\n52,000,000 Exp."
-CFrameQBoss = CFrame.new(5445.9541015625, 601.62945556641, 751.43792724609)
-CFrameBoss = CFrame.new(5543.86328125, 668.97399902344, 199.0341796875)
-elseif SelectBoss == "Kilo Admiral" then
-BossMon = "Kilo Admiral"
-NameBoss = 'Kilo Admiral'
-NameQuestBoss = "MarineTreeIsland"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$35,000\n56,000,000 Exp."
-CFrameQBoss = CFrame.new(2179.3010253906, 28.731239318848, -6739.9741210938)
-CFrameBoss = CFrame.new(2764.2233886719, 432.46154785156, -7144.4580078125)
-elseif SelectBoss == "Captain Elephant" then
-BossMon = "Captain Elephant"
-NameBoss = 'Captain Elephant'
-NameQuestBoss = "DeepForestIsland"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$40,000\n67,000,000 Exp."
-CFrameQBoss = CFrame.new(-13232.682617188, 332.40396118164, -7626.01171875)
-CFrameBoss = CFrame.new(-13376.7578125, 433.28689575195, -8071.392578125)
-elseif SelectBoss == "Beautiful Pirate" then
-BossMon = "Beautiful Pirate"
-NameBoss = 'Beautiful Pirate'
-NameQuestBoss = "DeepForestIsland2"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$50,000\n70,000,000 Exp."
-CFrameQBoss = CFrame.new(-12682.096679688, 390.88653564453, -9902.1240234375)
-CFrameBoss = CFrame.new(5283.609375, 22.56223487854, -110.78285217285)
-elseif SelectBoss == "Cake Queen" then
-BossMon = "Cake Queen"
-NameBoss = 'Cake Queen'
-NameQuestBoss = "IceCreamIslandQuest"
-QuestLvBoss = 3
-RewardBoss = "Reward:\n$30,000\n112,500,000 Exp."
-CFrameQBoss = CFrame.new(-819.376709, 64.9259796, -10967.2832, -0.766061664, 0, 0.642767608, 0, 1, 0, -0.642767608, 0, -0.766061664)
-CFrameBoss = CFrame.new(-678.648804, 381.353943, -11114.2012, -0.908641815, 0.00149294338, 0.41757378, 0.00837114919, 0.999857843, 0.0146408929, -0.417492568, 0.0167988986, -0.90852499)
-elseif SelectBoss == "Longma" then
-BossMon = "Longma"
-NameBoss = 'Longma'
-CFrameBoss = CFrame.new(-10238.875976563, 389.7912902832, -9549.7939453125)
-elseif SelectBoss == "Soul Reaper" then
-BossMon = "Soul Reaper"
-NameBoss = 'Soul Reaper'
-CFrameBoss = CFrame.new(-9524.7890625, 315.80429077148, 6655.7192382813)
-elseif SelectBoss == "rip_indra True Form" then
-BossMon = "rip_indra True Form"
-NameBoss = 'rip_indra True Form'
-CFrameBoss = CFrame.new(-5415.3920898438, 505.74133300781, -2814.0166015625)
-end
-end
-end
+
 
 --// Check Material
 
@@ -1007,215 +757,252 @@ end
 ---------Tween
 
 function TP1(Pos)
-    Distance = (Pos.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    if game.Players.LocalPlayer.Character.Humanoid.Sit == true then game.Players.LocalPlayer.Character.Humanoid.Sit = false end
-    pcall(function() tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/210, Enum.EasingStyle.Linear),{CFrame = Pos}) end)
+    -- Tính khoảng cách
+    local Distance = (Pos.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+
+    -- Hủy trạng thái ngồi
+    if game.Players.LocalPlayer.Character.Humanoid.Sit then
+        game.Players.LocalPlayer.Character.Humanoid.Sit = false
+    end
+
+    -- Tạo và chạy tween
+    local tween = game:GetService("TweenService"):Create(
+        game.Players.LocalPlayer.Character.HumanoidRootPart,
+        TweenInfo.new(Distance / 210, Enum.EasingStyle.Linear),
+        {CFrame = Pos}
+    )
     tween:Play()
+
+    -- Kiểm tra điều kiện để hủy hoặc áp dụng trực tiếp
     if Distance <= 250 then
         tween:Cancel()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
     end
-    if _G.StopTween == true then
+
+    if _G.StopTween then
         tween:Cancel()
         _G.Clip = false
     end
 end
 
-  function Tween2(P1)
+function Tween2(P1)
+    -- Tính khoảng cách
     local Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    if Distance >= 1 then
-    Speed = 350
-    end
-    game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear), {
-      CFrame = P1
-    }):Play()
+    local Speed = 350
+
+    -- Tạo và chạy tween
+    local tween = game:GetService("TweenService"):Create(
+        game.Players.LocalPlayer.Character.HumanoidRootPart,
+        TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear),
+        {CFrame = P1}
+    )
+    tween:Play()
+
+    -- Kiểm tra điều kiện để hủy tween
     if _G.CancelTween2 then
-    game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear), {
-      CFrame = P1
-    }):Cancel()
+        tween:Cancel()
     end
+
     _G.Clip2 = true
-    wait(Distance/Speed)
+    wait(Distance / Speed)
     _G.Clip2 = false
-    end
-   
+end
+
 -- [Function (Abandoned Quest , Others)]
 
 
 --BTP
+-- Teleport và thiết lập điểm hồi sinh
 function BTP(Position)
-	game.Players.LocalPlayer.Character.Head:Destroy()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Position
-	wait(0.5)
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Position
-	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetSpawnPoint")
+    -- Phá hủy phần "Head" để làm mới nhân vật
+    if game.Players.LocalPlayer.Character:FindFirstChild("Head") then
+        game.Players.LocalPlayer.Character.Head:Destroy()
+    end
+
+    -- Dịch chuyển nhân vật đến vị trí mục tiêu
+    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+    humanoidRootPart.CFrame = Position
+    task.wait(0.5)
+    humanoidRootPart.CFrame = Position
+
+    -- Thiết lập điểm hồi sinh
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetSpawnPoint")
 end
---BTPZ
+
+-- Teleport đơn giản đến vị trí chỉ định
 function BTPZ(Point)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Point
-    task.wait()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Point
-        end
+    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+    -- Dịch chuyển đến vị trí mục tiêu
+    humanoidRootPart.CFrame = Point
+    task.wait(0.1) -- Chờ một thời gian ngắn
+    humanoidRootPart.CFrame = Point
+end
+
 ------Bypass TP 2
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
-  TweenSpeed = 350
-   function Tween(P1)
-    local Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    if Distance >= 1 then
-    Speed = TweenSpeed
+-- Tốc độ tween
+local TweenSpeed = 350
+
+-- Hàm Tween (dịch chuyển mượt mà đến vị trí chỉ định)
+function Tween(P1)
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+
+    if humanoidRootPart then
+        -- Tính khoảng cách và thời gian tween
+        local Distance = (P1.Position - humanoidRootPart.Position).Magnitude
+        local Speed = TweenSpeed
+
+        -- Tạo tween
+        local tween = game:GetService("TweenService"):Create(
+            humanoidRootPart,
+            TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear),
+            {CFrame = P1}
+        )
+
+        -- Phát tween
+        tween:Play()
+
+        -- Hủy tween nếu cờ _G.StopTween được bật
+        if _G.StopTween then
+            tween:Cancel()
+        end
     end
-    game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear), {
-      CFrame = P1
-    }):Play()
-    if _G.StopTween then
-    game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear), {
-      CFrame = P1
-    }):Cancel()
-    end
-    end
-    function CancelTween(target)
-    if not target then
-    _G.StopTween = true
-    wait()
-    Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-    wait()
-    _G.StopTween = false
-    end
-    end
-----------------------------------------------------------------------------------------------------------------------------------------------
-
-function toTargetP(CFgo)
-	if game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Health <= 0 or not game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid") then tween:Cancel() repeat wait(_G.Fast_Delay) until game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid") and game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health > 0 wait(7) return end
-	if (game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart.Position - CFgo.Position).Magnitude <= 150 then
-		pcall(function()
-			tween:Cancel()
-
-			game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart.CFrame = CFgo
-
-			return
-		end)
-	end
-	local tween_s = game:service"TweenService"
-	local info = TweenInfo.new((game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart.Position - CFgo.Position).Magnitude/325, Enum.EasingStyle.Linear)
-	tween = tween_s:Create(game.Players.LocalPlayer.Character["HumanoidRootPart"], info, {CFrame = CFgo})
-	tween:Play()
-
-	local tweenfunc = {}
-
-	function tweenfunc:Stop()
-		tween:Cancel()
-	end
-
-	return tweenfunc
 end
+
+-- Hàm hủy Tween (dừng dịch chuyển và đặt lại vị trí)
+function CancelTween()
+    _G.StopTween = true  -- Bật cờ để hủy Tween hiện tại
+    wait(0.1)            -- Chờ ngắn để đảm bảo tween được dừng
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+
+    if humanoidRootPart then
+        -- Đặt lại vị trí hiện tại
+        Tween(humanoidRootPart.CFrame)
+    end
+
+    wait(0.1)            -- Chờ ngắn trước khi tắt cờ
+    _G.StopTween = false -- Tắt cờ
+end
+
+----------------------------------------------------------------------------------------------------------------------------------------------
 
     --function TP to Boat/Ship
 
-
---select weapon
+-- Select Weapon
 function EquipTool(ToolSe)
-		if game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe) then
-			local tool = game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe)
-			wait(0.5)
-			game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
-		end
-	end
-    
---aimbot mastery
-    
---Equip Gun
-spawn(function()
-  pcall(function()
-    while task.wait() do
-    for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-    if v:IsA("Tool") then
-    if v:FindFirstChild("RemoteFunctionShoot") then
-    CurrentEquipGun = v.Name
-    end
-    end
-    end
-    end
-    end)
-  end)
+    local player = game.Players.LocalPlayer
+    local backpack = player.Backpack
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChild("Humanoid")
 
--- [Body Gyro]
-   spawn(function()
-			while task.wait() do
-				pcall(function()
-					if _G.TeleportIsland or _G.AutoEvoRace or AutoFarmChest or _G.chestsea2 or _G.chestsea3 or _G.CastleRaid or _G.CollectAzure or _G.TweenToKitsune or _G.AutoCandy or _G.GhostShip or _G.Ship or _G.SailBoat or _G.Auto_Holy_Torch or _G.FindMirageIsland or _G.TeleportPly or _G.Tweenfruit or _G.AutoFishCrew or _G.AutoShark or _G.AutoCakeV2 or _G.AutoMysticIsland or _G.AutoQuestRace or _G.AutoBuyBoat or _G.dao or _G.AutoMirage or AutoFarmAcient or _G.AutoQuestRace or Auto_Law or _G.AutoAllBoss or AutoTushita or _G.AutoHolyTorch or _G.AutoTerrorshark or _G.farmpiranya or _G.DriveMytic or _G.AutoCakeV2V2 or PirateShip or _G.AutoSeaBeast or _G.AutoNear or _G.BossRaid or _G.GrabChest or AutoCitizen or _G.Ectoplasm or AutoEvoRace or AutoBartilo or AutoFactory or BringChestz or BringFruitz or _G.AutoLevel or _G.Clip2 or AutoFarmNoQuest or _G.AutoBone or AutoFarmSelectMonsterQuest or AutoFarmSelectMonsterNoQuest or _G.AutoBoss or AutoFarmBossQuest or AutoFarmMasGun or AutoFarmMasDevilFruit or AutoFarmSelectArea or AutoSecondSea or AutoThirdSea or AutoDeathStep or AutoSuperhuman or AutoSharkman or AutoElectricClaw or AutoDragonTalon or AutoGodhuman or AutoRengoku or AutoBuddySword or AutoPole or AutoHallowSycthe or AutoCavander or AutoTushita or AutoDarkDagger or _G.CakePrince or _G.AutoElite or AutoRainbowHaki or AutoSaber or AutoFarmKen or AutoKenHop or AutoKenV2 or _G.AutoKillPlayerMelee or _G.AutoKillPlayerGun or _G.AutoKillPlayerFruit or AutoDungeon or AutoNextIsland or AutoAdvanceDungeon or Musketeer or RipIndra or Auto_Serpent_Bow or AutoTorch or AutoSoulGuitar or Auto_Cursed_Dual_Katana or _G.AutoMaterial or Auto_Quest_Yama_1 or Auto_Quest_Yama_2 or Auto_Quest_Yama_3 or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3 or _G.Factory or _G.SwanGlasses or AutoBartilo or AutoEvoRace or _G.Ectoplasm then
-						if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
-							local Noclip = Instance.new("BodyVelocity")
-							Noclip.Name = "BodyClip"
-							Noclip.Parent = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
-							Noclip.MaxForce = Vector3.new(100000,100000,100000)
-							Noclip.Velocity = Vector3.new(0,0,0)
-						end
-					else
-						game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip"):Destroy()
-					end
-				end)
-			end
-		end)
+    if backpack:FindFirstChild(ToolSe) and humanoid then
+        local tool = backpack:FindFirstChild(ToolSe)
+        task.wait(0.5)
+        humanoid:EquipTool(tool)
+    end
+end
 
-	
---No CLip Auto Farm
+-- Aimbot Mastery (Equip Gun)
 spawn(function()
-  pcall(function()
-    game:GetService("RunService").Stepped:Connect(function()
-      if _G.TeleportIsland or _G.AutoEvoRace or _G.CastleRaid or AutoFarmChest or _G.CollectAzure or _G.TweenToKitsune or _G.AutoCandy or _G.GhostShip or _G.Ship or _G.SailBoat or _G.Auto_Holy_Torch or _G.Tweenfruit or _G.FindMirageIsland or _G.TeleportPly or _G.AutoFishCrew or _G.AutoShark or _G.AutoMysticIsland or _G.AutoCakeV2 or _G.AutoQuestRace or _G.AutoBuyBoat or _G.dao or AutoFarmAcient or _G.AutoMirage or Auto_Law or _G.AutoQuestRace or _G.AutoAllBoss or _G.AutoHolyTorch or AutoTushita or _G.farmpiranya or _G.AutoTerrorshark or _G.AutoNear or _G.AutoCakeV2V2 or PirateShip or _G.AutoSeaBeast or _G.DriveMytic or _G.BossRaid or _G.GrabChest or AutoCitizen or _G.Ectoplasm or AutoEvoRace or AutoBartilo or AutoFactory or BringChestz or BringFruitz or _G.AutoLevel or _G.Clip2 or AutoFarmNoQuest or _G.AutoBone or AutoFarmSelectMonsterQuest or AutoFarmSelectMonsterNoQuest or _G.AutoBoss or AutoFarmBossQuest or AutoFarmMasGun or AutoFarmMasDevilFruit or AutoFarmSelectArea or AutoSecondSea or AutoThirdSea or AutoDeathStep or AutoSuperhuman or AutoSharkman or AutoElectricClaw or AutoDragonTalon or AutoGodhuman or AutoRengoku or AutoBuddySword or AutoPole or AutoHallowSycthe or AutoCavander or AutoTushita or AutoDarkDagger or _G.CakePrince or _G.AutoElite or AutoRainbowHaki or AutoSaber or AutoFarmKen or AutoKenHop or AutoKenV2 or _G.AutoKillPlayerMelee or _G.AutoKillPlayerGun or _G.AutoKillPlayerFruit or AutoDungeon or AutoNextIsland or AutoAdvanceDungeon or Musketeer or RipIndra or Auto_Serpent_Bow or AutoTorch or AutoSoulGuitar or Auto_Cursed_Dual_Katana or _G.AutoMaterial or Auto_Quest_Yama_1 or Auto_Quest_Yama_2 or Auto_Quest_Yama_3 or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3 or _G.Factory or _G.SwanGlasses or AutoBartilo or AutoEvoRace or _G.Ectoplasm then
-      for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-      if v:IsA("BasePart") then
-      v.CanCollide = false
-      end
-      end
-      end
-      end)
-    end)
-  end)
-  --//Stun Player
-  task.spawn(function()
-    if game.Players.LocalPlayer.Character:FindFirstChild("Stun") then
-    game.Players.LocalPlayer.Character.Stun.Changed:connect(function()
-      pcall(function()
-        if game.Players.LocalPlayer.Character:FindFirstChild("Stun") then
-        game.Players.LocalPlayer.Character.Stun.Value = 0
+    pcall(function()
+        while task.wait() do
+            for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                if tool:IsA("Tool") and tool:FindFirstChild("RemoteFunctionShoot") then
+                    CurrentEquipGun = tool.Name
+                end
+            end
         end
-        end)
-      end)
-    end
     end)
-  
+end)
+
+-- Body Gyro for NoClip
+spawn(function()
+    while task.wait() do
+        pcall(function()
+            local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+            if _G.TeleportPly or _G.AutoLevel or _G.Clip2 or _G.AutoBone then
+                if not hrp:FindFirstChild("BodyClip") then
+                    local bodyClip = Instance.new("BodyVelocity", hrp)
+                    bodyClip.Name = "BodyClip"
+                    bodyClip.MaxForce = Vector3.new(100000, 100000, 100000)
+                    bodyClip.Velocity = Vector3.zero
+                end
+            else
+                local bodyClip = hrp:FindFirstChild("BodyClip")
+                if bodyClip then
+                    bodyClip:Destroy()
+                end
+            end
+        end)
+    end
+end)
+
+-- NoClip Auto Farm
+spawn(function()
+    pcall(function()
+        game:GetService("RunService").Stepped:Connect(function()
+            if _G.NoClipActive then
+                for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
+            end
+        end)
+    end)
+end)
+
+-- Stun Player Handling
+task.spawn(function()
+    local stun = game.Players.LocalPlayer.Character:FindFirstChild("Stun")
+    if stun then
+        stun.Changed:Connect(function()
+            pcall(function()
+                if stun then
+                    stun.Value = 0
+                end
+            end)
+        end)
+    end
+end)
 
 --Check Material
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
-------AttackNoCD  
+--- Attack No Cooldown
 local plr = game.Players.LocalPlayer
 local CbFw = debug.getupvalues(require(plr.PlayerScripts.CombatFramework))
 local CbFw2 = CbFw[2]
 
-function GetCurrentBlade() 
+function GetCurrentBlade()
     local p13 = CbFw2.activeController
     local ret = p13.blades[1]
-    if not ret then return end
-    while ret.Parent~=game.Players.LocalPlayer.Character do ret=ret.Parent end
+    if not ret then return nil end
+    while ret.Parent ~= plr.Character do
+        ret = ret.Parent
+    end
     return ret
 end
 
-function AttackNoCoolDown() 
+function AttackNoCoolDown()
     local AC = CbFw2.activeController
-    for i = 1, 1 do 
+    for i = 1, 1 do
         local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
             plr.Character,
             {plr.Character.HumanoidRootPart},
             60
         )
-        local cac = {}
-        local hash = {}
-        for k, v in pairs(bladehit) do
+        local cac, hash = {}, {}
+        for _, v in pairs(bladehit) do
             if v.Parent:FindFirstChild("HumanoidRootPart") and not hash[v.Parent] then
                 table.insert(cac, v.Parent.HumanoidRootPart)
                 hash[v.Parent] = true
@@ -1229,144 +1016,96 @@ function AttackNoCoolDown()
             local u10 = debug.getupvalue(AC.attack, 7)
             local u12 = (u8 * 798405 + u7 * 727595) % u9
             local u13 = u7 * 798405
+            
             (function()
                 u12 = (u12 * u9 + u13) % 1099511627776
                 u8 = math.floor(u12 / u9)
                 u7 = u12 - u8 * u9
             end)()
+            
             u10 = u10 + 1
             debug.setupvalue(AC.attack, 5, u8)
             debug.setupvalue(AC.attack, 6, u9)
             debug.setupvalue(AC.attack, 4, u7)
             debug.setupvalue(AC.attack, 7, u10)
+            
             pcall(function()
-                for k, v in pairs(AC.animator.anims.basic) do
-                    v:Play()
-                end                  
+                for _, anim in pairs(AC.animator.anims.basic) do
+                    anim:Play()
+                end
             end)
-            if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then 
-                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange",tostring(GetCurrentBlade()))
+
+            if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(GetCurrentBlade()))
                 game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
-                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladehit, i, "") 
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladehit, i, "")
             end
         end
     end
 end
 
---Attack Mastery
-    function NormalAttack()
-        if not _G.NormalAttack then
-            local Module = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework)
-            local CombatFramework = debug.getupvalues(Module)[2]
-            local CamShake = require(game.ReplicatedStorage.Util.CameraShaker)
-            CamShake:Stop()
-            CombatFramework.activeController.attacking = false
-            CombatFramework.activeController.timeToNextAttack = 0
-            CombatFramework.activeController.hitboxMagnitude = 180
-            game:GetService'VirtualUser':CaptureController()
-            game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+-- Attack Mastery
+function NormalAttack()
+    if not _G.NormalAttack then
+        local Module = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework)
+        local CombatFramework = debug.getupvalues(Module)[2]
+        local CamShake = require(game.ReplicatedStorage.Util.CameraShaker)
+        CamShake:Stop()
+        CombatFramework.activeController.attacking = false
+        CombatFramework.activeController.timeToNextAttack = 0
+        CombatFramework.activeController.hitboxMagnitude = 180
+        game:GetService("VirtualUser"):CaptureController()
+        game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 672))
+    end
+end
+
+-- Sword Weapon
+function GetWeaponInventory(WeaponName)
+    for _, v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+        if type(v) == "table" and v.Type == "Sword" and v.Name == WeaponName then
+            return true
         end
     end
-
---------------------------------------------------------------------------------------------------------------------------------------------
-
---Sword Weapon
-function GetWeaponInventory(Weaponname)
-for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-if type(v) == "table" then
-if v.Type == "Sword" then
-if v.Name == Weaponname then
-return true
-end
-end
-end
-end
-return false
+    return false
 end
 
----Method Farm
-Type1 = 1
+-- Method Farm
+local Type = 1
+local Pos = CFrame.new()
+
 spawn(function()
-    while wait(.1) do
+    while task.wait(0.1) do
         if Type == 1 then
-            Pos = CFrame.new(10,40,10)
+            Pos = CFrame.new(10, 40, 10)
         elseif Type == 2 then
-            Pos = CFrame.new(-30,10,-30)
+            Pos = CFrame.new(-30, 10, -30)
         elseif Type == 3 then
-            Pos = CFrame.new(10,10,-40)
+            Pos = CFrame.new(10, 10, -40)
         elseif Type == 4 then
-            Pos = CFrame.new(-40,10,10)	
+            Pos = CFrame.new(-40, 10, 10)
         end
-        end
-    end)
-
-spawn(function()
-    while wait(.1) do
-        Type = 1
-        wait(1)
-        Type = 2
-        wait(1)
-        Type = 3
-        wait(1)
-        Type = 4
-        wait(1)
     end
 end)
---auto turn haki
-  function AutoHaki()
-    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+
+spawn(function()
+    while task.wait(0.1) do
+        Type = 1
+        task.wait(1)
+        Type = 2
+        task.wait(1)
+        Type = 3
+        task.wait(1)
+        Type = 4
+        task.wait(1)
     end
-end
----Bypass Teleport
-function to(P)
-	repeat wait(0.5)
-		game.Players.LocalPlayer.Character.Humanoid:ChangeState(15)
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = P
-		task.wait()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = P
-	until (P.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 2000
+end)
+
+--auto turn haki
+function AutoHaki()
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
 end
 
-function to(p)
-		pcall(function()
-			if (p.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >= 2000 and not Auto_Raid and game.Players.LocalPlayer.Character.Humanoid.Health > 0 then
-				if NameMon == "FishmanQuest" then
-					Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-					wait()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-				elseif Mon == "God's Guard"  then
-					Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-					wait()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-4607.82275, 872.54248, -1667.55688))
-				elseif NameMon == "SkyExp1Quest" then
-					Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-					wait()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
-				elseif NameMon == "ShipQuest1" then
-					Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-					wait()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
-				elseif NameMon == "ShipQuest2" then
-					Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-					wait()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
-				elseif NameMon == "FrostQuest" then
-					Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-					wait()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-6508.5581054688, 89.034996032715, -132.83953857422))
-				else
-						repeat wait(0.5)
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p
-						wait(.05)
-						game.Players.LocalPlayer.Character.Head:Destroy()
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p
-					until (p.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2500 and game.Players.LocalPlayer.Character.Humanoid.Health > 0
-					wait()
-				end
-			end
-		end)
-	end
+---Bypass Teleport
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 ---Close UI
