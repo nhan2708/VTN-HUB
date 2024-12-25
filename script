@@ -1380,7 +1380,7 @@ spawn(function()
     end)
 end)
 
--- Attack (No Cooldown)
+-- Attack Mastery (No Cooldown)
 function AttackNoCoolDown()
     local AC = CbFw2.activeController
     local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
@@ -1389,7 +1389,7 @@ function AttackNoCoolDown()
         60
     )
 
-    -- Lọc ra các cú đánh hợp lệ
+    -- Kiểm tra các cú đánh hợp lệ
     local validHits = {}
     local seen = {}
     for _, hit in ipairs(bladehit) do
@@ -1399,20 +1399,21 @@ function AttackNoCoolDown()
         end
     end
 
-    -- Nếu có cú đánh hợp lệ, tiếp tục xử lý
+    -- Tiến hành nếu có cú đánh hợp lệ
     if #validHits > 0 then
         local u8 = debug.getupvalue(AC.attack, 5)
         local u9 = debug.getupvalue(AC.attack, 6)
         local u7 = debug.getupvalue(AC.attack, 4)
         local u10 = debug.getupvalue(AC.attack, 7)
-
-        -- Cập nhật giá trị các upvalues
         local u12 = (u8 * 798405 + u7 * 727595) % u9
         local u13 = u7 * 798405
 
-        u12 = (u12 * u9 + u13) % 1099511627776
-        u8 = math.floor(u12 / u9)
-        u7 = u12 - u8 * u9
+        -- Cập nhật giá trị của upvalues
+        (function()
+            u12 = (u12 * u9 + u13) % 1099511627776
+            u8 = math.floor(u12 / u9)
+            u7 = u12 - u8 * u9
+        end)()
 
         u10 = u10 + 1
         debug.setupvalue(AC.attack, 5, u8)
@@ -1422,7 +1423,7 @@ function AttackNoCoolDown()
 
         -- Chạy các animation
         pcall(function()
-            for _, v in pairs(AC.animator.anims.basic) do
+            for k, v in pairs(AC.animator.anims.basic) do
                 v:Play()
             end
         end)
