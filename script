@@ -1343,24 +1343,26 @@ end
  
 
 --select weapon
+-- Equip Tool Function
 function EquipTool(ToolSe)
-    if game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe) then
-        local tool = game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe)
+    local tool = game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe)
+    if tool then
         wait(0.5)
         game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
     end
 end
-    --aimbot mastery
 
---Equip Gun
-
-
-
--- [Body Gyro]
+-- Aimbot Mastery & Body Gyro
 spawn(function()
     while task.wait() do
         pcall(function()
-            if _G.TeleportIsland or _G.AutoEvoRace or AutoFarmChest or _G.chestsea2 or _G.chestsea3 or _G.CastleRaid or _G.CollectAzure or _G.TweenToKitsune or _G.AutoCandy or _G.GhostShip or _G.Ship or _G.SailBoat or _G.Auto_Holy_Torch or _G.FindMirageIsland or _G.TeleportPly or _G.Tweenfruit or _G.AutoFishCrew or _G.AutoShark or _G.AutoCakeV2 or _G.AutoMysticIsland or _G.AutoQuestRace or _G.AutoBuyBoat or _G.dao or _G.AutoMirage or AutoFarmAcient or _G.AutoQuestRace or Auto_Law or _G.AutoAllBoss or AutoTushita or _G.AutoHolyTorch or _G.AutoTerrorshark or _G.farmpiranya or _G.DriveMytic or _G.AutoCakeV2V2 or PirateShip or _G.AutoSeaBeast or _G.AutoNear or _G.BossRaid or _G.GrabChest or AutoCitizen or _G.Ectoplasm or AutoBartilo or AutoFactory or BringChestz or BringFruitz or _G.AutoLevel or _G.Clip2 or AutoFarmNoQuest or _G.AutoBone or AutoFarmSelectMonsterQuest or AutoFarmSelectMonsterNoQuest or _G.AutoBoss or AutoFarmBossQuest or AutoFarmMasGun or AutoFarmMasDevilFruit or AutoFarmSelectArea or AutoSecondSea or AutoThirdSea or AutoDeathStep or AutoSuperhuman or AutoSharkman or AutoElectricClaw or AutoDragonTalon or AutoGodhuman or AutoRengoku or AutoBuddySword or AutoPole or AutoHallowSycthe or AutoCavander or AutoTushita or AutoDarkDagger or _G.CakePrince or _G.AutoElite or AutoRainbowHaki or AutoSaber or AutoFarmKen or AutoKenHop or AutoKenV2 or _G.AutoKillPlayerMelee or _G.AutoKillPlayerGun or _G.AutoKillPlayerFruit or AutoDungeon or AutoNextIsland or AutoAdvanceDungeon or Musketeer or RipIndra or Auto_Serpent_Bow or AutoTorch or AutoSoulGuitar or Auto_Cursed_Dual_Katana or _G.AutoMaterial or Auto_Quest_Yama_1 or Auto_Quest_Yama_2 or Auto_Quest_Yama_3 or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3 or _G.Factory or _G.SwanGlasses or AutoBartilo or AutoEvoRace or _G.Ectoplasm then
+            if _G.TeleportIsland or _G.AutoEvoRace or AutoFarmChest or _G.chestsea2 or _G.chestsea3 or _G.CastleRaid or 
+            _G.CollectAzure or _G.TweenToKitsune or _G.AutoCandy or _G.GhostShip or _G.Ship or _G.SailBoat or _G.Auto_Holy_Torch or
+            _G.FindMirageIsland or _G.TeleportPly or _G.Tweenfruit or _G.AutoFishCrew or _G.AutoShark or _G.AutoCakeV2 or
+            _G.AutoMysticIsland or _G.AutoQuestRace or _G.AutoBuyBoat or _G.dao or AutoFarmAcient or _G.AutoMirage or 
+            Auto_Law or _G.AutoAllBoss or AutoTushita or _G.AutoHolyTorch or _G.AutoTerrorshark or _G.farmpiranya or 
+            _G.DriveMytic or _G.AutoCakeV2V2 or PirateShip or _G.AutoSeaBeast or _G.AutoNear or _G.BossRaid or 
+            _G.GrabChest or AutoCitizen or _G.Ectoplasm then
                 if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
                     local Noclip = Instance.new("BodyVelocity")
                     Noclip.Name = "BodyClip"
@@ -1376,48 +1378,28 @@ spawn(function()
     end
 end)
 
-	
---No CLip Auto Farm
+-- NoClip Auto Farm
 spawn(function()
   pcall(function()
     game:GetService("RunService").Stepped:Connect(function()
-      if _G.TeleportIsland or _G.AutoEvoRace or _G.CastleRaid or AutoFarmChest or _G.CollectAzure or _G.TweenToKitsune or _G.AutoCandy or _G.GhostShip or _G.Ship or _G.SailBoat or _G.Auto_Holy_Torch or _G.Tweenfruit or _G.FindMirageIsland or _G.TeleportPly or _G.AutoFishCrew or _G.AutoShark or _G.AutoMysticIsland or _G.AutoCakeV2 or _G.AutoQuestRace or _G.AutoBuyBoat or _G.dao or AutoFarmAcient or _G.AutoMirage or Auto_Law or _G.AutoQuestRace or _G.AutoAllBoss or _G.AutoHolyTorch or AutoTushita or _G.farmpiranya or _G.AutoTerrorshark or _G.AutoNear or _G.AutoCakeV2V2 or PirateShip or _G.AutoSeaBeast or _G.DriveMytic or _G.BossRaid or _G.GrabChest or AutoCitizen or _G.Ectoplasm or AutoEvoRace or AutoBartilo or AutoFactory or BringChestz or BringFruitz or _G.AutoLevel or _G.Clip2 or AutoFarmNoQuest or _G.AutoBone or AutoFarmSelectMonsterQuest or AutoFarmSelectMonsterNoQuest or _G.AutoBoss or AutoFarmBossQuest or AutoFarmMasGun or AutoFarmMasDevilFruit or AutoFarmSelectArea or AutoSecondSea or AutoThirdSea or AutoDeathStep or AutoSuperhuman or AutoSharkman or AutoElectricClaw or AutoDragonTalon or AutoGodhuman or AutoRengoku or AutoBuddySword or AutoPole or AutoHallowSycthe or AutoCavander or AutoTushita or AutoDarkDagger or _G.CakePrince or _G.AutoElite or AutoRainbowHaki or AutoSaber or AutoFarmKen or AutoKenHop or AutoKenV2 or _G.AutoKillPlayerMelee or _G.AutoKillPlayerGun or _G.AutoKillPlayerFruit or AutoDungeon or AutoNextIsland or AutoAdvanceDungeon or Musketeer or RipIndra or Auto_Serpent_Bow or AutoTorch or AutoSoulGuitar or Auto_Cursed_Dual_Katana or _G.AutoMaterial or Auto_Quest_Yama_1 or Auto_Quest_Yama_2 or Auto_Quest_Yama_3 or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3 or _G.Factory or _G.SwanGlasses or AutoBartilo or AutoEvoRace or _G.Ectoplasm then
-      for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-      if v:IsA("BasePart") then
-      v.CanCollide = false
+      if _G.TeleportIsland or _G.AutoEvoRace or AutoFarmChest or _G.CollectAzure or _G.GhostShip or _G.Ship or _G.Auto_Holy_Torch then
+        for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
       end
-      end
-      end
-      end)
     end)
   end)
-  --//Stun Player
+end)
 
---Check Material
-
------------------------------------------------------------------------------------------------------------------------------------------------
--local plr = game.Players.LocalPlayer
-local CbFw = debug.getupvalues(require(plr.PlayerScripts.CombatFramework))
-local CbFw2 = CbFw[2]
-
-function GetCurrentBlade() 
-    local p13 = CbFw2.activeController
-    if not p13 or not p13.blades or #p13.blades == 0 then
-        return nil -- Không có vũ khí
-    end
-    local ret = p13.blades[1]
-    while ret.Parent and ret.Parent ~= game.Players.LocalPlayer.Character do
-        ret = ret.Parent
-    end
-    return ret
-end
-
+-- Attack Mastery (No Cooldown)
 function AttackNoCoolDown()
     local AC = CbFw2.activeController
     -- Lấy thông tin các cú đánh từ bladehit
     local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-        plr.Character,
-        {plr.Character.HumanoidRootPart},
+        game.Players.LocalPlayer.Character,
+        {game.Players.LocalPlayer.Character.HumanoidRootPart},
         60
     )
 
@@ -1456,13 +1438,13 @@ function AttackNoCoolDown()
 
         -- Chạy các animation cho basic
         pcall(function()
-            for k, v in pairs(AC.animator.anims.basic) do
+            for _, v in pairs(AC.animator.anims.basic) do
                 v:Play()
             end
         end)
 
         -- Kiểm tra vũ khí hiện tại và gửi thông điệp
-        if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
+        if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
             local currentBlade = GetCurrentBlade()
             if currentBlade then
                 game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(currentBlade))
@@ -1473,27 +1455,21 @@ function AttackNoCoolDown()
     end
 end
 
---Attack Mastery
-
---------------------------------------------------------------------------------------------------------------------------------------------
-
---Sword Weapon
+-- Get Weapon Inventory
 function GetWeaponInventory(Weaponname)
-for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-if type(v) == "table" then
-if v.Type == "Sword" then
-if v.Name == Weaponname then
-return true
-end
-end
-end
-end
-return false
+    for _, v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+        if type(v) == "table" then
+            if v.Type == "Sword" and v.Name == Weaponname then
+                return true
+            end
+        end
+    end
+    return false
 end
 
----Method Farm
+-- Method Farm
 local Type = 1
-local Pos = CFrame.new(10, 40, 10) -- Khởi tạo giá trị Pos ban đầu
+local Pos = CFrame.new(10, 40, 10) -- Initial Position
 
 spawn(function()
     while wait(0.1) do
@@ -1509,26 +1485,20 @@ spawn(function()
     end
 end)
 
--- Thay đổi giá trị của Type sau mỗi khoảng thời gian
+-- Change Type Periodically
 spawn(function()
     while wait(1) do
-        Type = 1
-        wait(1)
-        Type = 2
-        wait(1)
-        Type = 3
-        wait(1)
-        Type = 4
-        wait(1)
+        Type = math.random(1, 4) -- Randomly change the Type
     end
 end)
 
---auto turn haki
+-- Auto Haki
 function AutoHaki()
     if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
     end
 end
+
 ---Bypass Teleport
 
 
