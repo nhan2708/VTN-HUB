@@ -1483,7 +1483,6 @@ function AutoHaki()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
     end
 end
-
 ---Bypass Teleport
 
 
