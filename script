@@ -21,7 +21,7 @@ ImageButton.Image = "rbxassetid://18648609696" -- Replace with a valid image ID
 -- Functionality for button click
 ImageButton.MouseButton1Down:Connect(function()
     -- Simulate pressing "End" key (to minimize Fluent UI)
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Ctrl, false, game)
 end)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
