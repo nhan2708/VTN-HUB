@@ -1352,17 +1352,12 @@ function EquipTool(ToolSe)
     end
 end
 
--- Aimbot Mastery & Body Gyro
+--  Body Gyro
 spawn(function()
     while task.wait() do
         pcall(function()
-            if _G.TeleportIsland or _G.AutoEvoRace or AutoFarmChest or _G.chestsea2 or _G.chestsea3 or _G.CastleRaid or 
-            _G.CollectAzure or _G.TweenToKitsune or _G.AutoCandy or _G.GhostShip or _G.Ship or _G.SailBoat or _G.Auto_Holy_Torch or
-            _G.FindMirageIsland or _G.TeleportPly or _G.Tweenfruit or _G.AutoFishCrew or _G.AutoShark or _G.AutoCakeV2 or
-            _G.AutoMysticIsland or _G.AutoQuestRace or _G.AutoBuyBoat or _G.dao or AutoFarmAcient or _G.AutoMirage or 
-            Auto_Law or _G.AutoAllBoss or AutoTushita or _G.AutoHolyTorch or _G.AutoTerrorshark or _G.farmpiranya or 
-            _G.DriveMytic or _G.AutoCakeV2V2 or PirateShip or _G.AutoSeaBeast or _G.AutoNear or _G.BossRaid or 
-            _G.GrabChest or AutoCitizen or _G.Ectoplasm then
+            -- Kiểm tra điều kiện và thêm BodyVelocity nếu cần
+            if  _G.TeleportIsland or _G.AutoLevel or _G.AutoBone or _G.CakePrince then
                 if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
                     local Noclip = Instance.new("BodyVelocity")
                     Noclip.Name = "BodyClip"
@@ -1378,32 +1373,32 @@ spawn(function()
     end
 end)
 
+
 -- NoClip Auto Farm
 spawn(function()
-  pcall(function()
-    game:GetService("RunService").Stepped:Connect(function()
-      if _G.TeleportIsland or _G.AutoEvoRace or AutoFarmChest or _G.CollectAzure or _G.GhostShip or _G.Ship or _G.Auto_Holy_Torch then
-        for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-            if v:IsA("BasePart") then
-                v.CanCollide = false
+    pcall(function()
+        game:GetService("RunService").Stepped:Connect(function()
+            if _G.TeleportIsland or _G.AutoLevel or _G.AutoBone or _G.CakePrince then
+                for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false
+                    end
+                end
             end
-        end
-      end
+        end)
     end)
-  end)
 end)
 
 -- Attack Mastery (No Cooldown)
 function AttackNoCoolDown()
     local AC = CbFw2.activeController
-    -- Lấy thông tin các cú đánh từ bladehit
     local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-        game.Players.LocalPlayer.Character,
-        {game.Players.LocalPlayer.Character.HumanoidRootPart},
+        plr.Character,
+        {plr.Character.HumanoidRootPart},
         60
     )
 
-    -- Lọc các cú đánh hợp lệ
+    -- Kiểm tra các cú đánh hợp lệ
     local validHits = {}
     local seen = {}
     for _, hit in ipairs(bladehit) do
@@ -1413,9 +1408,8 @@ function AttackNoCoolDown()
         end
     end
 
-    -- Kiểm tra nếu có cú đánh hợp lệ
+    -- Tiến hành nếu có cú đánh hợp lệ
     if #validHits > 0 then
-        -- Lấy các giá trị của upvalues từ hàm attack
         local u8 = debug.getupvalue(AC.attack, 5)
         local u9 = debug.getupvalue(AC.attack, 6)
         local u7 = debug.getupvalue(AC.attack, 4)
@@ -1436,15 +1430,15 @@ function AttackNoCoolDown()
         debug.setupvalue(AC.attack, 4, u7)
         debug.setupvalue(AC.attack, 7, u10)
 
-        -- Chạy các animation cho basic
+        -- Chạy các animation
         pcall(function()
-            for _, v in pairs(AC.animator.anims.basic) do
+            for k, v in pairs(AC.animator.anims.basic) do
                 v:Play()
             end
         end)
 
-        -- Kiểm tra vũ khí hiện tại và gửi thông điệp
-        if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
+        -- Xử lý vũ khí và gửi thông điệp
+        if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then
             local currentBlade = GetCurrentBlade()
             if currentBlade then
                 game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(currentBlade))
