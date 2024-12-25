@@ -1521,151 +1521,133 @@ end
 local Farming = Tabs.Main:AddSection("Farming")
 local listfastattack = {'Slow','Normal','Super'}
 
-    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-        Title = "Select Fast Attack",
-        Values = listfastattack,
-        Multi = false,
-        Default = 1,
-    })
-    DropdownDelayAttack:SetValue("Fast Attack")
-    DropdownDelayAttack:OnChanged(function(Value)
+local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
+    Title = "Select Fast Attack",
+    Values = listfastattack,
+    Multi = false,
+    Default = 1,
+})
+DropdownDelayAttack:SetValue("Fast Attack")
+DropdownDelayAttack:OnChanged(function(Value)
     _G.FastAttack = Value
-	if _G.FastAttack == "Slow" then
-		_G.Fast_Delay = 0.15
-	elseif _G.FastAttack == "Normal" then
-		_G.Fast_Delay = 0.125
-	elseif _G.FastAttack == "Super" then
-		_G.Fast_Delay = 0.1
-	 end
- end)
+    if _G.FastAttack == "Slow" then
+        _G.Fast_Delay = 0.15
+    elseif _G.FastAttack == "Normal" then
+        _G.Fast_Delay = 0.125
+    elseif _G.FastAttack == "Super" then
+        _G.Fast_Delay = 0.1
+    end
+end)
 
-    local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
-        Title = "Weapon",
-        Description = "",
-        Values = {'Melee','Sword','Blox Fruit'},
-        Multi = false,
-        Default = 1,
-    })
-    DropdownSelectWeapon:SetValue('Melee')
-    DropdownSelectWeapon:OnChanged(function(Value)
-        ChooseWeapon = Value
-    end)
-    task.spawn(function()
-        while wait() do
+local ChooseWeapon = "Melee"  -- Đảm bảo có giá trị mặc định
+local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
+    Title = "Weapon",
+    Description = "",
+    Values = {'Melee','Sword','Blox Fruit'},
+    Multi = false,
+    Default = 1,
+})
+DropdownSelectWeapon:SetValue('Melee')
+DropdownSelectWeapon:OnChanged(function(Value)
+    ChooseWeapon = Value
+end)
+
+task.spawn(function()
+    while wait() do
+        pcall(function()
+            if ChooseWeapon then
+                local SelectWeapon = nil
+                for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                    if v.ToolTip == ChooseWeapon then
+                        SelectWeapon = v.Name
+                        break  -- Dừng vòng lặp sau khi tìm thấy vũ khí
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
+    Title = "Auto Farm Level",
+    Description = "",
+    Default = false
+})
+
+ToggleLevel:OnChanged(function(Value)
+    _G.AutoLevel = Value
+    if not Value then
+        wait()
+        toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+        wait()
+    end
+end)
+
+-- Kiểm tra biến Options trước khi sử dụng
+if Options and Options.ToggleLevel then
+    Options.ToggleLevel:SetValue(false)
+end
+
+spawn(function()
+    while task.wait() do
+        if _G.AutoLevel then
             pcall(function()
-                if ChooseWeapon == "Melee" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
+                local player = game:GetService("Players").LocalPlayer
+                local questTitle = player.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+                local questVisible = player.PlayerGui.Main.Quest.Visible
+
+                -- Kiểm tra quest và cập nhật
+                if not string.find(questTitle, NameMon) or not questVisible then
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+                    toTarget(CFrameQ)
+
+                    if (CFrameQ.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 5 then
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+                    end
+                elseif string.find(questTitle, NameMon) or questVisible then
+                    -- Farm quái vật
+                    for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                        if enemy:FindFirstChild("Humanoid") and enemy:FindFirstChild("HumanoidRootPart") and enemy.Humanoid.Health > 0 then
+                            if enemy.Name == Ms then
+                                repeat
+                                    wait(_G.Fast_Delay)
+                                    AttackNoCoolDown()
+                                    bringmob = true
+                                    AutoHaki()
+                                    EquipTool(SelectWeapon)
+                                    Tween(enemy.HumanoidRootPart.CFrame * CFrame.new(posX, posY, posZ))
+                                    enemy.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                    enemy.HumanoidRootPart.Transparency = 1
+                                    enemy.Humanoid.JumpPower = 0
+                                    enemy.Humanoid.WalkSpeed = 0
+                                    enemy.HumanoidRootPart.CanCollide = false
+                                    FarmPos = enemy.HumanoidRootPart.CFrame
+                                    MonFarm = enemy.Name
+                                until not _G.AutoLevel or not enemy.Parent or enemy.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(enemy.Name) or not game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible
+                                bringmob = false
                             end
                         end
                     end
-                elseif ChooseWeapon == "Sword" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Sword" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == "Blox Fruit" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Blox Fruit" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                else
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
+
+                    -- Kiểm tra và di chuyển tới các spawn quái vật
+                    for _, spawn in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
+                        if string.find(spawn.Name, NameMon) then
+                            if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - spawn.Position).Magnitude >= 10 then
+                                Tween(spawn.CFrame * CFrame.new(posX, posY, posZ))
                             end
                         end
                     end
                 end
             end)
         end
-    end)
-
-    local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
-        Title = "Auto Farm Level",
-        Description = "",
-        Default = false
-    })
-    
-    ToggleLevel:OnChanged(function(Value)
-        _G.AutoLevel = Value
-        if not Value then
-            wait()
-            toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-            wait()
-        end
-    end)
-    
-    -- Kiểm tra biến Options trước khi sử dụng
-    if Options and Options.ToggleLevel then
-        Options.ToggleLevel:SetValue(false)
     end
-    
-    spawn(function()
-        while task.wait() do
-            if _G.AutoLevel then
-                pcall(function()
-                    -- Kiểm tra và lấy thông tin quest
-                    local player = game:GetService("Players").LocalPlayer
-                    local questTitle = player.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-                    local questVisible = player.PlayerGui.Main.Quest.Visible
+end)
 
-                    if not string.find(questTitle, NameMon) or not questVisible then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                        toTarget(CFrameQ)
-    
-                        if (CFrameQ.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 5 then
-                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
-                        end
-                    elseif string.find(questTitle, NameMon) or questVisible then
-                        -- Farm quái vật
-                        for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                            if enemy:FindFirstChild("Humanoid") and enemy:FindFirstChild("HumanoidRootPart") and enemy.Humanoid.Health > 0 then
-                                if enemy.Name == Ms then
-                                    repeat
-                                        wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
-                                        bringmob = true
-                                        AutoHaki()
-                                        EquipTool(SelectWeapon)
-                                        Tween(enemy.HumanoidRootPart.CFrame * CFrame.new(posX, posY, posZ))
-                                        enemy.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                        enemy.HumanoidRootPart.Transparency = 1
-                                        enemy.Humanoid.JumpPower = 0
-                                        enemy.Humanoid.WalkSpeed = 0
-                                        enemy.HumanoidRootPart.CanCollide = false
-                                        FarmPos = enemy.HumanoidRootPart.CFrame
-                                        MonFarm = enemy.Name
-                                    until not _G.AutoLevel or not enemy.Parent or enemy.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(enemy.Name) or not game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible
-                                    bringmob = false
-                                end
-                            end
-                        end
-    
-                        -- Kiểm tra và di chuyển tới các spawn quái vật
-                        for _, spawn in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
-                            if string.find(spawn.Name, NameMon) then
-                                if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - spawn.Position).Magnitude >= 10 then
-                                    Tween(spawn.CFrame * CFrame.new(posX, posY, posZ))
-                                end
-                            end
-                        end
-                    end
-                end)
-            end
-        end
-    end)
-    
-                     
+-- Hàm tween di chuyển đến vị trí
+local function Tween(targetCFrame)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetCFrame
+end
+           
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 --// auto farm chest
@@ -1770,66 +1752,6 @@ Tabs.Main:AddButton({
 })
 
 
-    Tabs.Main:AddButton({
-        Title = "Fps Booster",
-        Description = "",
-        Callback = function()
-            FPSBooster()
-        end
-    })
-    
-    function FPSBooster()
-        local decalsyeeted = true
-        local g = game
-        local w = g.Workspace
-        local l = g.Lighting
-        local t = w.Terrain
-        
-        -- Kiểm tra sự tồn tại của các đối tượng trước khi sử dụng
-        local success, errorMsg = pcall(function()
-            sethiddenproperty(l, "Technology", 2)  -- Thiết lập công nghệ chiếu sáng
-            sethiddenproperty(t, "Decoration", false)  -- Tắt decoration trong Terrain
-            t.WaterWaveSize = 0
-            t.WaterWaveSpeed = 0
-            t.WaterReflectance = 0
-            t.WaterTransparency = 0
-            l.GlobalShadows = false  -- Tắt bóng toàn cầu
-            l.FogEnd = 9e9  -- Tắt sương mù
-            l.Brightness = 0  -- Giảm độ sáng xuống 0
-            settings().Rendering.QualityLevel = "Level01"  -- Chế độ render thấp nhất
-    
-            -- Duyệt qua tất cả các đối tượng trong Workspace để giảm thiểu chi phí render
-            for _, v in pairs(g:GetDescendants()) do
-                if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
-                    v.Material = "Plastic"  -- Chuyển tất cả các vật thể thành Plastic để giảm chi phí render
-                    v.Reflectance = 0  -- Tắt phản chiếu
-                elseif v:IsA("Decal") or v:IsA("Texture") then
-                    if decalsyeeted then
-                        v.Transparency = 1  -- Ẩn tất cả decals và textures
-                    end
-                elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
-                    v.Lifetime = NumberRange.new(0)  -- Tắt tất cả các particle emitter và trail
-                elseif v:IsA("Explosion") then
-                    v.BlastPressure = 1  -- Giảm sức mạnh nổ xuống mức thấp nhất
-                    v.BlastRadius = 1  -- Giảm bán kính nổ xuống mức thấp nhất
-                elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
-                    v.Enabled = false  -- Tắt hiệu ứng Fire, Smoke, Spotlight và Sparkles
-                elseif v:IsA("MeshPart") then
-                    v.Material = "Plastic"  -- Tương tự như các Part khác, chuyển MeshPart thành Plastic
-                    v.Reflectance = 0  -- Tắt phản chiếu trên MeshPart
-                    v.TextureID = 10385902758728957  -- Thay đổi texture ID, có thể làm đơn giản và tối ưu hơn
-                end
-            end
-    
-            -- Tắt các hiệu ứng đồ họa trong Lighting
-            for _, e in pairs(l:GetChildren()) do
-                if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
-                    e.Enabled = false  -- Tắt tất cả các hiệu ứng đồ họa này để giảm tải hệ thống
-                end
-            end
-        end)
-    end
-    
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Mastery
