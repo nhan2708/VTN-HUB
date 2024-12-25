@@ -52,16 +52,24 @@ local Options = Fluent.Options
 do
 --------------------------------------------------------------------------------------------------------------------------------------------
 --// Place Id Check
+--// Place Id Check
 local id = game.PlaceId
+
 if id == 2753915549 then
     First_Sea = true
+    print("Welcome to First Sea")
 elseif id == 6732215145 then
     Second_Sea = true
+    print("Welcome to Second Sea")
 elseif id == 11137954327 then
     Third_Sea = true
+    print("Welcome to Third Sea")
 else
-    game:Shutdown() -- Shutdown game nếu không phải bất kỳ PlaceId nào đã định nghĩa
+    warn("PlaceId không hợp lệ. Đang thoát trò chơi...")
+    wait(3) -- Đợi 3 giây trước khi tắt game
+    game:Shutdown()
 end
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 --// Flag Player
