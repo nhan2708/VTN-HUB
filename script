@@ -1629,6 +1629,9 @@ local listfastattack = {'Slow','Normal','Super'}
                     local questVisible = player.PlayerGui.Main.Quest.Visible
     
                     -- Kiểm tra quest
+                    print("Quest Title:", questTitle)
+                    print("Quest Visible:", questVisible)
+                    
                     if not string.find(questTitle, NameMon) or not questVisible then
                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
                         toTarget(CFrameQ)
@@ -1641,6 +1644,7 @@ local listfastattack = {'Slow','Normal','Super'}
                         for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                             if enemy:FindFirstChild("Humanoid") and enemy:FindFirstChild("HumanoidRootPart") and enemy.Humanoid.Health > 0 then
                                 if enemy.Name == Ms then
+                                    print("Found enemy:", enemy.Name)
                                     repeat
                                         wait(_G.Fast_Delay)
                                         AttackNoCoolDown()
@@ -1674,6 +1678,7 @@ local listfastattack = {'Slow','Normal','Super'}
             end
         end
     end)
+    
                      
 --------------------------------------------------------------------------------------------------------------------------------------------
 
