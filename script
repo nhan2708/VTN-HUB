@@ -1419,12 +1419,16 @@ spawn(function()
     end
 end)
 
+
 -- Auto Turn Haki
 function AutoHaki()
-    if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character:FindFirstChild("HasBuso") then
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
     end
 end
+
 
 ---Bypass Teleport
 
