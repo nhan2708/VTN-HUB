@@ -1333,14 +1333,14 @@ end
     --function TP to Boat/Ship
  
 
---select weapon
+-- Select Weapon
 function EquipTool(toolName)
     local player = game.Players.LocalPlayer
-    local backpack = player.Backpack
-    local character = player.Character
+    local backpack = player:WaitForChild("Backpack")
+    local character = player:WaitForChild("Character")
     local humanoid = character:FindFirstChildOfClass("Humanoid")
 
-    if backpack:FindFirstChild(toolName) then
+    if humanoid and backpack:FindFirstChild(toolName) then
         local tool = backpack:FindFirstChild(toolName)
         task.wait(0.5)
         humanoid:EquipTool(tool)
@@ -1351,8 +1351,8 @@ end
 spawn(function()
     while task.wait() do
         pcall(function()
+            local rootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
             if _G.EnableNoclip then
-                local rootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
                 if not rootPart:FindFirstChild("BodyClip") then
                     local noclip = Instance.new("BodyVelocity")
                     noclip.Name = "BodyClip"
@@ -1361,14 +1361,14 @@ spawn(function()
                     noclip.Velocity = Vector3.zero
                 end
             else
-                local clip = game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip")
+                local clip = rootPart:FindFirstChild("BodyClip")
                 if clip then clip:Destroy() end
             end
         end)
     end
 end)
 
---No clip auto farm
+-- No clip auto farm
 spawn(function()
     game:GetService("RunService").Stepped:Connect(function()
         if _G.EnableNoclip then
@@ -1381,13 +1381,13 @@ spawn(function()
     end)
 end)
 
-
 -- Attack (No Cooldown)
 local player = game.Players.LocalPlayer
-local combatFramework = debug.getupvalues(require(player.PlayerScripts.CombatFramework))
-local combatController = combatFramework[2]
+local combatFramework = debug.getupvalues(require(player.PlayerScripts:WaitForChild("CombatFramework")))
+local combatController = combatFramework and combatFramework[2]
 
 function AttackNoCooldown()
+    if not combatController or not combatController.activeController then return end
     local activeController = combatController.activeController
     for _ = 1, 1 do
         local bladeHits = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
@@ -1417,63 +1417,55 @@ function AttackNoCooldown()
             debug.setupvalue(activeController.attack, 6, u9)
             debug.setupvalue(activeController.attack, 4, u7)
             debug.setupvalue(activeController.attack, 7, u10)
-
-            pcall(function()
-                -- Add attack logic here
-            end)
         end
     end
 end
---------------------------------------------------------------------------------------------------------------------------------------------
 
---Sword Weapon
+-- Sword Weapon
 function GetWeaponInventory(Weaponname)
-    for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-    if type(v) == "table" then
-    if v.Type == "Sword" then
-    if v.Name == Weaponname then
-    return true
-    end
-    end
-    end
+    local inventory = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")
+    for _, item in pairs(inventory or {}) do
+        if type(item) == "table" and item.Type == "Sword" and item.Name == Weaponname then
+            return true
+        end
     end
     return false
-    end
-    
-    ---Method Farm
-    Type1 = 1
-    spawn(function()
-        while wait(.1) do
-            if Type == 1 then
-                Pos = CFrame.new(10,40,10)
-            elseif Type == 2 then
-                Pos = CFrame.new(-30,10,-30)
-            elseif Type == 3 then
-                Pos = CFrame.new(10,10,-40)
-            elseif Type == 4 then
-                Pos = CFrame.new(-40,10,10)	
-            end
-            end
-        end)
-    
-    spawn(function()
-        while wait(.1) do
-            Type = 1
-            wait(1)
-            Type = 2
-            wait(1)
-            Type = 3
-            wait(1)
-            Type = 4
-            wait(1)
-        end
-    end)
-    --auto turn haki
-      function AutoHaki()
-        if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+end
+
+-- Method Farm
+local Type = 1
+local Pos = CFrame.new(10, 40, 10)
+
+spawn(function()
+    while task.wait(0.1) do
+        if Type == 1 then
+            Pos = CFrame.new(10, 40, 10)
+        elseif Type == 2 then
+            Pos = CFrame.new(-30, 10, -30)
+        elseif Type == 3 then
+            Pos = CFrame.new(10, 10, -40)
+        elseif Type == 4 then
+            Pos = CFrame.new(-40, 10, 10)
         end
     end
+end)
+
+spawn(function()
+    while task.wait(1) do
+        for i = 1, 4 do
+            Type = i
+            task.wait(1)
+        end
+    end
+end)
+
+-- Auto Turn Haki
+function AutoHaki()
+    if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+    end
+end
+
 ---Bypass Teleport
 
 
