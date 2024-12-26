@@ -1470,7 +1470,9 @@ end)
 
 -- Auto Haki
 function AutoHaki()
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")\
+    end
 end
 
 ---Bypass Teleport
