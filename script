@@ -1334,7 +1334,6 @@ end
  
 
 --select weapon
--- Đảm bảo biến `plr` được định nghĩa chính xác
 local plr = game.Players.LocalPlayer
 
 -- Equip Tool Function
@@ -1346,41 +1345,48 @@ function EquipTool(ToolSe)
     end
 end
 
--- Body Gyro
-spawn(function()
-    while task.wait() do
+-- Di chuyển đến vị trí (CFrame)
+function MoveToPosition(targetPos)
+    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidRoot then
+        humanoidRoot.CFrame = targetPos
+        task.wait(0.5)
+    end
+end
+
+-- Gom quái
+function GatherMobs()
+    local mobs = {}
+    for _, mob in pairs(workspace.Enemies:GetChildren()) do
+        if mob:FindFirstChild("HumanoidRootPart") and mob:FindFirstChild("Humanoid") and mob.Humanoid.Health > 0 then
+            table.insert(mobs, mob)
+        end
+    end
+
+    -- Gom quái về trung tâm
+    for _, mob in pairs(mobs) do
         pcall(function()
-            local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-            if humanoidRoot and (_G.TeleportIsland or _G.AutoLevel or _G.AutoBone or _G.CakePrince) then
-                if not humanoidRoot:FindFirstChild("BodyClip") then
-                    local bodyVelocity = Instance.new("BodyVelocity")
-                    bodyVelocity.Name = "BodyClip"
-                    bodyVelocity.Parent = humanoidRoot
-                    bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
-                    bodyVelocity.Velocity = Vector3.zero
-                end
-            elseif humanoidRoot then
-                local bodyClip = humanoidRoot:FindFirstChild("BodyClip")
-                if bodyClip then bodyClip:Destroy() end
-            end
+            mob.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(-5, 5), 0, math.random(-5, 5))
         end)
     end
-end)
+end
 
--- NoClip Auto Farm
-spawn(function()
-    game:GetService("RunService").Stepped:Connect(function()
-        if _G.TeleportIsland or _G.AutoLevel or _G.AutoBone or _G.CakePrince then
-            if plr.Character then
-                for _, v in pairs(plr.Character:GetDescendants()) do
-                    if v:IsA("BasePart") then
-                        v.CanCollide = false
-                    end
-                end
-            end
+-- Tấn công quái
+function AttackMobs()
+    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRoot then return end
+
+    local mobs = {}
+    for _, mob in pairs(workspace.Enemies:GetChildren()) do
+        if mob:FindFirstChild("Humanoid") and mob:FindFirstChild("HumanoidRootPart") and mob.Humanoid.Health > 0 then
+            table.insert(mobs, mob.HumanoidRootPart)
         end
-    end)
-end)
+    end
+
+    if #mobs > 0 then
+        AttackNoCoolDown()
+    end
+end
 
 -- Attack (No Cooldown)
 function AttackNoCoolDown()
@@ -1435,58 +1441,32 @@ function AttackNoCoolDown()
     end
 end
 
--- Get Weapon Inventory
-function GetWeaponInventory(Weaponname)
-    local inventory = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")
-    for _, v in pairs(inventory or {}) do
-        if type(v) == "table" and v.Type == "Sword" and v.Name == Weaponname then
-            return true
-        end
+-- Kiểm tra vị trí và di chuyển
+function CheckAndMove(targetPos)
+    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidRoot and (humanoidRoot.Position - targetPos.Position).Magnitude > 5 then
+        MoveToPosition(targetPos)
     end
-    return false
 end
 
--- Get Current Blade
-function GetCurrentBlade()
-    local AC = CbFw2 and CbFw2.activeController
-    if AC and AC.blades and #AC.blades > 0 then
-        return AC.blades[1]
-    end
-    return nil
-end
-
--- Method Farm
-local Type = 1
-local Pos = CFrame.new(10, 40, 10)
-
-spawn(function()
-    while task.wait(0.1) do
-        if Type == 1 then
-            Pos = CFrame.new(10, 40, 10)
-        elseif Type == 2 then
-            Pos = CFrame.new(-30, 10, -30)
-        elseif Type == 3 then
-            Pos = CFrame.new(10, 10, -40)
-        elseif Type == 4 then
-            Pos = CFrame.new(-40, 10, 10)
-        else
-            Pos = CFrame.new(0, 0, 0)
-        end
-    end
-end)
-
+-- Bắt đầu farm
 spawn(function()
     while task.wait(1) do
-        Type = math.random(1, 4)
+        if _G.AutoFarm then
+            local targetPos = CFrame.new(100, 10, 100) -- Cập nhật vị trí bãi quái
+
+            -- Di chuyển đến bãi quái
+            CheckAndMove(targetPos)
+
+            -- Gom quái
+            GatherMobs()
+
+            -- Đánh quái
+            AttackMobs()
+        end
     end
 end)
 
--- Auto Haki
-function AutoHaki()
-    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
-    end
-end
 
 ---Bypass Teleport
 
