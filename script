@@ -1345,6 +1345,14 @@ function EquipTool(ToolSe)
     end
 end
 
+-- Bật Haki tự động
+function EnableHaki()
+    local humanoid = plr.Character:FindFirstChild("Humanoid")
+    if humanoid and not plr.Character:FindFirstChild("HakiActive") then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+    end
+end
+
 -- Di chuyển đến vị trí (CFrame)
 function MoveToPosition(targetPos)
     local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
@@ -1457,6 +1465,9 @@ spawn(function()
 
             -- Di chuyển đến bãi quái
             CheckAndMove(targetPos)
+
+            -- Bật Haki
+            EnableHaki()
 
             -- Gom quái
             GatherMobs()
