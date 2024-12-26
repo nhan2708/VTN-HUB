@@ -1334,151 +1334,146 @@ end
  
 
 --select weapon
-local plr = game.Players.LocalPlayer
+function EquipTool(toolName)
+    local player = game.Players.LocalPlayer
+    local backpack = player.Backpack
+    local character = player.Character
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
 
--- Equip Tool Function
-function EquipTool(ToolSe)
-    local tool = plr.Backpack:FindFirstChild(ToolSe)
-    if tool then
+    if backpack:FindFirstChild(toolName) then
+        local tool = backpack:FindFirstChild(toolName)
         task.wait(0.5)
-        plr.Character.Humanoid:EquipTool(tool)
+        humanoid:EquipTool(tool)
     end
 end
 
--- Bật Haki tự động
-function EnableHaki()
-    local humanoid = plr.Character:FindFirstChild("Humanoid")
-    if humanoid and not plr.Character:FindFirstChild("HakiActive") then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
-    end
-end
-
--- Di chuyển đến vị trí (CFrame)
-function MoveToPosition(targetPos)
-    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if humanoidRoot then
-        humanoidRoot.CFrame = targetPos
-        task.wait(0.5)
-    end
-end
-
--- Gom quái
-function GatherMobs()
-    local mobs = {}
-    for _, mob in pairs(workspace.Enemies:GetChildren()) do
-        if mob:FindFirstChild("HumanoidRootPart") and mob:FindFirstChild("Humanoid") and mob.Humanoid.Health > 0 then
-            table.insert(mobs, mob)
-        end
-    end
-
-    -- Gom quái về trung tâm
-    for _, mob in pairs(mobs) do
+-- Body Gyro
+spawn(function()
+    while task.wait() do
         pcall(function()
-            mob.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(-5, 5), 0, math.random(-5, 5))
-        end)
-    end
-end
-
--- Tấn công quái
-function AttackMobs()
-    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRoot then return end
-
-    local mobs = {}
-    for _, mob in pairs(workspace.Enemies:GetChildren()) do
-        if mob:FindFirstChild("Humanoid") and mob:FindFirstChild("HumanoidRootPart") and mob.Humanoid.Health > 0 then
-            table.insert(mobs, mob.HumanoidRootPart)
-        end
-    end
-
-    if #mobs > 0 then
-        AttackNoCoolDown()
-    end
-end
-
--- Attack (No Cooldown)
-function AttackNoCoolDown()
-    local AC = CbFw2 and CbFw2.activeController
-    if not AC then return end
-
-    local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-        plr.Character,
-        {plr.Character.HumanoidRootPart},
-        60
-    )
-
-    local validHits = {}
-    local seen = {}
-    for _, hit in ipairs(bladehit) do
-        if hit.Parent:FindFirstChild("HumanoidRootPart") and not seen[hit.Parent] then
-            table.insert(validHits, hit.Parent.HumanoidRootPart)
-            seen[hit.Parent] = true
-        end
-    end
-
-    if #validHits > 0 then
-        local u8 = debug.getupvalue(AC.attack, 5)
-        local u9 = debug.getupvalue(AC.attack, 6)
-        local u7 = debug.getupvalue(AC.attack, 4)
-        local u10 = debug.getupvalue(AC.attack, 7)
-        local u12 = (u8 * 798405 + u7 * 727595) % u9
-        local u13 = u7 * 798405
-
-        u12 = (u12 * u9 + u13) % 1099511627776
-        u8 = math.floor(u12 / u9)
-        u7 = u12 - u8 * u9
-        u10 = u10 + 1
-
-        debug.setupvalue(AC.attack, 5, u8)
-        debug.setupvalue(AC.attack, 6, u9)
-        debug.setupvalue(AC.attack, 4, u7)
-        debug.setupvalue(AC.attack, 7, u10)
-
-        pcall(function()
-            for _, v in pairs(AC.animator.anims.basic) do
-                v:Play()
+            if _G.EnableNoclip then
+                local rootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+                if not rootPart:FindFirstChild("BodyClip") then
+                    local noclip = Instance.new("BodyVelocity")
+                    noclip.Name = "BodyClip"
+                    noclip.Parent = rootPart
+                    noclip.MaxForce = Vector3.new(100000, 100000, 100000)
+                    noclip.Velocity = Vector3.zero
+                end
+            else
+                local clip = game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip")
+                if clip then clip:Destroy() end
             end
         end)
-
-        local currentBlade = GetCurrentBlade()
-        if currentBlade then
-            game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(currentBlade))
-            game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
-            game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", validHits, 1, "")
-        end
-    end
-end
-
--- Kiểm tra vị trí và di chuyển
-function CheckAndMove(targetPos)
-    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if humanoidRoot and (humanoidRoot.Position - targetPos.Position).Magnitude > 5 then
-        MoveToPosition(targetPos)
-    end
-end
-
--- Bắt đầu farm
-spawn(function()
-    while task.wait(1) do
-        if _G.AutoLevel then
-            local targetPos = CFrame.new(100, 10, 100) -- Cập nhật vị trí bãi quái
-
-            -- Di chuyển đến bãi quái
-            CheckAndMove(targetPos)
-
-            -- Bật Haki
-            EnableHaki()
-
-            -- Gom quái
-            GatherMobs()
-
-            -- Đánh quái
-            AttackMobs()
-        end
     end
 end)
 
+--No clip auto farm
+spawn(function()
+    game:GetService("RunService").Stepped:Connect(function()
+        if _G.EnableNoclip then
+            for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        end
+    end)
+end)
 
+
+-- Attack (No Cooldown)
+local player = game.Players.LocalPlayer
+local combatFramework = debug.getupvalues(require(player.PlayerScripts.CombatFramework))
+local combatController = combatFramework[2]
+
+function AttackNoCooldown()
+    local activeController = combatController.activeController
+    for _ = 1, 1 do
+        local bladeHits = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
+            player.Character, {player.Character.HumanoidRootPart}, 60
+        )
+        local uniqueHits = {}
+        local hash = {}
+
+        for _, hit in pairs(bladeHits) do
+            local rootPart = hit.Parent:FindFirstChild("HumanoidRootPart")
+            if rootPart and not hash[hit.Parent] then
+                table.insert(uniqueHits, rootPart)
+                hash[hit.Parent] = true
+            end
+        end
+
+        if #uniqueHits > 0 then
+            local u8, u9, u7, u10 = debug.getupvalue(activeController.attack, 5), debug.getupvalue(activeController.attack, 6), debug.getupvalue(activeController.attack, 4), debug.getupvalue(activeController.attack, 7)
+            local u12 = (u8 * 798405 + u7 * 727595) % u9
+            local u13 = u7 * 798405
+
+            u12 = (u12 * u9 + u13) % 1099511627776
+            u8, u7 = math.floor(u12 / u9), u12 - u8 * u9
+            u10 += 1
+
+            debug.setupvalue(activeController.attack, 5, u8)
+            debug.setupvalue(activeController.attack, 6, u9)
+            debug.setupvalue(activeController.attack, 4, u7)
+            debug.setupvalue(activeController.attack, 7, u10)
+
+            pcall(function()
+                -- Add attack logic here
+            end)
+        end
+    end
+end
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+--Sword Weapon
+function GetWeaponInventory(Weaponname)
+    for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+    if type(v) == "table" then
+    if v.Type == "Sword" then
+    if v.Name == Weaponname then
+    return true
+    end
+    end
+    end
+    end
+    return false
+    end
+    
+    ---Method Farm
+    Type1 = 1
+    spawn(function()
+        while wait(.1) do
+            if Type == 1 then
+                Pos = CFrame.new(10,40,10)
+            elseif Type == 2 then
+                Pos = CFrame.new(-30,10,-30)
+            elseif Type == 3 then
+                Pos = CFrame.new(10,10,-40)
+            elseif Type == 4 then
+                Pos = CFrame.new(-40,10,10)	
+            end
+            end
+        end)
+    
+    spawn(function()
+        while wait(.1) do
+            Type = 1
+            wait(1)
+            Type = 2
+            wait(1)
+            Type = 3
+            wait(1)
+            Type = 4
+            wait(1)
+        end
+    end)
+    --auto turn haki
+      function AutoHaki()
+        if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+        end
+    end
 ---Bypass Teleport
 
 
