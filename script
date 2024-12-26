@@ -1514,6 +1514,11 @@ task.spawn(function()
     end
 end)
 
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
 local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
     Title = "Auto Farm Level",
     Description = "",
@@ -1524,39 +1529,28 @@ ToggleLevel:OnChanged(function(Value)
     _G.AutoLevel = Value
     if not Value then
         wait()
-        toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+        toTarget(LocalPlayer.Character.HumanoidRootPart.CFrame)
         wait()
     end
 end)
 
 -- Kiểm tra biến Options trước khi sử dụng
-
 Options.ToggleLevel:SetValue(false)
 
-local TweenService = game:GetService("TweenService")
-
-local function Tween(targetCFrame)
-    local rootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-    local goal = {CFrame = targetCFrame}
-    local tween = TweenService:Create(rootPart, tweenInfo, goal)
-    tween:Play()
-end
-
--- Cải thiện việc kiểm tra và thực thi các yêu cầu
+-- Kiểm tra lại giá trị các biến toàn cục đã được gán đúng
 local function AutoFarmLevel()
-    local player = game:GetService("Players").LocalPlayer
+    local player = LocalPlayer
     local questTitle = player.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
     local questVisible = player.PlayerGui.Main.Quest.Visible
-    
+
     -- Kiểm tra quest và cập nhật
     if not string.find(questTitle, NameMon) or not questVisible then
         -- Nếu không có quest hoặc quest không hợp lệ, hủy quest và chuyển đến mục tiêu
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+        ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
         toTarget(CFrameQ)
         -- Bắt đầu quest mới nếu vị trí đến gần đủ
         if (CFrameQ.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 5 then
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+            ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
         end
     elseif string.find(questTitle, NameMon) and questVisible then
         -- Farm quái vật
@@ -1595,7 +1589,16 @@ local function AutoFarmLevel()
     end
 end
 
--- Hàm auto farm
+-- Hàm để di chuyển mượt mà đến vị trí mới
+local function Tween(targetCFrame)
+    local rootPart = LocalPlayer.Character.HumanoidRootPart
+    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+    local goal = {CFrame = targetCFrame}
+    local tween = TweenService:Create(rootPart, tweenInfo, goal)
+    tween:Play()
+end
+
+-- Kiểm tra lại mọi điều kiện có thể gây lỗi
 spawn(function()
     while task.wait() do
         if _G.AutoLevel then
@@ -1604,7 +1607,8 @@ spawn(function()
             end)
         end
     end
-end)      
+end)
+     
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 --// auto farm chest
