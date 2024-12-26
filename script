@@ -1381,46 +1381,6 @@ spawn(function()
     end)
 end)
 
--- Attack (No Cooldown)
-local player = game.Players.LocalPlayer
-local combatFramework = debug.getupvalues(require(player.PlayerScripts:WaitForChild("CombatFramework")))
-local combatController = combatFramework and combatFramework[2]
-
-function AttackNoCooldown()
-    if not combatController or not combatController.activeController then return end
-    local activeController = combatController.activeController
-    for _ = 1, 1 do
-        local bladeHits = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-            player.Character, {player.Character.HumanoidRootPart}, 60
-        )
-        local uniqueHits = {}
-        local hash = {}
-
-        for _, hit in pairs(bladeHits) do
-            local rootPart = hit.Parent:FindFirstChild("HumanoidRootPart")
-            if rootPart and not hash[hit.Parent] then
-                table.insert(uniqueHits, rootPart)
-                hash[hit.Parent] = true
-            end
-        end
-
-        if #uniqueHits > 0 then
-            local u8, u9, u7, u10 = debug.getupvalue(activeController.attack, 5), debug.getupvalue(activeController.attack, 6), debug.getupvalue(activeController.attack, 4), debug.getupvalue(activeController.attack, 7)
-            local u12 = (u8 * 798405 + u7 * 727595) % u9
-            local u13 = u7 * 798405
-
-            u12 = (u12 * u9 + u13) % 1099511627776
-            u8, u7 = math.floor(u12 / u9), u12 - u8 * u9
-            u10 += 1
-
-            debug.setupvalue(activeController.attack, 5, u8)
-            debug.setupvalue(activeController.attack, 6, u9)
-            debug.setupvalue(activeController.attack, 4, u7)
-            debug.setupvalue(activeController.attack, 7, u10)
-        end
-    end
-end
-
 -- Sword Weapon
 function GetWeaponInventory(Weaponname)
     local inventory = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")
