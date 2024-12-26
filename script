@@ -1332,152 +1332,120 @@ end
 
     --function TP to Boat/Ship
  
+    local plr = game.Players.LocalPlayer
 
---select weapon
-local plr = game.Players.LocalPlayer
-
--- Equip Tool Function
-function EquipTool(ToolSe)
-    local tool = plr.Backpack:FindFirstChild(ToolSe)
-    if tool then
-        task.wait(0.5)
-        plr.Character.Humanoid:EquipTool(tool)
+    -- Hàm bật Haki
+    function EnableHaki()
+        local humanoid = plr.Character and plr.Character:FindFirstChild("Humanoid")
+        if humanoid and not plr.Character:FindFirstChild("HakiActive") then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+        end
     end
-end
-
--- Bật Haki tự động
-function EnableHaki()
-    local humanoid = plr.Character:FindFirstChild("Humanoid")
-    if humanoid and not plr.Character:FindFirstChild("HakiActive") then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+    
+    -- Hàm trang bị vũ khí
+    function EquipTool(toolName)
+        local tool = plr.Backpack:FindFirstChild(toolName)
+        if tool then
+            task.wait(0.5)
+            plr.Character.Humanoid:EquipTool(tool)
+        end
     end
-end
-
--- Di chuyển đến vị trí (CFrame)
-function MoveToPosition(targetPos)
-    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if humanoidRoot then
-        humanoidRoot.CFrame = targetPos
+    
+    -- Hàm tween di chuyển
+    local function Tween(targetCFrame)
+        plr.Character.HumanoidRootPart.CFrame = targetCFrame
         task.wait(0.5)
     end
-end
-
--- Gom quái
-function GatherMobs()
-    local mobs = {}
-    for _, mob in pairs(workspace.Enemies:GetChildren()) do
-        if mob:FindFirstChild("HumanoidRootPart") and mob:FindFirstChild("Humanoid") and mob.Humanoid.Health > 0 then
-            table.insert(mobs, mob)
-        end
-    end
-
-    -- Gom quái về trung tâm
-    for _, mob in pairs(mobs) do
-        pcall(function()
-            mob.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(-5, 5), 0, math.random(-5, 5))
-        end)
-    end
-end
-
--- Tấn công quái
-function AttackMobs()
-    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRoot then return end
-
-    local mobs = {}
-    for _, mob in pairs(workspace.Enemies:GetChildren()) do
-        if mob:FindFirstChild("Humanoid") and mob:FindFirstChild("HumanoidRootPart") and mob.Humanoid.Health > 0 then
-            table.insert(mobs, mob.HumanoidRootPart)
-        end
-    end
-
-    if #mobs > 0 then
-        AttackNoCoolDown()
-    end
-end
-
--- Attack (No Cooldown)
-function AttackNoCoolDown()
-    local AC = CbFw2 and CbFw2.activeController
-    if not AC then return end
-
-    local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-        plr.Character,
-        {plr.Character.HumanoidRootPart},
-        60
-    )
-
-    local validHits = {}
-    local seen = {}
-    for _, hit in ipairs(bladehit) do
-        if hit.Parent:FindFirstChild("HumanoidRootPart") and not seen[hit.Parent] then
-            table.insert(validHits, hit.Parent.HumanoidRootPart)
-            seen[hit.Parent] = true
-        end
-    end
-
-    if #validHits > 0 then
-        local u8 = debug.getupvalue(AC.attack, 5)
-        local u9 = debug.getupvalue(AC.attack, 6)
-        local u7 = debug.getupvalue(AC.attack, 4)
-        local u10 = debug.getupvalue(AC.attack, 7)
-        local u12 = (u8 * 798405 + u7 * 727595) % u9
-        local u13 = u7 * 798405
-
-        u12 = (u12 * u9 + u13) % 1099511627776
-        u8 = math.floor(u12 / u9)
-        u7 = u12 - u8 * u9
-        u10 = u10 + 1
-
-        debug.setupvalue(AC.attack, 5, u8)
-        debug.setupvalue(AC.attack, 6, u9)
-        debug.setupvalue(AC.attack, 4, u7)
-        debug.setupvalue(AC.attack, 7, u10)
-
-        pcall(function()
-            for _, v in pairs(AC.animator.anims.basic) do
-                v:Play()
+    
+    -- Hàm đánh quái không có cooldown
+    function AttackNoCoolDown()
+        local AC = CbFw2 and CbFw2.activeController
+        if not AC then return end
+    
+        local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
+            plr.Character,
+            {plr.Character.HumanoidRootPart},
+            60
+        )
+    
+        local validHits = {}
+        local seen = {}
+        for _, hit in ipairs(bladehit) do
+            if hit.Parent:FindFirstChild("HumanoidRootPart") and not seen[hit.Parent] then
+                table.insert(validHits, hit.Parent.HumanoidRootPart)
+                seen[hit.Parent] = true
             end
-        end)
-
-        local currentBlade = GetCurrentBlade()
-        if currentBlade then
-            game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(currentBlade))
-            game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
-            game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", validHits, 1, "")
+        end
+    
+        if #validHits > 0 then
+            local u8 = debug.getupvalue(AC.attack, 5)
+            local u9 = debug.getupvalue(AC.attack, 6)
+            local u7 = debug.getupvalue(AC.attack, 4)
+            local u10 = debug.getupvalue(AC.attack, 7)
+            local u12 = (u8 * 798405 + u7 * 727595) % u9
+            local u13 = u7 * 798405
+    
+            u12 = (u12 * u9 + u13) % 1099511627776
+            u8 = math.floor(u12 / u9)
+            u7 = u12 - u8 * u9
+            u10 = u10 + 1
+    
+            debug.setupvalue(AC.attack, 5, u8)
+            debug.setupvalue(AC.attack, 6, u9)
+            debug.setupvalue(AC.attack, 4, u7)
+            debug.setupvalue(AC.attack, 7, u10)
+    
+            pcall(function()
+                for _, v in pairs(AC.animator.anims.basic) do
+                    v:Play()
+                end
+            end)
+    
+            local currentBlade = GetCurrentBlade()
+            if currentBlade then
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(currentBlade))
+                game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", validHits, 1, "")
+            end
         end
     end
-end
-
--- Kiểm tra vị trí và di chuyển
-function CheckAndMove(targetPos)
-    local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if humanoidRoot and (humanoidRoot.Position - targetPos.Position).Magnitude > 5 then
-        MoveToPosition(targetPos)
-    end
-end
-
--- Bắt đầu farm
-spawn(function()
-    while task.wait(1) do
-        if _G.AutoLevel then
-            local targetPos = CFrame.new(100, 10, 100) -- Cập nhật vị trí bãi quái
-
-            -- Di chuyển đến bãi quái
-            CheckAndMove(targetPos)
-
-            -- Bật Haki
-            EnableHaki()
-
-            -- Gom quái
-            GatherMobs()
-
-            -- Đánh quái
-            AttackMobs()
+    
+    -- Hàm kiểm tra nhiệm vụ và farm quái
+    function CheckAndFarm(NameQuest, QuestLv, NameMon, SelectWeapon)
+        local questTitle = plr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+        local questVisible = plr.PlayerGui.Main.Quest.Visible
+    
+        -- Kiểm tra nhiệm vụ
+        if not string.find(questTitle, NameMon) or not questVisible then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+            Tween(CFrameQ)
+    
+            if (CFrameQ.Position - plr.Character.HumanoidRootPart.Position).Magnitude <= 5 then
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+            end
+        else
+            -- Farm quái
+            for _, v in pairs(workspace.Enemies:GetChildren()) do
+                if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                    if v.Name == NameMon then
+                        repeat
+                            task.wait(0.1)
+                            AttackNoCoolDown()
+                            EnableHaki()
+                            EquipTool(SelectWeapon)
+                            Tween(v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 5))
+                            v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                            v.HumanoidRootPart.Transparency = 1
+                            v.Humanoid.JumpPower = 0
+                            v.Humanoid.WalkSpeed = 0
+                            v.HumanoidRootPart.CanCollide = false
+                        until not _G.AutoLevel or v.Humanoid.Health <= 0 or not v.Parent
+                    end
+                end
+            end
         end
     end
-end)
-
+    
 
 ---Bypass Teleport
 
@@ -1569,80 +1537,21 @@ local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
     Default = false
 })
 
-ToggleLevel:OnChanged(function(Value)
+-- Tự động bật/tắt chế độ farm
+Options.ToggleLevel:OnChanged(function(Value)
     _G.AutoLevel = Value
-    if not Value then
-        wait()
-        toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-        wait()
-    end
 end)
 
--- Kiểm tra biến Options trước khi sử dụng
-
-Options.ToggleLevel:SetValue(false)
+-- Vòng lặp chính
 spawn(function()
-    while task.wait() do
+    while task.wait(1) do
         if _G.AutoLevel then
             pcall(function()
-                CheckLevel()
-                local player = game:GetService("Players").LocalPlayer
-                local questTitle = player.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-                local questVisible = player.PlayerGui.Main.Quest.Visible
-
-                -- Kiểm tra quest và cập nhật
-                if not string.find(questTitle, NameMon) or not questVisible then
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                    toTarget(CFrameQ)
-
-                    if (CFrameQ.Position - player.Character.HumanoidRootPart.Position).Magnitude <= 5 then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
-                    end
-                elseif string.find(questTitle, NameMon) and questVisible then
-                    -- Farm quái vật
-                    for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                            if v.Name == Ms then
-                                repeat
-                                    wait(_G.Fast_Delay)
-                                    AttackNoCoolDown()
-                                    bringmob = true
-                                    AutoHaki()
-                                    EquipTool(SelectWeapon)
-                                    Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX, posY, posZ))
-                                    -- Thực hiện các thay đổi cho mob
-                                    v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                    v.HumanoidRootPart.Transparency = 1
-                                    v.Humanoid.JumpPower = 0
-                                    v.Humanoid.WalkSpeed = 0
-                                    v.HumanoidRootPart.CanCollide = false
-                                    FarmPos = v.HumanoidRootPart.CFrame
-                                    MonFarm = v.Name
-                                until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or not game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible
-                                bringmob = false
-                            end
-                        end
-                    end
-
-                    -- Di chuyển đến spawn quái vật nếu cần thiết
-                    for _, v in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
-                        if string.find(v.Name, NameMon) then
-                            if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude >= 10 then
-                                Tween(v.CFrame * CFrame.new(posX, posY, posZ))
-                            end
-                        end
-                    end
-                end
+                CheckAndFarm("QuestName", QuestLevel, "MonsterName", "WeaponName")
             end)
         end
     end
 end)
-
-
--- Hàm tween di chuyển đến vị trí
-local function Tween(targetCFrame)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetCFrame
-end
            
 --------------------------------------------------------------------------------------------------------------------------------------------
 
