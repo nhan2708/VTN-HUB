@@ -1350,7 +1350,7 @@ end
 spawn(function()
     while task.wait() do
         pcall(function()
-            local humanoidRoot = plr.Character:FindFirstChild("HumanoidRootPart")
+            local humanoidRoot = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
             if humanoidRoot and (_G.TeleportIsland or _G.AutoLevel or _G.AutoBone or _G.CakePrince) then
                 if not humanoidRoot:FindFirstChild("BodyClip") then
                     local bodyVelocity = Instance.new("BodyVelocity")
@@ -1359,8 +1359,8 @@ spawn(function()
                     bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
                     bodyVelocity.Velocity = Vector3.zero
                 end
-            else
-                local bodyClip = humanoidRoot and humanoidRoot:FindFirstChild("BodyClip")
+            elseif humanoidRoot then
+                local bodyClip = humanoidRoot:FindFirstChild("BodyClip")
                 if bodyClip then bodyClip:Destroy() end
             end
         end)
@@ -1371,9 +1371,11 @@ end)
 spawn(function()
     game:GetService("RunService").Stepped:Connect(function()
         if _G.TeleportIsland or _G.AutoLevel or _G.AutoBone or _G.CakePrince then
-            for _, v in pairs(plr.Character:GetDescendants()) do
-                if v:IsA("BasePart") then
-                    v.CanCollide = false
+            if plr.Character then
+                for _, v in pairs(plr.Character:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false
+                    end
                 end
             end
         end
@@ -1444,12 +1446,21 @@ function GetWeaponInventory(Weaponname)
     return false
 end
 
+-- Get Current Blade
+function GetCurrentBlade()
+    local AC = CbFw2 and CbFw2.activeController
+    if AC and AC.blades and #AC.blades > 0 then
+        return AC.blades[1]
+    end
+    return nil
+end
+
 -- Method Farm
 local Type = 1
 local Pos = CFrame.new(10, 40, 10)
 
 spawn(function()
-    while wait(0.1) do
+    while task.wait(0.1) do
         if Type == 1 then
             Pos = CFrame.new(10, 40, 10)
         elseif Type == 2 then
@@ -1458,12 +1469,14 @@ spawn(function()
             Pos = CFrame.new(10, 10, -40)
         elseif Type == 4 then
             Pos = CFrame.new(-40, 10, 10)
+        else
+            Pos = CFrame.new(0, 0, 0)
         end
     end
 end)
 
 spawn(function()
-    while wait(1) do
+    while task.wait(1) do
         Type = math.random(1, 4)
     end
 end)
