@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/VanThanhIOS/VanThanhKamuy/refs/heads/main/VanThanhIOS.lua.txt"))() -- LIBRARY
 
 
-local Window = Library:CreateWindow('Menu : VTN HUB ') --CREATE WINDOW
+local Window = Library:CreateWindow('Menu : VTN HUB') -- CREATE WINDOW
 
 local Tab = { -- CREATE TABS
     Tab_1 = Window:addTab('#Home'),
@@ -1526,7 +1526,7 @@ Main_Setting:addTextbox("Distance Farm", DisFarm, function(Value)
     DisFarm = Value
 end)
 
-spawn(function()
+--[[spawn(function()
     local gg = getrawmetatable(game)
     local old = gg.__namecall
     setreadonly(gg,false)
@@ -1549,7 +1549,7 @@ spawn(function()
         end
         return old(...)
     end)
-end)
+end)]]
 function getHead()
     local returntable = {}
     local plr = game:GetService("Players").LocalPlayer
@@ -1580,7 +1580,7 @@ function FastShooted()
     end
 end
 
-function FastM1()
+--[[function FastM1()
     local plr = game:GetService("Players").LocalPlayer
     local getHeadPositionAttack = getHeadPosition()
     for i = 1, #getHeadPositionAttack do
@@ -1595,7 +1595,7 @@ function FastM1()
             end)
         end
     end
-end
+end]]
 
 function FastAttacked()
     local plr = game:GetService("Players").LocalPlayer
@@ -1720,7 +1720,7 @@ spawn(function()
     end
 end)
 
- --Fast Attack
+--[[// Fast Attack
 local CombatFramework = require(game:GetService('Players').LocalPlayer.PlayerScripts.CombatFramework)
 
 function GetCurrentBlade()
@@ -1776,15 +1776,15 @@ function AttackNoCD()
             end)
         end
     end
-end
+end]]
 
-local FastAttack = true
+--[[local FastAttack = true
 Main_Setting:addToggle('Fast Attack 1 (Selected Delay)', FastAttack, function(Value)
     FastAttack = Value
-end)
+end)]]
 
 
-spawn(function()
+--[[spawn(function()
     while task.wait() do
         if FastAttack then
             local CameraShakerR = require(game.ReplicatedStorage.Util.CameraShaker)
@@ -1797,9 +1797,9 @@ spawn(function()
             end)
         end
     end
-end)
+end)]]
 
-Main_Setting:addToggle('Fast Attack 2 (Without Selected Delay)', MobileFastAttack, function(Value)
+--[[Main_Setting:addToggle('Fast Attack 2 (Without Selected Delay)', MobileFastAttack, function(Value)
     MobileFastAttack = Value
 end)
 spawn(function()
@@ -1824,7 +1824,7 @@ spawn(function()
             end)
         end
     end
-end)
+end)]]
 
 --// BRING MOBS
 function BringMonster(TargetName, TargetCFrame)
