@@ -1,190 +1,133 @@
-highChestOnly = true
-godsChaliceSniper = false
-repeat task.wait(4) until game:IsLoaded()
-local PlaceID = game.PlaceId
-local AllIDs = {}
-local foundAnything = ""
-local actualHour = os.date("!*t").hour
-local Deleted = false
-local File = pcall(function()
-    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
-end)
-if not File then
-    table.insert(AllIDs, actualHour)
-    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-end
-function TPReturner()
-    local Site;
-    if foundAnything == "" then
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
-    else
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
-    end
-    local ID = ""
-    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-        foundAnything = Site.nextPageCursor
-    end
-    local num = 0;
-    for i,v in pairs(Site.data) do
-        local Possible = true
-        ID = tostring(v.id)
-        if tonumber(v.maxPlayers) > tonumber(v.playing) then
-            for _,Existing in pairs(AllIDs) do
-                if num ~= 0 then
-                    if ID == tostring(Existing) then
-                        Possible = false
-                    end
-                else
-                    if tonumber(actualHour) ~= tonumber(Existing) then
-                        local delFile = pcall(function()
-                            delfile("NotSameServers.json")
-                            AllIDs = {}
-                            table.insert(AllIDs, actualHour)
-                        end)
-                    end
-                end
-                num = num + 1
-            end
-            if Possible == true then
-                table.insert(AllIDs, ID)
-                wait()
-                pcall(function()
-                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-                    wait()
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
-                end)
-                wait(4)
-            end
-        end
-    end
-end
-
-function Teleport()
-    while wait() do
-        pcall(function()
-            TPReturner()
-            if foundAnything ~= "" then
-                TPReturner()
-            end
-        end)
-    end
-end
-local veryImportantWaitTime = 0.75
-task.spawn(function()
-    while task.wait(veryImportantWaitTime) do
-        pcall(function()
-            for i,v in pairs(game.CoreGui:GetDescendants()) do
-                pcall(function()
-                    if string.find(v.Name,"ErrorMessage") then
-                        if string.find(v.Text,"Security kick") then
-                            veryImportantWaitTime = 1e9
-                            Teleport()
-                        end
-                    end
-                end)
-            end
-        end)
-    end
-end)
-
-local AllowRunService = true
-local AllowRunServiceBind = Instance.new("BindableFunction")
-function AllowRunServiceBind.OnInvoke(args)
-    if args == "ON" then
-        AllowRunService = true
-    elseif args == "OFF" then
-        AllowRunService = false
-    end
-    local CoreGui = game:GetService("StarterGui")
-    CoreGui:SetCore("SendNotification", {
-        Title = "Farm Chest (TP)",
-        Text = "made by NHN ",
-        Icon = "rbxassetid://17862090672",
-        Duration = math.huge,
-        Callback = AllowRunServiceBind,
-        Button1 = "ON",
-        Button2 = "OFF",
-    })
-end
-
-
-task.spawn(function()
-    while task.wait() do
-        task.spawn(function()
-            if godsChaliceSniper == true then
-                if stuff then
-                    AllowRunService = false
-                end
-            end
-        end)
-    end
-end)
-
-local CoreGui = game:GetService("StarterGui")
-CoreGui:SetCore("SendNotification", {
-    Title = "Farm Chest (TP)",
-    Text = "made by NHN",
-    Icon = "rbxassetid://17862090672",
-    Duration = math.huge,
-    Callback = AllowRunServiceBind,
-    Button1 = "ON",
-    Button2 = "OFF",
+local Player = game.Players.LocalPlayer
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/VanThanhIOS/VanThanhLuxucu/refs/heads/main/main.txt"))()
+ 
+local Hub = Material.Load({
+	Title = "VTN HUB",
+	Style = 3,
+	SizeX = 300,
+	SizeY = 300,
+	Theme = "Light",
+	ColorOverrides = {
+		MainFrame = Color3.fromRGB(235,235,235)
+	}
 })
-task.spawn(function()
-    while true and task.wait(.5) do
-        if AllowRunService == true then
-            local ohString1 = "SetTeam"
-            local ohString2 = "Marines"
-
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(ohString1, ohString2)
-        end
-    end
+ 
+local Home = Hub.New({
+	Title = "Home"
+})
+ 
+_G.Tween = nil
+_G.Play = false
+_G.CloseAllScript = false
+ 
+local ToggleAutoChest = Home.Toggle({
+	Text = "Nhặt Rương Bằng Cả Tính Mạng",
+	Callback = function(Value)
+		_G.Play = Value
+	end,
+	Enabled = _G.Play
+})
+ 
+game:GetService('RunService').Stepped:connect(function()
+	if _G.Play then
+		local HumanoidRootPart = Player.Character:WaitForChild("HumanoidRootPart")
+		local Humanoid = Player.Character:WaitForChild("Humanoid")
+		HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+		for i,v in pairs(Player.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = false
+			end
+		end
+		Humanoid.Sit = false
+	end
 end)
-
-task.spawn(function()
-    while true and task.wait() do
-        if AllowRunService == true then
-            if highChestOnly == false then
-                local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
-                if not game.Players.LocalPlayer.Character then
-        
-                else
-                    local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG",true)
-                    if hasCrewTag then hasCrewTag:Destroy() end
-                    local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-                    if hasHumanoid then
-                        local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
-                        
-                        if Chest then
-                            game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
-                            firesignal(Chest.Touched,game.Players.LocalPlayer.Character.HumanoidRootPart)
-                        else
-                            Teleport()
-                            break
-                        end
-                    end 
-                end
-            elseif highChestOnly == true then
-                local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
-                if not game.Players.LocalPlayer.Character then
-        
-                else
-                    local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG",true)
-                    if hasCrewTag then hasCrewTag:Destroy() end
-                    local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-                    if hasHumanoid then
-                        local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2")
-                        
-                        if Chest then
-                            game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
-                            firesignal(Chest.Touched,game.Players.LocalPlayer.Character.HumanoidRootPart)
-                        else
-                            Teleport()
-                            break
-                        end
-                    end 
-                end
-            end
-        end
-    end
-end)
+ 
+function Tween(Part)
+	if _G.Tween then
+		_G.Tween:Cancel()
+	end
+	local HumanoidRootPart = Player.Character:WaitForChild("HumanoidRootPart")
+	_G.Tween = game:GetService("TweenService"):Create(HumanoidRootPart,TweenInfo.new((Part.Position-HumanoidRootPart.Position).magnitude/300,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{CFrame = Part.CFrame})
+	_G.Tween:Play()
+	local flying = true
+	while game:GetService("RunService").Stepped:Wait() and flying and _G.Play do
+		if _G.Play == false then
+			_G.Tween:Cancel()
+		end
+		if (Part.Position-HumanoidRootPart.Position).magnitude < 250 then
+			_G.Tween:Cancel()
+			for i = 1,5 do
+				HumanoidRootPart.CFrame = Part.CFrame
+				wait()
+			end
+			flying = false
+		end
+	end
+end
+ 
+function TableNearToFarChests()
+	local HumanoidRootPart = Player.Character:WaitForChild("HumanoidRootPart")
+	local chests = {}
+	local checkedchests = {}
+	local function Check(v)
+		for i,e in pairs(checkedchests) do
+			if v == e then
+				return false
+			end
+		end
+		return true
+	end
+	local function A(tablec)
+		local nearest
+		local sus
+		for i,v in pairs(tablec) do
+			local real = Check(v)
+			if real then
+				if nearest then
+					if (v.Position-HumanoidRootPart.Position).magnitude < nearest then
+                        nearest = (v.Position-HumanoidRootPart.Position).magnitude
+						sus = v
+					end
+				else
+					nearest = (v.Position-HumanoidRootPart.Position).magnitude
+                    sus = v
+				end
+			end
+		end
+		return sus
+	end
+	local function B(tablec)
+		local C = A(tablec)
+		if C then
+			table.insert(checkedchests,C)
+			B(tablec)
+		end
+		return checkedchests
+	end
+	for i,v in pairs(workspace:GetDescendants()) do
+		if v.Name == "Chest1" or v.Name == "Chest2" or v.Name == "Chest3" then
+			table.insert(chests,v)
+		end
+	end
+	B(chests)
+	return chests,checkedchests
+end
+ 
+repeat wait() until game:IsLoaded()
+ 
+while wait(1) do
+	if _G.Play then
+		local chests,checkedchests = TableNearToFarChests()
+		for i,v in pairs(checkedchests) do
+			Tween(v)
+			if _G.Play == false then
+				break
+			end
+		end
+	else
+		if _G.Tween then
+			_G.Tween:Cancel()
+		end
+	end
+end
