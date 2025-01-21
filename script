@@ -1,9 +1,9 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/VanThanhIOS/VanThanhKamuy/refs/heads/main/VanThanhIOS.lua.txt"))() -- LIBRARY
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/VanThanhIOS/OniiChanVanThanhIOS/refs/heads/main/main.txt"))()
 
 
-local Window = Library:CreateWindow('Menu : VTN HUB') -- CREATE WINDOW
+local Window = Library:CreateWindow('VTN')
 
-local Tab = { -- CREATE TABS
+local Tab = {
     Tab_1 = Window:addTab('#Home'),
     Tab_Setting = Window:addTab('#Settings'),
     Tab_2 = Window:addTab('#Main Farm'),
@@ -42,32 +42,6 @@ Main_Home:addTextbox("Jump Hack", getgenv().JumpValue, function(jumpfunc)
     end
 end)
 
-Main_Home:addToggle("Infinite Jump", InfiniteJumpEnabled, function(Value)
-    InfiniteJumpEnabled = Value
-    if InfiniteJumpEnabled then
-        game:GetService("UserInputService").JumpRequest:connect(function()
-            game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
-        end)
-    end
-end)
-
-Main_Home:addToggle('No Clip', getgenv().NoClip, function(clipf)
-    getgenv().NoClip = clipf
-end)
-spawn(function()
-    pcall(function()
-        game:GetService("RunService").Stepped:Connect(function()
-            if getgenv().NoClip then
-                for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-                    if v:IsA("BasePart") then
-                        v.CanCollide = false
-                    end
-                end
-            end
-        end)
-    end)
-end)
-
 getgenv().AntiAFK = true
 Main_Home:addToggle("Anti AFK", getgenv().AntiAFK, function(Value)
     getgenv().AntiAFK = Value
@@ -98,7 +72,7 @@ task.spawn(function()
     end
 end)
 
-Main_Home:addButton("FPS Boost", function()
+Main_Home:addButton("Antilag - FPS", function()
     local decalsyeeted = false
     local g = game
     local w = g.Workspace
@@ -138,141 +112,17 @@ Main_Home:addButton("FPS Boost", function()
     end
 end)
 
-Main_Home:addButton("Rejoin Server", function()
-    game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
-end)
+local Home_Left = Tab.Tab_1:addSection()
+local Changelog = Home_Left:addMenu("Thông Tin")
+Changelog:addChangelog('Xin Chào Tất Cả Các Bạn ❤️')
+Changelog:addChangelog('Hello Everyone ❤️')
+Changelog:addChangelog('Menu : Văn Thành IOS' )
+Changelog:addChangelog('Thông Tin Liên Hệ')
+Changelog:addChangelog('YTB: @thanhdzso1')
+Changelog:addChangelog('Tik Tok: @vanthanhisme_')
+Changelog:addChangelog('FB : @vanthanhisme')
+Changelog:addChangelog('Goodbye Everyone')
 
-Main_Home:addButton("Server Hop", function()
-    Hop()
-end)
-function Hop()
-    local PlaceID = game.PlaceId
-    local AllIDs = {}
-    local foundAnything = ""
-    local actualHour = os.date("!*t").hour
-    local Deleted = false
-    function TPReturner()
-        local Site;
-        if foundAnything == "" then
-            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
-        else
-            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
-        end
-        local ID = ""
-        if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-            foundAnything = Site.nextPageCursor
-        end
-        local num = 0;
-        for i,v in pairs(Site.data) do
-            local Possible = true
-            ID = tostring(v.id)
-            if tonumber(v.maxPlayers) > tonumber(v.playing) then
-                for _,Existing in pairs(AllIDs) do
-                    if num ~= 0 then
-                        if ID == tostring(Existing) then
-                            Possible = false
-                        end
-                    else
-                        if tonumber(actualHour) ~= tonumber(Existing) then
-                            local delFile = pcall(function()
-                                -- delfile("NotSameServers.json")
-                                AllIDs = {}
-                                table.insert(AllIDs, actualHour)
-                            end)
-                        end
-                    end
-                    num = num + 1
-                end
-                if Possible == true then
-                    table.insert(AllIDs, ID)
-                    wait(.1)
-                    pcall(function()
-                        -- writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-                        wait()
-                        game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
-                    end)
-                    wait(.1)
-                end
-            end
-        end
-    end
-    function Teleport() 
-        while wait(.1) do
-            pcall(function()
-                TPReturner()
-                if foundAnything ~= "" then
-                    TPReturner()
-                end
-            end)
-        end
-    end
-    Teleport()
-end
-
-Main_Home:addButton("Teleport To Lower Server", function()
-    local maxplayers, gamelink, goodserver, data_table = math.huge, "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
-    if not _G.FailedServerID then _G.FailedServerID = {} end
-
-    local function serversearch()
-        data_table = game:GetService"HttpService":JSONDecode(game:HttpGetAsync(gamelink))
-        for _, v in pairs(data_table.data) do
-            pcall(function()
-                if type(v) == "table" and v.id and v.playing and tonumber(maxplayers) > tonumber(v.playing) and not table.find(_G.FailedServerID, v.id) then
-                    maxplayers = v.playing
-                    goodserver = v.id
-                end
-            end)
-        end
-    end
-
-    function getservers()
-        pcall(serversearch)
-        for i, v in pairs(data_table) do
-            if i == "nextPageCursor" then
-                if gamelink:find"&cursor=" then
-                    local a = gamelink:find"&cursor="
-                    local b = gamelink:sub(a)
-                    gamelink = gamelink:gsub(b, "")
-                end
-                gamelink = gamelink .. "&cursor=" .. v
-                pcall(getservers)
-            end
-        end
-    end
-
-    pcall(getservers)
-    wait(.1)
-    if goodserver == game.JobId or maxplayers == #game:GetService"Players":GetChildren() - 1 then
-    end
-    table.insert(_G.FailedServerID, goodserver)
-    game:GetService"TeleportService":TeleportToPlaceInstance(game.PlaceId, goodserver)
-
-    while wait(.1) do
-        pcall(function()
-            if not game:IsLoaded() then
-                game.Loaded:Wait()
-            end
-            game.CoreGui.RobloxPromptGui.promptOverlay.DescendantAdded:Connect(function()
-                local GUI = game.CoreGui.RobloxPromptGui.promptOverlay:FindFirstChild("ErrorPrompt")
-                if GUI then
-                    if GUI.TitleFrame.ErrorTitle.Text == "Disconnected" then
-                        if #game.Players:GetPlayers() <= 1 then
-                            game.Players.LocalPlayer:Kick("\nRejoining...")
-                            wait(.1)
-                            game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
-                        else
-                            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
-                        end
-                    end
-                end
-            end)
-        end)
-    end
-end)
-
-Main_Home:addButton("Destroy GUI", function()
-    Library:DestroyGui()
-end)
 
 ----------------------------------------------------//----------------------------------------------------
 --// PATH 
@@ -2519,9 +2369,9 @@ local MirageCheck = IslandInfo:addLabel("")
 spawn(function()
 	while task.wait() do
 		if game.Workspace._WorldOrigin.Locations:FindFirstChild("Mirage Island") then
-            MirageCheck:Refresh("Mirage Island : Spawn âœ…")
+            MirageCheck:Refresh("Mirage Island : Spawn")
         else
-            MirageCheck:Refresh("Mirage Island : Not Spawn âŒ")
+            MirageCheck:Refresh("Mirage Island : Not Spawn")
         end
 	end
 end)
@@ -2530,9 +2380,9 @@ local KitsuneCheck = IslandInfo:addLabel("")
 spawn(function()
 	while task.wait() do
 		if game.Workspace._WorldOrigin.Locations:FindFirstChild("Kitsune Island") then
-            KitsuneCheck:Refresh("Kitsune Island : Spawn âœ…")
+            KitsuneCheck:Refresh("Kitsune Island : Spawn")
         else
-            KitsuneCheck:Refresh("Kitsune Island : Not Spawn âŒ")
+            KitsuneCheck:Refresh("Kitsune Island : Not Spawn")
         end
 	end
 end)
@@ -2541,17 +2391,17 @@ local MoonCheck = IslandInfo:addLabel("")
 spawn(function()
     while wait() do
         if game:GetService("Lighting").Sky.MoonTextureId == "http://www.roblox.com/asset/?id=9709149431" then
-            MoonCheck:Refresh("Moon Status : ðŸŒ‘ 100%")
+            MoonCheck:Refresh("Moon Status :  100%")
         elseif game:GetService("Lighting").Sky.MoonTextureId == "http://www.roblox.com/asset/?id=9709149052" then
-            MoonCheck:Refresh("Moon Status : ðŸŒ’ 75%")
+            MoonCheck:Refresh("Moon Status :  75%")
         elseif game:GetService("Lighting").Sky.MoonTextureId == "http://www.roblox.com/asset/?id=9709143733" then
-            MoonCheck:Refresh("Moon Status : ðŸŒ“ 50%")
+            MoonCheck:Refresh("Moon Status :  50%")
         elseif game:GetService("Lighting").Sky.MoonTextureId == "http://www.roblox.com/asset/?id=9709150401" then
-            MoonCheck:Refresh("Moon Status : ðŸŒ— 25%")
+            MoonCheck:Refresh("Moon Status :  25%")
         elseif game:GetService("Lighting").Sky.MoonTextureId == "http://www.roblox.com/asset/?id=9709149680" then
-            MoonCheck:Refresh("Moon Status : ðŸŒ– 15%")
+            MoonCheck:Refresh("Moon Status :  15%")
         else
-            MoonCheck:Refresh("Moon Status : ðŸŒš 0%")
+            MoonCheck:Refresh("Moon Status :  0%")
         end
     end
 end)
@@ -5931,15 +5781,15 @@ end
 spawn(function()
     while task.wait() do
         if GetWeaponInventory("Tushita") == true then
-            TushitaSword:Refresh("Tushita Sword : Have âœ…")
+            TushitaSword:Refresh("Tushita Sword : Have")
         elseif GetWeaponInventory("Tushita") == false then
-            TushitaSword:Refresh("Tushita Sword : Not Have âŒ")
+            TushitaSword:Refresh("Tushita Sword : Not Have")
         end
 
         if GetWeaponInventory("Yama") == true then
-            YamaSword:Refresh("Yama Sword : Have âœ…")
+            YamaSword:Refresh("Yama Sword : Have")
         elseif GetWeaponInventory("Yama") == false then
-            YamaSword:Refresh("Yama Sword : Not Have âŒ")
+            YamaSword:Refresh("Yama Sword : Not Have")
         end
     end
 end)
@@ -7958,7 +7808,7 @@ RaceFragShop:addButton("Cyborg [ $??? ]", function()
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 end)
 
-RaceFragShop:addButton("Suprise Bone [ ðŸ¦´50 Bone ]", function()
+RaceFragShop:addButton("Suprise Bone [ 50 Bone ]", function()
     local args = {
         [1] = "Bones",
         [2] = "Buy",
@@ -7968,7 +7818,7 @@ RaceFragShop:addButton("Suprise Bone [ ðŸ¦´50 Bone ]", function()
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 end)
 
-RaceFragShop:addButton("Stat Refund [ ðŸ¦´50 Bone ]", function()
+RaceFragShop:addButton("Stat Refund [ 50 Bone ]", function()
     local args = {
         [1] = "Bones",
         [2] = "Buy",
@@ -7978,7 +7828,7 @@ RaceFragShop:addButton("Stat Refund [ ðŸ¦´50 Bone ]", function()
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 end)
 
-RaceFragShop:addButton("Race Reroll [ ðŸ¦´50 Bone ]", function()
+RaceFragShop:addButton("Race Reroll [ 50 Bone ]", function()
     local args = {
         [1] = "Bones",
         [2] = "Buy",
