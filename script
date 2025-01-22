@@ -1,4 +1,4 @@
-local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/VanThanhIOS/OniiChanVanThanhIOS/refs/heads/main/main.txt"))()
+local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 
 local Window = Library:CreateWindow('VTN')
@@ -1864,9 +1864,9 @@ spawn(function()
     while wait() do
         if KenHaki then
             if not game.Players.LocalPlayer.Character:FindFirstChild("Highlight") then
-                game:service('VirtualInputManager'):SendKeyEvent(true, "K", false, game)
+                game:service('VirtualInputManager'):SendKeyEvent(true, "E", false, game)
                 wait(.1)
-                game:service('VirtualInputManager'):SendKeyEvent(false, "K", false, game)
+                game:service('VirtualInputManager'):SendKeyEvent(false, "E", false, game)
             end
         end
     end
