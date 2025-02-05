@@ -6,9 +6,9 @@ local Window = Fluent:CreateWindow({
     Title = "VTN HUB",
     SubTitle = " ",
     TabWidth = 160,
-    Size = UDim2.fromOffset(530, 350),
+    Size = UDim2.fromOffset(500, 320),
     Acrylic = false,
-    Theme = "Light",
+    Theme = "Black",
     MinimizeKey = Enum.KeyCode.End
 })
 local Tabs = {
