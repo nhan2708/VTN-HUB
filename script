@@ -2810,20 +2810,6 @@ local MiscFarm = Tabs.Main:AddSection("Misc Farm")
 if Third_Sea then
     local MiscFarm = Tabs.Main:AddSection("Bone Farm")
     
-    local StatusBone = Tabs.Main:AddParagraph({
-        Title = "Bone Status",
-        Content = ""
-    })
-        spawn(function()
-            pcall(function()
-                while wait() do
-                    StatusBone:SetDesc("You Have : "..tostring(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Bones","Check").." Bones"))
-                end
-            end)
-        end)
-    
-    
-    
         local ToggleBone = Tabs.Main:AddToggle("ToggleBone", {Title = "Auto Bone", Default = false })
         ToggleBone:OnChanged(function(Value)
             _G.AutoBone = Value
