@@ -5969,140 +5969,166 @@ spawn(function()
 	end)
 
 
-Tabs.Shop:AddButton({
-	Title = "Geppo",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Geppo")
-	end
-})
-
-
-
-Tabs.Shop:AddButton({
-	Title = "Buso Haki",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Buso")
-	end
-})
-
-
-
-
-Tabs.Shop:AddButton({
-	Title = "Soru",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Soru")
-	end
-})
-
-
-Tabs.Shop:AddButton({
-	Title = "Ken Haki",
-	Description = "",
-	Callback = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("KenTalk","Buy")
-	end
-})
-
-local Mastery = Tabs.Shop:AddSection("Fighting Styles")
-
-
-Tabs.Shop:AddButton({
-	Title = "Black Leg",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyBlackLeg")
-	end
-})
-
-Tabs.Shop:AddButton({
-	Title = "Electro",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectro")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Fishman Karate",
-	Description = "",
-	Callback = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyFishmanKarate")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Dragon Claw",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","DragonClaw","1")
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","DragonClaw","2")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Superhuman",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperhuman")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Death Step",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDeathStep")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Sharkman Karate",
-	Description = "",
-	Callback = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate",true)
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Electric Claw",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectricClaw")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Dragon Talon",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonTalon")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Godhuman",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyGodhuman")
-	end
-})
-
-
-local Mastery = Tabs.Shop:AddSection("Misc Items")
-
-Tabs.Shop:AddButton({
-	Title = "Refund Stats",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Refund","1")
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Refund","2")
-	end
-})
-Tabs.Shop:AddButton({
-	Title = "Reroll Race",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","1")
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","2")
-	end
-})
+    Tabs.Shop:AddButton({
+        Title = "Buy Geppo",
+        Description = "$10,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Geppo")
+        end
+    })
+    
+    
+    
+    Tabs.Shop:AddButton({
+        Title = "Buy Buso Haki",
+        Description = "$25,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Buso")
+        end
+    })
+    
+    
+    
+    
+    Tabs.Shop:AddButton({
+        Title = "Buy Soru",
+        Description = "$100.000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Soru")
+        end
+    })
+    
+    
+    Tabs.Shop:AddButton({
+        Title = "Buy Ken Haki",
+        Description = "$750,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("KenTalk","Buy")
+        end
+    })
+    
+    local Mastery = Tabs.Shop:AddSection("Fighting Styles")
+    
+    
+    Tabs.Shop:AddButton({
+        Title = "Buy Black Leg",
+        Description = "$150,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyBlackLeg")
+        end
+    })
+    
+    Tabs.Shop:AddButton({
+        Title = "Buy Electric",
+        Description = "$500,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectro")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Water Kung Fu",
+        Description = "$750,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyFishmanKarate")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Dragon Claw",
+        Description = "1,500F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","DragonClaw","1")
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","DragonClaw","2")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Superhuman",
+        Description = "$3,000,000",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperhuman")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Death Step",
+        Description = "$2.500.000 5.000F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDeathStep")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Sharkman Karate",
+        Description = "$2.500.000 5.000F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate",true)
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Electric Claw",
+        Description = "$3.000.000 5.000F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectricClaw")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Dragon Talon",
+        Description = "$3.000.000 5.000F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonTalon")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Buy Godhuman",
+        Description = "$5.000.000 5.000F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyGodhuman")
+        end
+    })
+    
+    Tabs.Shop:AddButton({
+            Title = "Buy Sanguine Art",
+            Description = "$5.000.000 5.000F",
+            Callback = function()            
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySanguineArt")
+            end
+        })
+    
+    
+    local Mastery = Tabs.Shop:AddSection("Misc Items")
+    
+    Tabs.Shop:AddButton({
+        Title = "Refund Stats",
+        Description = "2,500F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Refund","1")
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Refund","2")
+        end
+    })
+    Tabs.Shop:AddButton({
+        Title = "Reroll Race",
+        Description = "3,000F",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","1")
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","2")
+        end
+    })
+    Tabs.Shop:AddButton({
+            Title = "Buy Race Cyborg",
+            Description = "3.000F",
+            Callback = function()            
+    local args = {[1] = "CyborgTrainer", [2] = "Buy"}
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end
+        })
+        Tabs.Shop:AddButton({
+            Title = "Buy Race Ghoul",
+            Description = "250 Ectoplasm",
+            Callback = function()            
+    local args = {[1] = "Ectoplasm", [2] = "BuyCheck", [3] = 4}
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            local args = {[1] = "Ectoplasm", [2] = "Change", [3] = 4}
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end
+        }) 
 
 
 
