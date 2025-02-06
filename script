@@ -5334,28 +5334,13 @@ spawn(function()
 end)
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Player
-local Playerslist = {}
 
--- Hàm làm mới danh sách người chơi
-local function refreshPlayerList()
-    table.clear(Playerslist)  -- Xóa danh sách cũ
-    for _, v in pairs(game:GetService("Players"):GetChildren()) do
-        table.insert(Playerslist, v.Name)  -- Thêm tên người chơi vào danh sách
-    end
+local Playerslist = {}
+for i,v in pairs(game:GetService("Players"):GetChildren()) do
+    table.insert(Playerslist,v.Name)
 end
 
-local SelectedPly
-
-local function createDropdown()
-    if SelectedPly then
-        SelectedPly:Remove()
-    end
-
--- Khởi tạo danh sách người chơi
-refreshPlayerList()
-
--- Tạo Dropdown chọn người chơi
-SelectedPly = Tabs.Player:AddDropdown("SelectedPly", {
+local SelectedPly = Tabs.Player:AddDropdown("SelectedPly", {
     Title = "Select Player",
     Description = "",
     Values = Playerslist,
@@ -5368,16 +5353,17 @@ SelectedPly:OnChanged(function(Value)
     _G.SelectPly = Value
 end)
 
--- Nút làm mới người chơi
+
 Tabs.Player:AddButton({
     Title = "Refresh Player",
     Description = "",
     Callback = function()
-        refreshPlayerList()  -- Làm mới danh sách người chơi
-        createDropdown()  -- Cập nhật lại dropdown với danh sách mới
+        table.clear(Playerslist)
+        for i,v in pairs(game:GetService("Players"):GetChildren()) do
+            table.insert(Playerslist,v.Name)
+        end
     end
 })
-
 
 local ToggleTeleport = Tabs.Player:AddToggle("ToggleTeleport", {Title = "Teleport To Player", Description = "",Default = false })
 ToggleTeleport:OnChanged(function(Value)
