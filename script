@@ -4788,58 +4788,64 @@ end
 --Setting
 local SettingFarm = Tabs.Setting:AddSection("Farming")
 
-local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack",Description = "", Default = true })
+local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack", Description = "", Default = true })
 ToggleFast:OnChanged(function(Value)
     _G.FastNe = Value
 end)
 Options.ToggleFast:SetValue(true)
 
+-- Hàm tấn công nhanh (Fast Attack)
 spawn(function()
-	while wait(0.4) do
-		pcall(function()
-			if _G.FastNe then
-				repeat wait(0)
-					 
-				until not _G.FastNe
-			end
-		end)
-	end
+    while wait(0.2) do
+        pcall(function()
+            if _G.FastNe then
+                -- Tấn công nhanh liên tục khi FastNe bật
+                local mouse = game.Players.LocalPlayer:GetMouse()
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        -- Nhắm vào Cake Prince hoặc mob khác
+                        mouse.Target = v
+                        mouse:Click()
+                    end
+                end
+            end
+        end)
+    end
 end)
- 
-    local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
-   ToggleBringMob:OnChanged(function(Value)
-        _G.BringMob = Value
-    end)
-    Options.ToggleBringMob:SetValue(true)
-    spawn(function()
-        while wait() do
-            pcall(function()
-                for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                    if _G.BringMob and bringmob then
-                        if v.Name == MonFarm and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                            if v.Name == "Factory Staff" then
-                                if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
-                                    v.Head.CanCollide = false
-                                    v.HumanoidRootPart.CanCollide = false
-                                    v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
-                                    v.HumanoidRootPart.CFrame = FarmPos
-                                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                                end
-                            elseif v.Name == MonFarm then
-                                if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
-                                    v.Head.CanCollide = false
-                                    v.HumanoidRootPart.CanCollide = false
-                                    v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
-                                    v.HumanoidRootPart.CFrame = FarmPos
-                                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                                end
+
+-- Toggle kéo mob lại gần (Bring Mob)
+local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
+ToggleBringMob:OnChanged(function(Value)
+    _G.BringMob = Value
+end)
+Options.ToggleBringMob:SetValue(true)
+
+-- Hàm kéo mob lại gần
+spawn(function()
+    while wait(0.2) do
+        pcall(function()
+            if _G.BringMob then
+                -- Lặp qua tất cả các mob trong game
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        if v.Name == "Factory Staff" or v.Name == MonFarm then
+                            -- Kiểm tra khoảng cách và kéo mob lại gần vị trí farm
+                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
+                                v.Head.CanCollide = false
+                                v.HumanoidRootPart.CanCollide = false
+                                v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
+                                v.HumanoidRootPart.CFrame = FarmPos
+                                -- Cập nhật SimulationRadius
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
                             end
                         end
-                                end
-                            end
-                        end)
+                    end
                 end
-            end)
+            end
+        end)
+    end
+end)
+
          
     local ToggleBypassTP = Tabs.Setting:AddToggle("ToggleBypassTP", {Title = "Enabled Bypass Tp",Description = "", Default = false })
     ToggleBypassTP:OnChanged(function(Value)
