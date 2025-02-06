@@ -4963,9 +4963,9 @@ SliderPosX:SetValue(0)
 local SliderPosY = Tabs.Setting:AddSlider("SliderPosY", {
     Title = "Pos Y",
     Description = "",
-    Default = 30,
-    Min = -60,
-    Max = 60,
+    Default = 15,
+    Min = -30,
+    Max = 30,
     Rounding = 1,
     Callback = function(Value)
       posY = Value
