@@ -4814,27 +4814,16 @@ end)
                                 if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
                                     v.Head.CanCollide = false
                                     v.HumanoidRootPart.CanCollide = false
-                                    v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                    v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
                                     v.HumanoidRootPart.CFrame = FarmPos
-                                    if v.Humanoid:FindFirstChild("Animator") then
-                                        v.Humanoid.Animator:Destroy()
-                                    end
                                     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
                                 end
                             elseif v.Name == MonFarm then
-                                if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 337.5 then
-                                    v.HumanoidRootPart.CFrame = FarmPos
-                                    v.HumanoidRootPart.Size = Vector3.new(60,60,60)
-                                    v.HumanoidRootPart.Transparency = 1
-                                    v.Humanoid.JumpPower = 0
-                                    v.Humanoid.WalkSpeed = 0
-                                    if v.Humanoid:FindFirstChild("Animator") then
-                                        v.Humanoid.Animator:Destroy()
-                                    end
-                                    v.HumanoidRootPart.CanCollide = false
+                                if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
                                     v.Head.CanCollide = false
-                                    v.Humanoid:ChangeState(11)
-                                    v.Humanoid:ChangeState(14)
+                                    v.HumanoidRootPart.CanCollide = false
+                                    v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
+                                    v.HumanoidRootPart.CFrame = FarmPos
                                     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
                                 end
                             end
@@ -4844,7 +4833,6 @@ end)
                         end)
                 end
             end)
-
          
     local ToggleBypassTP = Tabs.Setting:AddToggle("ToggleBypassTP", {Title = "Enabled Bypass Tp",Description = "", Default = false })
     ToggleBypassTP:OnChanged(function(Value)
