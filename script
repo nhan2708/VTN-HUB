@@ -5344,11 +5344,18 @@ local function refreshPlayerList()
     end
 end
 
+local SelectedPly
+
+local function createDropdown()
+    if SelectedPly then
+        SelectedPly:Remove()
+    end
+
 -- Khởi tạo danh sách người chơi
 refreshPlayerList()
 
 -- Tạo Dropdown chọn người chơi
-local SelectedPly = Tabs.Player:AddDropdown("SelectedPly", {
+SelectedPly = Tabs.Player:AddDropdown("SelectedPly", {
     Title = "Select Player",
     Description = "",
     Values = Playerslist,
@@ -5367,7 +5374,7 @@ Tabs.Player:AddButton({
     Description = "",
     Callback = function()
         refreshPlayerList()  -- Làm mới danh sách người chơi
-        SelectedPly:SetOptions(Playerslist)  -- Cập nhật lại dropdown với danh sách mới
+        createDropdown()  -- Cập nhật lại dropdown với danh sách mới
     end
 })
 
