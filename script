@@ -12,7 +12,7 @@ button.Name = "MyButton"
 button.Font = Enum.Font.SourceSansBold
 button.Size = UDim2.new(0, 100, 0, 50) -- Set size
 button.Position = UDim2.new(0, 10, 0.5, -25) -- Set position to the left with an X offset of 10 pixel
-button.BackgroundColor3 = Color3.fromRGB(255,255,255) -- Set button background color to red
+button.BackgroundColor3 = Color3.fromRGB(255,255,255)
 
 local function onClick()
     toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
@@ -2362,81 +2362,15 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
-local plr = game.Players.LocalPlayer
-local CombatFramework = require(plr.PlayerScripts:FindFirstChild("CombatFramework"))
-local CbFw2 = debug.getupvalues(CombatFramework)[2]
 
 
-function GetCurrentBlade() 
-    local p13 = CbFw2.activeController
-    local ret = p13.blades[1]
-    if not ret then return end
-    while ret.Parent~=game.Players.LocalPlayer.Character do ret=ret.Parent end
-    return ret
-end
-
-function AttackNoCoolDown() 
-    local AC = CbFw2.activeController
-    for i = 1, 1 do 
-        local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-            plr.Character,
-            {plr.Character.HumanoidRootPart},
-            60
-        )
-        local cac = {}
-        local hash = {}
-        for k, v in pairs(bladehit) do
-            if v.Parent:FindFirstChild("HumanoidRootPart") and not hash[v.Parent] then
-                table.insert(cac, v.Parent.HumanoidRootPart)
-                hash[v.Parent] = true
-            end
-        end
-        bladehit = cac
-        if #bladehit > 0 then
-            local u8 = debug.getupvalue(AC.attack, 5)
-            local u9 = debug.getupvalue(AC.attack, 6)
-            local u7 = debug.getupvalue(AC.attack, 4)
-            local u10 = debug.getupvalue(AC.attack, 7)
-            local u12 = (u8 * 798405 + u7 * 727595) % u9
-            local u13 = u7 * 798405
-            (function()
-                u12 = (u12 * u9 + u13) % 1099511627776
-                u8 = math.floor(u12 / u9)
-                u7 = u12 - u8 * u9
-            end)()
-            u10 = u10 + 1
-            debug.setupvalue(AC.attack, 5, u8)
-            debug.setupvalue(AC.attack, 6, u9)
-            debug.setupvalue(AC.attack, 4, u7)
-            debug.setupvalue(AC.attack, 7, u10)
-            pcall(function()
-                for k, v in pairs(AC.animator.anims.basic) do
-                    v:Play()
-                end                  
-            end)
-            if plr.Character:FindFirstChildOfClass("Tool") and AC.blades and AC.blades[1] then 
-                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange",tostring(GetCurrentBlade()))
-                game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
-                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladehit, i, "") 
-            end
-        end
-    end
+--// AUTO CLICK
+function AutoClick()
+    game:GetService('VirtualUser'):CaptureController()
+    game:GetService('VirtualUser'):Button1Down(Vector2.new(1280, 672))
 end
 
 --Attack Mastery
-    function NormalAttack()
-        if not _G.NormalAttack then
-            local Module = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework)
-            local CombatFramework = debug.getupvalues(Module)[2]
-            local CamShake = require(game.ReplicatedStorage.Util.CameraShaker)
-            CamShake:Stop()
-            CombatFramework.activeController.attacking = false
-            CombatFramework.activeController.timeToNextAttack = 0
-            CombatFramework.activeController.hitboxMagnitude = 180
-            game:GetService'VirtualUser':CaptureController()
-            game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
-        end
-    end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2537,6 +2471,23 @@ function to(p)
 			end
 		end)
 	end
+
+    
+function nHgshEJpoqgHTBEJZ(c)
+    tab={}
+    for i = 1,#c do
+    x=string.len(c[i]) 
+    y=string.char(x)
+    table.insert(tab,y)
+    end
+    x=table.concat(tab)
+    return x
+    end 
+    
+    
+    local a=game:GetService(nHgshEJpoqgHTBEJZ({'8888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888'}))local b=a.Modules.Net:FindFirstChild(nHgshEJpoqgHTBEJZ({'8888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888'}))local c=a.Modules.Net:FindFirstChild(nHgshEJpoqgHTBEJZ({'8888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888'}))local function d(e)local f={}for g,h in next,workspace.Characters:GetChildren()do if h~=e.Character and h:FindFirstChild(nHgshEJpoqgHTBEJZ({'888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888'}))and e:DistanceFromCharacter(h.HumanoidRootPart.Position)<5522 then table.insert(f,{h,h.HumanoidRootPart})end end;for g,h in next,workspace.Enemies:GetChildren()do if h:FindFirstChild(nHgshEJpoqgHTBEJZ({'888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888','8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888','88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888'}))and e:DistanceFromCharacter(h.HumanoidRootPart.Position)<5325 then table.insert(f,{h,h.HumanoidRootPart})end end;return f end;spawn(function()while true do if not AutoFarmMasDevilFruit then wait()else wait(0.6)end;if _G.FastAttack then local f=d(game.Players.LocalPlayer)if#f>0 then b:FireServer(0.4)for g,i in next,f do c:FireServer(f[g][2],f)end end end end end)
+    _G.FastAttack = true    
+    
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 ---Close UI
@@ -2671,7 +2622,6 @@ local listfastattack = {'Slow','Normal','Super'}
           if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
           if v.Name == Ms then
           repeat wait(_G.Fast_Delay)
-          AttackNoCoolDown()
           bringmob = true
           AutoHaki()
           EquipTool(SelectWeapon)
@@ -2725,7 +2675,6 @@ local listfastattack = {'Slow','Normal','Super'}
           if v.Name then
           if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude <= 5000 then
             repeat wait(_G.Fast_Delay)
-                AttackNoCoolDown()
                 bringmob = true
           AutoHaki()
           EquipTool(SelectWeapon)
@@ -2768,7 +2717,7 @@ local listfastattack = {'Slow','Normal','Super'}
                             if _G.CastleRaid and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
                                 if (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2000 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                   
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -3179,7 +3128,7 @@ spawn(function()
                                 if v.Name == "Reborn Skeleton" or v.Name == "Living Zombie" or v.Name == "Demonic Soul" or v.Name == "Posessed Mummy" then
                                     if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Demonic Soul") then
                                         repeat wait(_G.Fast_Delay)
-                                            AttackNoCoolDown()
+                                            
                                             AutoHaki()
                                             bringmob = true
                                             EquipTool(SelectWeapon)
@@ -3275,7 +3224,7 @@ spawn(function()
 							for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do 
 								if v.Name == "Cake Prince" then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                        AutoClick()
 										AutoHaki()
 										EquipTool(SelectWeapon)
 										v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
@@ -3294,7 +3243,7 @@ spawn(function()
                             for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do  
                                 if (v.Name == "Baking Staff" or v.Name == "Head Baker" or v.Name == "Cake Guard" or v.Name == "Cookie Crafter") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                   
 										AutoHaki()
                                         bringmob = true
 										EquipTool(SelectWeapon)
@@ -3362,7 +3311,7 @@ end
                             if v.Name == "Ship Steward" or v.Name == "Ship Engineer" or v.Name == "Ship Deckhand" or v.Name == "Ship Officer" and v:FindFirstChild("Humanoid") then
                                 if v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                     
                                         AutoHaki()
                                         bringmob = true
                                         EquipTool(SelectWeapon)
@@ -3438,7 +3387,7 @@ local boss = Tabs.Main:AddSection("Boss Farm")
                             if v.Name == _G.SelectBoss then
                                 if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                    
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -3513,7 +3462,7 @@ local boss = Tabs.Main:AddSection("Boss Farm")
           if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
           if v.Name == MMon then
             repeat wait(_G.Fast_Delay)
-                AttackNoCoolDown()
+     
           AutoHaki()
           bringmob = true
           EquipTool(SelectWeapon)
@@ -3833,7 +3782,7 @@ end)
                             if v.Name == "Terrorshark" then
                                 if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                          
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -3875,7 +3824,7 @@ end)
                             if v.Name == "Piranha" then
                                 if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                            
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -3915,7 +3864,7 @@ end)
                             if v.Name == "Shark" then
                                 if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                   
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -3957,7 +3906,7 @@ end)
                             if v.Name == "Fish Crew Member" then
                                 if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -4185,7 +4134,7 @@ spawn(function()
                                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                            if v.Name == "Diablo" or v.Name == "Deandre" or v.Name == "Urban" then
                                             repeat wait(_G.Fast_Delay)
-                                                AttackNoCoolDown()
+                                          
                                                    EquipTool(SelectWeapon)
                                                    AutoHaki()
                                                    toTarget(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
@@ -4558,7 +4507,7 @@ if Third_Sea then
                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                             if string.find(v.Name , "Soul Reaper") then
                                 repeat wait(_G.Fast_Delay)
-                                    AttackNoCoolDown()
+                        
                                     AutoHaki()
                                     EquipTool(SelectWeapon)
                                     v.HumanoidRootPart.Size = Vector3.new(50,50,50)
@@ -4632,7 +4581,7 @@ if Third_Sea then
                                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                                            if v.Name == ("Longma" or v.Name == "Longma") and v.Humanoid.Health > 0 and v:IsA("Model") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") then
                                             repeat wait(_G.Fast_Delay)
-                                                AttackNoCoolDown()
+                                        
                                                    AutoHaki()
                                                    if not game.Players.LocalPlayer.Character:FindFirstChild(SelectWeapon) then
                                                        wait()
@@ -4732,7 +4681,7 @@ end
                             if v.Name == "Dough King" then
                                 if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
                                     repeat wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
+                                    
                                         AutoHaki()
                                         EquipTool(SelectWeapon)
                                         v.HumanoidRootPart.CanCollide = false
@@ -4856,82 +4805,63 @@ end
 --Setting
 local SettingFarm = Tabs.Setting:AddSection("Farming")
 
-local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack",Description = "", Default = true })
+local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack", Description = "", Default = true })
 ToggleFast:OnChanged(function(Value)
     _G.FastNe = Value
 end)
 Options.ToggleFast:SetValue(true)
 
-local CameraShaker = require(game.ReplicatedStorage.Util.CameraShaker)
-CombatFrameworkR = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
-y = debug.getupvalues(CombatFrameworkR)[2]
+-- Hàm tấn công nhanh (Fast Attack)
 spawn(function()
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if _G.FastNe then
-            if typeof(y) == "table" then
-                pcall(function()
-                    CameraShaker:Stop()
-                    y.activeController.timeToNextAttack = (math.huge^math.huge^math.huge)
-                    y.activeController.timeToNextAttack = 0
-                    y.activeController.hitboxMagnitude = 60
-                    y.activeController.active = false
-                    y.activeController.timeToNextBlock = 0
-                    y.activeController.focusStart = 1655503339.0980349
-                    y.activeController.increment = 1
-                    y.activeController.blocking = false
-                    y.activeController.attacking = false
-                    y.activeController.humanoid.AutoRotate = true
-                end)
+    while wait(0.2) do
+        pcall(function()
+            if _G.FastNe then
+                -- Tấn công nhanh liên tục khi FastNe bật
+                local mouse = game.Players.LocalPlayer:GetMouse()
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        -- Nhắm vào Cake Prince hoặc mob khác
+                        mouse.Target = v
+                        mouse:Click()
+                    end
+                end
             end
-        end
-    end)
-end) 
- 
-    local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
-   ToggleBringMob:OnChanged(function(Value)
-        _G.BringMob = Value
-    end)
-    Options.ToggleBringMob:SetValue(true)
-    spawn(function()
-        while wait() do
-            pcall(function()
-                for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                    if _G.BringMob and bringmob then
-                        if v.Name == MonFarm and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                            if v.Name == "Factory Staff" then
-                                if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
-                                    v.Head.CanCollide = false
-                                    v.HumanoidRootPart.CanCollide = false
-                                    v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                    v.HumanoidRootPart.CFrame = FarmPos
-                                    if v.Humanoid:FindFirstChild("Animator") then
-                                        v.Humanoid.Animator:Destroy()
-                                    end
-                                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                                end
-                            elseif v.Name == MonFarm then
-                                if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 337.5 then
-                                    v.HumanoidRootPart.CFrame = FarmPos
-                                    v.HumanoidRootPart.Size = Vector3.new(60,60,60)
-                                    v.HumanoidRootPart.Transparency = 1
-                                    v.Humanoid.JumpPower = 0
-                                    v.Humanoid.WalkSpeed = 0
-                                    if v.Humanoid:FindFirstChild("Animator") then
-                                        v.Humanoid.Animator:Destroy()
-                                    end
-                                    v.HumanoidRootPart.CanCollide = false
-                                    v.Head.CanCollide = false
-                                    v.Humanoid:ChangeState(11)
-                                    v.Humanoid:ChangeState(14)
-                                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                                end
+        end)
+    end
+end)
+
+-- Toggle kéo mob lại gần (Bring Mob)
+local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
+ToggleBringMob:OnChanged(function(Value)
+    _G.BringMob = Value
+end)
+Options.ToggleBringMob:SetValue(true)
+
+-- Hàm kéo mob lại gần
+spawn(function()
+    while wait(0.2) do
+        pcall(function()
+            if _G.BringMob then
+                -- Lặp qua tất cả các mob trong game
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        if v.Name == "Factory Staff" or v.Name == MonFarm then
+                            -- Kiểm tra khoảng cách và kéo mob lại gần vị trí farm
+                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
+                                v.Head.CanCollide = false
+                                v.HumanoidRootPart.CanCollide = false
+                                v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
+                                v.HumanoidRootPart.CFrame = FarmPos
+                                -- Cập nhật SimulationRadius
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
                             end
                         end
-                                end
-                            end
-                        end)
+                    end
                 end
-            end)
+            end
+        end)
+    end
+end)
 
          
     local ToggleBypassTP = Tabs.Setting:AddToggle("ToggleBypassTP", {Title = "Enabled Bypass Tp",Description = "", Default = false })
@@ -5063,9 +4993,9 @@ SliderPosX:SetValue(0)
 local SliderPosY = Tabs.Setting:AddSlider("SliderPosY", {
     Title = "Pos Y",
     Description = "",
-    Default = 30,
-    Min = -60,
-    Max = 60,
+    Default = 15,
+    Min = -30,
+    Max = 30,
     Rounding = 1,
     Callback = function(Value)
       posY = Value
@@ -5534,7 +5464,7 @@ while wait() do
     pcall(function()
         if _G.FastAttack then
             repeat wait(_G.DelayAttackPlayer)
-               AttackNoCoolDown()
+            
             until not _G.FastAttack
         end
     end)
@@ -6558,7 +6488,7 @@ spawn(function()
                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                             if v.Name == "Order" then
                                 repeat wait(_G.Fast_Delay)
-                                    AttackNoCoolDown()
+                                
                                     AutoHaki()
                                     EquipTool(SelectWeapon)
                                     Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
