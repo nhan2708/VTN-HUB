@@ -3114,11 +3114,6 @@ local ToggleBone = Tabs.Main:AddToggle("ToggleBone", {
     Default = false })
 ToggleBone:OnChanged(function(Value)
     _G.AutoBone = Value
-    if Value == false then
-        wait()
-        Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-        wait()
-    end
 end)
 Options.ToggleBone:SetValue(false)
 local BoneCFrame = CFrame.new(-9515.75, 174.8521728515625, 6079.40625)
