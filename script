@@ -2362,6 +2362,19 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
+function GetEquippedTool()
+    local v227 = v21.Character;
+    if not v227 then
+        return nil;
+    end
+    for v475, v476 in ipairs(v227:GetChildren()) do
+        if v476:IsA("Tool") then
+            return v476;
+        end
+    end
+    return nil;
+end
+
 function AttackNoCoolDown()
     local v228 = {};
     local v229 = game:GetService("Workspace").Enemies:GetChildren();
