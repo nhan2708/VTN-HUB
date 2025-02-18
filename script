@@ -3178,16 +3178,7 @@ local StatusBone = Tabs.Main:AddParagraph({
     
     local BoneCFrame = CFrame.new(-9515.75, 174.8521728515625, 6079.40625)
     local BoneCFrame2 = CFrame.new(-9359.453125, 141.32679748535156, 5446.81982421875)
-    
-    -- Hàm để di chuyển đến vị trí mục tiêu
-    function toTarget(targetCFrame)
-        local player = game:GetService("Players").LocalPlayer
-        local character = player.Character
-        if character and character:FindFirstChild("HumanoidRootPart") then
-            character.HumanoidRootPart.CFrame = targetCFrame
-        end
-    end
-    
+
     -- Hàm auto farm Bone
     spawn(function()
         while wait() do
@@ -3210,9 +3201,8 @@ local StatusBone = Tabs.Main:AddParagraph({
                                     if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Demonic Soul") then
                                         repeat wait(_G.Fast_Delay)
                                             AutoHaki()
-                                            bringmob = true
                                             EquipTool(SelectWeapon)
-                                            Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX, posY, posZ))
+                                            Tween(v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 0))
                                             v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
                                             v.HumanoidRootPart.Transparency = 1
                                             v.Humanoid.JumpPower = 0
@@ -3223,7 +3213,6 @@ local StatusBone = Tabs.Main:AddParagraph({
                                         until not _G.AutoBone or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
                                     else
                                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                                        bringmob = false
                                     end
                                 end
                             end
