@@ -3178,7 +3178,24 @@ local StatusBone = Tabs.Main:AddParagraph({
     
     local BoneCFrame = CFrame.new(-9515.75, 174.8521728515625, 6079.40625)
     local BoneCFrame2 = CFrame.new(-9359.453125, 141.32679748535156, 5446.81982421875)
+    
 
+    -- Hàm để tấn công mục tiêu
+    function AttackTarget(target)
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame
+            -- Sử dụng công cụ hiện tại để tấn công
+            local tool = character:FindFirstChildOfClass("Tool")
+            if tool then
+                tool:Activate()
+                wait(0.1)
+                tool:Deactivate()
+            end
+        end
+    end
+    
     -- Hàm auto farm Bone
     spawn(function()
         while wait() do
@@ -3210,6 +3227,7 @@ local StatusBone = Tabs.Main:AddParagraph({
                                             v.HumanoidRootPart.CanCollide = false
                                             FarmPos = v.HumanoidRootPart.CFrame
                                             MonFarm = v.Name
+                                            AttackTarget(v)
                                         until not _G.AutoBone or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
                                     else
                                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
