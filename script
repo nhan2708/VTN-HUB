@@ -3179,7 +3179,33 @@ local StatusBone = Tabs.Main:AddParagraph({
     local BoneCFrame = CFrame.new(-9515.75, 174.8521728515625, 6079.40625)
     local BoneCFrame2 = CFrame.new(-9359.453125, 141.32679748535156, 5446.81982421875)
     
-
+    -- Hàm để di chuyển đến vị trí mục tiêu
+    function toTarget(targetCFrame)
+        local player = game:GetService("Players").LocalPlayer
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = targetCFrame
+        end
+    end
+    
+    
+    function EquipTool(toolName)
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local tool = character:FindFirstChild(toolName)
+        if tool then
+            character.Humanoid:EquipTool(tool)
+        end
+    end
+    
+    function Tween(targetCFrame)
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = targetCFrame
+        end
+    end
+    
     -- Hàm để tấn công mục tiêu
     function AttackTarget(target)
         local player = game.Players.LocalPlayer
@@ -3240,6 +3266,7 @@ local StatusBone = Tabs.Main:AddParagraph({
             end
         end
     end)
+    
     
 
 local ToggleRandomBone = Tabs.Main:AddToggle("ToggleRandomBone", {Title = "Auto Random Bone",Description = "", Default = false })
