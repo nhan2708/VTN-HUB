@@ -4974,7 +4974,6 @@ ToggleRemoveNotify:OnChanged(function(Value)
     v85:OnChanged(function(v273)
         _G.AutoT = v273;
     end)
-    v17.ToggleAutoT:SetValue(false)
     spawn(function()
         while wait() do
             pcall(function()
