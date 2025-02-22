@@ -4979,9 +4979,9 @@ ToggleRemoveNotify:OnChanged(function(Value)
             while wait() do
                 pcall(function()
                     if _G.V3 then
-                        game:GetService("UserInputService"):SendKeyEvent(true, "T", false, game)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "T", false, game)
                         wait(0.1)
-                        game:GetService("UserInputService"):SendKeyEvent(false, "T", false, game)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(false, "T", false, game)
                     end
                 end)
             end
