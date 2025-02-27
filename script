@@ -1,4 +1,4 @@
---VTN v21
+--VTN v22
 
 local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
@@ -4975,6 +4975,24 @@ ToggleRemoveNotify:OnChanged(function(Value)
             end
         end
     end)
+
+    local ToggleAutoObservationHaki = Tabs.Setting:AddToggle("ToggleAutoObservationHaki", {Title = "Auto turn on Observation Haki", Description = "", Default = false })
+ToggleAutoObservationHaki:OnChanged(function(Value)
+    _G.ObservationHaki = Value
+end)
+
+spawn(function()
+    while true do
+        pcall(function()
+            if _G.ObservationHaki then
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                wait(0.1)
+                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
+            end
+        end)
+    end
+end)
+
 
     local ToggleAutoV3 = Tabs.Setting:AddToggle("ToggleAutoV3", {Title = " Auto turn on V3",Description = "", Default = false })
     ToggleAutoV3:OnChanged(function(Value)
