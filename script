@@ -3837,6 +3837,91 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
+local v516 = Tabs.Sea:AddToggle("AutoComeTiki", {
+    Title = "Lái Thuyền Về Đảo Tiki",
+    Description = "",
+    Default = false
+});
+v516:OnChanged(function(v617)
+    _G.AutoComeTiki = v617;
+end);
+v505.RenderStepped:Connect(function()
+    if not _G.AutoComeTiki then
+        return;
+    end
+    local v618 = v504.LocalPlayer;
+    local v619 = v618.Character;
+    if (not v619 or not v619:FindFirstChild("Humanoid")) then
+        return;
+    end
+    local v620 = v619.Humanoid;
+    local v621 = nil;
+    for v714, v715 in pairs(v507.Boats:GetChildren()) do
+        local v716 = v715:FindFirstChild("VehicleSeat");
+        if (v716 and (v716.Occupant == v620)) then
+            v621 = v716;
+            break;
+        end
+    end
+    if v621 then
+        v621.MaxSpeed = v508;
+        local v776 = CFrame.new(- 16217.7568359375, 9.126761436462402, 446.06536865234375);
+        local v777 = v621.Position;
+        local v778 = v776.Position;
+        local v779 = (v778 - v777).unit;
+        local v780 = v779 * v621.MaxSpeed * v505.RenderStepped:Wait() ;
+        v621.CFrame = v621.CFrame + v780 ;
+        local v782 = CFrame.new(v777, v778);
+        v621.CFrame = CFrame.new(v621.Position, v778);
+        if ((v621.Position - v778).magnitude < 120) then
+            _G.AutoComeTiki = false;
+            v506:SendKeyEvent(false, "W", false, game);
+        end
+    end
+end);
+local v517 = Tabs.Sea:AddToggle("AutoComeHydra", {
+    Title = "Lái Thuyền Về Đảo Hydra",
+    Description = "",
+    Default = false
+});
+v517:OnChanged(function(v622)
+    _G.AutoComeHydra = v622;
+end);
+v505.RenderStepped:Connect(function()
+    if not _G.AutoComeHydra then
+        return;
+    end
+    local v623 = v504.LocalPlayer;
+    local v624 = v623.Character;
+    if (not v624 or not v624:FindFirstChild("Humanoid")) then
+        return;
+    end
+    local v625 = v624.Humanoid;
+    local v626 = nil;
+    for v717, v718 in pairs(v507.Boats:GetChildren()) do
+        local v719 = v718:FindFirstChild("VehicleSeat");
+        if (v719 and (v719.Occupant == v625)) then
+            v626 = v719;
+            break;
+        end
+    end
+    if v626 then
+        v626.MaxSpeed = v508;
+        local v784 = CFrame.new(5193.9375, - 0.04690289497375488, 1631.578369140625);
+        local v785 = v626.Position;
+        local v786 = v784.Position;
+        local v787 = (v786 - v785).unit;
+        local v788 = v787 * v626.MaxSpeed * v505.RenderStepped:Wait() ;
+        v626.CFrame = v626.CFrame + v788 ;
+        local v790 = CFrame.new(v785, v786);
+        v626.CFrame = CFrame.new(v626.Position, v786);
+        if ((v626.Position - v786).magnitude < 120) then
+            _G.AutoComeHydra = false;
+            v506:SendKeyEvent(false, "W", false, game);
+        end
+    end
+end);
+
 
 
     local ToggleTerrorshark = Tabs.Sea:AddToggle("ToggleTerrorshark", {Title = " Kill Terrorshark 20%",Description = "", Default = false })
@@ -4975,23 +5060,6 @@ ToggleRemoveNotify:OnChanged(function(Value)
             end
         end
     end)
-
-    local ToggleAutoObservationHaki = Tabs.Setting:AddToggle("ToggleAutoObservationHaki", {Title = "Auto turn on Observation Haki", Description = "", Default = false })
-ToggleAutoObservationHaki:OnChanged(function(Value)
-    _G.ObservationHaki = Value
-end)
-
-spawn(function()
-    while true do
-        pcall(function()
-            if _G.ObservationHaki then
-                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                wait(0.1)
-                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
-            end
-        end)
-    end
-end)
 
 
     local ToggleAutoV3 = Tabs.Setting:AddToggle("ToggleAutoV3", {Title = " Auto turn on V3",Description = "", Default = false })
