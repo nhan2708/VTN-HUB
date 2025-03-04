@@ -5835,7 +5835,7 @@ Tabs.Fruit:AddButton({
     Description = "",
     Callback = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShopAndealer.Visible = true
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.Shop.Visible = true
     end
 })
 
