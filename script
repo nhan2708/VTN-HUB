@@ -2547,11 +2547,11 @@ local listfastattack = {'Slow','Normal','Super'}
     DropdownDelayAttack:OnChanged(function(Value)
     _G.FastAttack = Value
 	if _G.FastAttack == "Slow" then
-		_G.Fast_Delay = 0.15
+		_G.Fast_Delay = 0.5
 	elseif _G.FastAttack == "Normal" then
-		_G.Fast_Delay = 0.125
+		_G.Fast_Delay = 0.4
 	elseif _G.FastAttack == "Super" then
-		_G.Fast_Delay = 0.1
+		_G.Fast_Delay = 0.3
 	 end
  end)
 
