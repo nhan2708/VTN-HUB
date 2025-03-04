@@ -4836,6 +4836,7 @@ end
 --Setting
 local SettingFarm = Tabs.Setting:AddSection("Farming")
 
+-- Thêm toggle cho Fast Attack trong phần cài đặt
 local ToggleFast = Tabs.Setting:AddToggle("ToggleFast", {Title = "Enabled Fast Attack", Description = "", Default = true })
 ToggleFast:OnChanged(function(Value)
     _G.FastNe = Value
@@ -4851,8 +4852,8 @@ spawn(function()
                 local mouse = game.Players.LocalPlayer:GetMouse()
                 for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                     if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                        -- Nhắm vào Cake Prince hoặc mob khác
-                        mouse.Target = v
+                        -- Nhắm mục tiêu và tấn công
+                        mouse.Target = v:FindFirstChild("HumanoidRootPart")
                         mouse:Click()
                     end
                 end
@@ -4860,6 +4861,7 @@ spawn(function()
         end)
     end
 end)
+
 
 -- Toggle kéo mob lại gần (Bring Mob)
 local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
