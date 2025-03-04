@@ -5831,12 +5831,12 @@ end)
 
 
 Tabs.Fruit:AddButton({
-	Title = "Devil Shop Menu",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
-	end
+    Title = "Devil Shop Menu",
+    Description = "",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShopAndealer.Visible = true
+    end
 })
 
 
