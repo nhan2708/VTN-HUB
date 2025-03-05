@@ -6970,7 +6970,7 @@ Tabs.Misc:AddButton({
 	Description = "",
 	Callback = function()
 		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitList.Visible = true
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShopMobileBugFix.Visible = true
 	end
 })
 
