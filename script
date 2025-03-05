@@ -5830,16 +5830,6 @@ DropdownFruit:OnChanged(function(Value)
 end)
 
 
-Tabs.Fruit:AddButton({
-    Title = "Devil Shop Menu",
-    Description = "",
-    Callback = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.SalesGui.Visible = true
-    end
-})
-
-
 local ToggleFruit = Tabs.Fruit:AddToggle("ToggleFruit", {Title = "Auto Buy Fruit Sniper",Description = "", Default = false })
 ToggleFruit:OnChanged(function(Value)
     _G.AutoBuyFruitSniper = Value
@@ -6980,7 +6970,7 @@ Tabs.Misc:AddButton({
 	Description = "",
 	Callback = function()
 		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitList.Visible = true
 	end
 })
 
