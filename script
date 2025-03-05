@@ -2522,7 +2522,7 @@ end
 --Create Tabs
 local Farming = Tabs.Main:AddSection("Farming")
 
- _G.Fast_Delay = 0.175
+ _G.Fast_Delay = 1e-9
 
     local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
         Title = "Weapon",
