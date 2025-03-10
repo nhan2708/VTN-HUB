@@ -1,5 +1,4 @@
 --VTN v22
-
 local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
 
@@ -7,12 +6,19 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MyButtonGui"
 screenGui.Parent = gui
 
+-- 🎨 Tạo nút với bo góc tròn
 local button = Instance.new("TextButton") -- Use TextButton instead of ImageButton
 button.Name = "MyButton"
 button.Font = Enum.Font.SourceSansBold
 button.Size = UDim2.new(0, 100, 0, 50) -- Set size
 button.Position = UDim2.new(0, 10, 0.5, -25) -- Set position to the left with an X offset of 10 pixel
-button.BackgroundColor3 = Color3.fromRGB(255,255,255)
+button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+button.Text = "Click Me"
+button.Parent = screenGui
+
+-- ✨ Thêm góc bo tròn vào nút
+local buttonCorner = Instance.new("UICorner", button)
+buttonCorner.CornerRadius = UDim.new(0, 10) -- Bo tròn 10 pixel
 
 local function onClick()
     toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
@@ -21,6 +27,7 @@ end
 button.MouseButton1Click:Connect(onClick)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
+-- 🎨 Thêm bo tròn vào cửa sổ chính (Fluent)
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
@@ -33,6 +40,12 @@ local Window = Fluent:CreateWindow({
     Theme = "Black",
     MinimizeKey = Enum.KeyCode.End
 })
+
+-- 📌 Làm mềm góc của toàn bộ cửa sổ
+Window.Container.ClipsDescendants = true -- Để bo góc hoạt động tốt
+local windowCorner = Instance.new("UICorner", Window.Container)
+windowCorner.CornerRadius = UDim.new(0, 12) -- Bo tròn 12 pixel
+
 local Tabs = {
     Main = Window:AddTab({ Title = "Main Farm", Icon = "home" }),
     Sea = Window:AddTab({ Title = "Sea Event(BETA)", Icon = "anchor" }),
@@ -45,11 +58,11 @@ local Tabs = {
     Raid = Window:AddTab({ Title = "Dungeon", Icon = "swords" }),
     Race = Window:AddTab({ Title = "Race Trial V4", Icon = "chevrons-right" }),
     Shop = Window:AddTab({ Title = "Shop", Icon = "shopping-cart" }),
-	Misc = Window:AddTab({ Title = "Miscellaneous", Icon = "list-plus" }),
+    Misc = Window:AddTab({ Title = "Miscellaneous", Icon = "list-plus" }),
     Hop = Window:AddTab({ Title = "Hop Server", Icon = "wifi" }),
 }
 local Options = Fluent.Options
-do
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 --// Place Id Check
 local id = game.PlaceId
@@ -2378,12 +2391,6 @@ end
 ------AttackNoCD  
 
 
---// AUTO CLICK
-function AutoClick()
-    game:GetService('VirtualUser'):CaptureController()
-    game:GetService('VirtualUser'):Button1Down(Vector2.new(1280, 672))
-end
-
 --Attack Mastery
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -3253,7 +3260,6 @@ spawn(function()
 							for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do 
 								if v.Name == "Cake Prince" then
                                     repeat wait(_G.Fast_Delay)
-                                        AutoClick()
 										AutoHaki()
 										EquipTool(SelectWeapon)
 										v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
