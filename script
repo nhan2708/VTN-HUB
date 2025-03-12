@@ -1,4 +1,4 @@
---VTN v22
+--VTN v23
 
 local player = game.Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui") -- Get the player's PlayerGui
@@ -716,8 +716,8 @@ elseif Lv == 2550 or Lv <= 2574 or _G.SelectMonster == "Serpent Hunter [Lv. 2550
     NameQuest = "TikiQuest3"
     QuestLv = 1
     NameMon = "Serpent Hunter"
-    CFrameQ = CFrame.new(-16665.1914, 104.596405, 1579.69434, 0.951068401, -0, -0.308980465, 0, 1, -0, 0.308980465, 0, 0.951068401)
-    CFrameMon = CFrame.new(-16654.7754, 105.286232, 1579.67444, 0.999096751, 4.45934489e-08, 0.0424928814, -4.38822667e-08, 1, -1.76692847e-08, -0.0424928814, 1.57886415e-08, 0.999096751)
+    CFrameQuest = CFrame.new(- 16665.462890625, 105.3105697631836, 1577.8289794921875)
+	CFrameMon = CFrame.new(- 16959.2734375, 110.61740112304688, 1669.6007080078125)
 elseif Lv >= 2575 or _G.SelectMonster == "Skull Slayer [Lv. 2575]" then
     Ms = "Skull Slayer"
     NameQuest = "TikiQuest3"
@@ -4928,7 +4928,33 @@ ToggleRemoveNotify:OnChanged(function(Value)
         end
     end)
 
+    local ToggleAutoOb = Tabs.Setting:AddToggle("ToggleAutoOb", {Title = " Auto turn on Obversation",Description = "", Default = false })
+    ToggleAutoOb:OnChanged(function(Value)
+        _G.Observation = Value
+        end)
+    spawn(function()
+        while wait() do
+            if _G.Observation then
+                if not game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui:FindFirstChild("ImageLabel") then
+                    game:GetService("VirtualUser"):SetKeyDown("0x65")
+                    wait(2)
+                    game:GetService("VirtualUser"):SetKeyUp("0x65")
+                end
+            end
+        end
+    end)
 
+    local ToggleAutoV3 = Tabs.Setting:AddToggle("ToggleAutoV3", {Title = " Auto turn on V3",Description = "", Default = false })
+    ToggleAutoV3:OnChanged(function(Value)
+        _G.V3 = Value
+        end)
+    spawn(function()
+        while wait() do
+            if _G.V3 then
+                game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("ActivateAbility")
+            end
+        end
+    end)
 
     local ToggleAutoV4 = Tabs.Setting:AddToggle("ToggleAutoV4", {Title = " Auto turn on V4",Description = "", Default = false })
     ToggleAutoV4:OnChanged(function(Value)
