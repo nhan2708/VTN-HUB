@@ -2370,8 +2370,8 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
 function Click()
-    game:GetService("VirtualUser"):CaptureController()
-    game:GetService("VirtualUser"):ClickButton1(Vector2.new(0,0))
+    --game:GetService("VirtualUser"):CaptureController()
+    --game:GetService("VirtualUser"):ClickButton1(Vector2.new(0,0))
 end
 
 --Attack Mastery
@@ -2476,73 +2476,6 @@ function to(p)
 		end)
 	end
 
- --[[   local Players = game:GetService("Players")
-local VirtualInputManager = game:GetService("VirtualInputManager")
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
-
--- Cấu hình
-local HITBOX_RADIUS = 35
-local CLICK_INTERVAL = 0.01 -- thời gian giữa 2 lần click
-local UPDATE_INTERVAL = 0.2 -- thời gian giữa mỗi lần cập nhật hitbox
-
--- Tăng hitbox
-local function ExpandHitbox(target)
-    pcall(function()
-        if target and target:FindFirstChild("HumanoidRootPart") then
-            if not target.HumanoidRootPart:FindFirstChild("OriginalSize") then
-                local originalSize = Instance.new("Vector3Value")
-                originalSize.Name = "OriginalSize"
-                originalSize.Value = target.HumanoidRootPart.Size
-                originalSize.Parent = target.HumanoidRootPart
-            end
-
-            target.HumanoidRootPart.Size = Vector3.new(HITBOX_RADIUS, HITBOX_RADIUS, HITBOX_RADIUS)
-            target.HumanoidRootPart.Transparency = 0.9
-            target.HumanoidRootPart.CanCollide = false
-        end
-    end)
-end
-
--- Reset hitbox (không dùng ở đây, vì bạn muốn tăng hitbox mọi lúc)
--- Nhưng vẫn giữ lại để dùng nếu cần sau này
-local function ResetHitbox(target)
-    pcall(function()
-        if target and target:FindFirstChild("HumanoidRootPart") and target.HumanoidRootPart:FindFirstChild("OriginalSize") then
-            target.HumanoidRootPart.Size = target.HumanoidRootPart.OriginalSize.Value
-            target.HumanoidRootPart.Transparency = 1
-        end
-    end)
-end
-
--- Luồng auto click
-task.spawn(function()
-    while true do
-        -- Click chuột trái
-        VirtualInputManager:SendMouseButtonEvent(500, 500, 0, true, game, 1)
-        task.defer(function()
-            VirtualInputManager:SendMouseButtonEvent(500, 500, 0, false, game, 1)
-        end)
-    end
-end)
-
--- Luồng mở rộng hitbox quái quanh người
-task.spawn(function()
-    while true do
-        for _, enemy in pairs(workspace.Enemies:GetChildren()) do
-            if enemy:FindFirstChild("HumanoidRootPart") and enemy:FindFirstChild("Humanoid") then
-                local distance = (HumanoidRootPart.Position - enemy.HumanoidRootPart.Position).Magnitude
-                if distance <= HITBOX_RADIUS * 2 and enemy.Humanoid.Health > 0 then
-                    ExpandHitbox(enemy)
-                end
-            end
-        end
-        task.wait(UPDATE_INTERVAL)
-    end
-end)
-
-]]
 
     
 -- Improved Blox Fruits Auto Farm Script
@@ -2656,6 +2589,41 @@ spawn(checkFarmStatus)
 
 -- Note: This script is for educational purposes only
 -- Always respect the game's terms of service
+
+_G.MaxAttackDistance = 500  -- Khoảng cách đánh (có thể điều chỉnh)
+
+-- Hàm tìm kiếm quái trong phạm vi xa hơn
+local function FindEnemyInExtendedRange(questName)
+    local player = game:GetService("Players").LocalPlayer
+    local character = player.Character
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    
+    if not humanoidRootPart then return nil end
+    
+    local closestEnemy = nil
+    local shortestDistance = _G.MaxAttackDistance
+    
+    for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+        if enemy:FindFirstChild("Humanoid") and 
+           enemy:FindFirstChild("HumanoidRootPart") and 
+           enemy.Humanoid.Health > 0 then
+            
+            -- Kiểm tra tên quái phù hợp với quest
+            local isQuestTarget = string.find(enemy.Name, questName) or enemy.Name == Ms
+            
+            if isQuestTarget then
+                local distance = (enemy.HumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
+                
+                if distance < shortestDistance then
+                    closestEnemy = enemy
+                    shortestDistance = distance
+                end
+            end
+        end
+    end
+    
+    return closestEnemy, shortestDistance
+end
 --------------------------------------------------------------------------------------------------------------------------------------------
 ---Close UI
 local ScreenGui = Instance.new("ScreenGui")
@@ -2773,26 +2741,42 @@ local Farming = Tabs.Main:AddSection("Farming")
           end
           elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
           for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-          if v.Name == Ms then
-          repeat wait(_G.Fast_Delay)
-          bringmob = true
-          AutoHaki()
-          EquipTool(SelectWeapon)
-          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
-          v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-          v.HumanoidRootPart.Transparency = 1
-          v.Humanoid.JumpPower = 0
-          v.Humanoid.WalkSpeed = 0
-          v.HumanoidRootPart.CanCollide = false
-          FarmPos = v.HumanoidRootPart.CFrame
-          MonFarm = v.Name
-          Click()
-          until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
-          bringmob = false
+    if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+        if v.Name == Ms then
+            -- Tìm quái trong phạm vi xa hơn
+            local extendedEnemy, distance = FindEnemyInExtendedRange(NameMon)
+            
+            if extendedEnemy then
+                repeat wait(_G.Fast_Delay)
+                    bringmob = true
+                    AutoHaki()
+                    EquipTool(SelectWeapon)
+                    
+                    -- Di chuyển đến quái ở khoảng cách xa hơn
+                    Tween(extendedEnemy.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                    
+                    -- Điều chỉnh thuộc tính quái
+                    extendedEnemy.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                    extendedEnemy.HumanoidRootPart.Transparency = 1
+                    extendedEnemy.Humanoid.JumpPower = 0
+                    extendedEnemy.Humanoid.WalkSpeed = 0
+                    extendedEnemy.HumanoidRootPart.CanCollide = false
+                    
+                    FarmPos = extendedEnemy.HumanoidRootPart.CFrame
+                    MonFarm = extendedEnemy.Name
+                    Click()
+                    
+                until not _G.AutoLevel or 
+                      not extendedEnemy.Parent or 
+                      extendedEnemy.Humanoid.Health <= 0 or 
+                      not game:GetService("Workspace").Enemies:FindFirstChild(extendedEnemy.Name) or 
+                      game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                
+                bringmob = false
+            end
         end   
-          end
-          end
+    end
+end
           for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
           if string.find(v.Name,NameMon) then
           if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude >= 10 then
