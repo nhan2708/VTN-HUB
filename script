@@ -2545,6 +2545,9 @@ end)
 ]]
 
     
+-- Improved Blox Fruits Auto Farm Script
+
+-- Decode function to handle obfuscated strings
 local function nHgshEJpoqgHTBEJZ(c)
     local tab = {}
     for i = 1, #c do
@@ -2555,9 +2558,10 @@ local function nHgshEJpoqgHTBEJZ(c)
     return table.concat(tab)
 end
 
--- Get game services (replace with actual service names)
+-- Get game services
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Find nearby targets function
 local function findNearbyTargets(player)
@@ -2592,6 +2596,14 @@ end
 
 -- Auto farm main loop
 local function startAutoFarm()
+    -- Find the combo remote
+    local comboRemote = ReplicatedStorage:FindFirstChild("combo")
+    
+    if not comboRemote then
+        warn("Không tìm thấy remote 'combo'. Script có thể không hoạt động.")
+        return
+    end
+
     spawn(function()
         while true do
             local player = Players.LocalPlayer
@@ -2605,16 +2617,12 @@ local function startAutoFarm()
                     local targets = findNearbyTargets(player)
                     
                     if #targets > 0 then
-                        -- Attempt to fire server with targets (replace with actual remote names)
-                        local netModule = game:GetService("ReplicatedStorage").Modules.Net
-                        local attackRemote1 = netModule:FindFirstChild("RemoteName1")
-                        local attackRemote2 = netModule:FindFirstChild("RemoteName2")
-                        
-                        if attackRemote1 and attackRemote2 then
-                            attackRemote1:FireServer(0.4)
-                            for _, target in ipairs(targets) do
-                                attackRemote2:FireServer(target[2], targets)
-                            end
+                        -- Fire the combo remote for each target
+                        for _, target in ipairs(targets) do
+                            -- Attempt to fire the combo remote
+                            pcall(function()
+                                comboRemote:FireServer(target[2], targets)
+                            end)
                         end
                     end
                 end
@@ -2625,14 +2633,30 @@ local function startAutoFarm()
     end)
 end
 
--- Configuration
+-- Global configuration
 _G.AutoFarmMasDevilFruit = true   -- Enable/disable auto farm
 _G.FastAttack = true              -- Enable/disable fast attack
 
 -- Start the auto farm
 startAutoFarm()
 
-Click()
+-- Additional safety checks and logging
+local function checkFarmStatus()
+    while true do
+        if _G.AutoFarmMasDevilFruit then
+            if not Players.LocalPlayer or not Players.LocalPlayer.Character then
+                _G.AutoFarmMasDevilFruit = false
+            end
+        end
+        wait(5)  -- Check every 5 seconds
+    end
+end
+
+-- Start status check
+spawn(checkFarmStatus)
+
+-- Note: This script is for educational purposes only
+-- Always respect the game's terms of service
 --------------------------------------------------------------------------------------------------------------------------------------------
 ---Close UI
 local ScreenGui = Instance.new("ScreenGui")
