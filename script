@@ -2370,8 +2370,8 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
 function Click()
-    game:GetService'VirtualUser':Button1Down(Vector2.new(0.9,0.9))
-    game:GetService'VirtualUser':Button1Up(Vector2.new(0.9,0.9))
+    game:GetService('VirtualUser'):CaptureController()
+    game:GetService('VirtualUser'):Button1Down(Vector2.new(1280, 672))
 end
 
 --Attack Mastery
