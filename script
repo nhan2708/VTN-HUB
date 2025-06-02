@@ -4213,8 +4213,8 @@ spawn(function()
     end
       end)
 
-      local v156 = v16.Sea:AddSection("Draco");
-local v157 = v16.Sea:AddToggle("ToggleBlazeEmber", {
+      local v156 = Tabs.Sea:AddSection("Draco");
+local v157 = Tabs.Sea:AddToggle("ToggleBlazeEmber", {
     Title = "Gets BlazeEmber",
     Description = "Auto gets blazeEmmber",
     Default = false
@@ -4231,7 +4231,7 @@ spawn(function()
         end
     end
 end);
-local v158 = v16.Sea:AddToggle("ToggleReceiveQuest", {
+local v158 = Tabs.Sea:AddToggle("ToggleReceiveQuest", {
     Title = "Gets quest auto red fire",
     Description = "Turn it on once to receive the red fire mission",
     Default = false
@@ -4261,7 +4261,7 @@ v158:OnChanged(function(v388)
         end);
     end
 end);
-local v159 = v16.Sea:AddParagraph({
+local v159 = Tabs.Sea:AddParagraph({
     Title = "",
     Content = "Check status BlazeEmber question (red fire)",
 });
@@ -4290,7 +4290,7 @@ spawn(function()
         end
     end);
 end);
-local v160 = v16.Sea:AddToggle("ToggleHydraTree", {
+local v160 = Tabs.Sea:AddToggle("ToggleHydraTree", {
     Title = "",
     Description = "Brake trees in hydra for done dojo quest",
     Default = false
@@ -4376,7 +4376,7 @@ v156:AddButton({
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(v395));
     end
 });
-local v164 = v16.Sea:AddToggle("ToggleCollectFireFlowers", {
+local v164 = Tabs.Sea:AddToggle("ToggleCollectFireFlowers", {
     Title = "Farm red follower",
     Description = "Auto gets red follower for upgrade draco race",
     Default = false
@@ -4407,7 +4407,7 @@ spawn(function()
         end
     end
 end);
-local v165 = v16.Sea:AddToggle("ToggleWhiteBelt", {
+local v165 = Tabs.Sea:AddToggle("ToggleWhiteBelt", {
     Title = "White Belt Plow",
     Description = "Auto get white dojo",
     Default = false
@@ -4436,11 +4436,11 @@ v165:OnChanged(function(v397)
         end);
     end
 end);
-local v166 = v16.Sea:AddParagraph({
+local v166 = Tabs.Sea:AddParagraph({
     Title = "Complete trials draco V4 (wait for leaves)",
     Content = "Done draco v4 trials"
 });
-local v167 = v16.Sea:AddToggle("ToggleTrialTeleport", {
+local v167 = Tabs.Sea:AddToggle("ToggleTrialTeleport", {
     Title = "",
     Description = "Teleport to draco race when defense done volcano|dịch chuyển đến cửa trials draco",
     Default = false
@@ -4458,8 +4458,8 @@ spawn(function()
         end
     end
 end);
-local v168 = v16.Sea:AddSection("volcano");
-local v169 = v16.Sea:AddParagraph({
+local v168 = Tabs.Sea:AddSection("volcano");
+local v169 = Tabs.Sea:AddParagraph({
     Title = "kiểm tra volcano trong sever hay không",
     Content = "check status volcano in sever or no"
 });
@@ -4474,7 +4474,7 @@ spawn(function()
         end
     end);
 end);
-local v170 = v16.Sea:AddToggle("ToggleTPVolcano", {
+local v170 = Tabs.Sea:AddToggle("ToggleTPVolcano", {
     Title = "",
     Description = "Teleport when volcano spawn in sever",
     Default = false
@@ -4503,7 +4503,7 @@ spawn(function()
         end
     end
 end);
-local v171 = v16.Sea:AddToggle("ToggleDefendVolcano", {
+local v171 = Tabs.Sea:AddToggle("ToggleDefendVolcano", {
     Title = "",
     Description = "Defense volcano island",
     Default = false
@@ -4511,7 +4511,7 @@ local v171 = v16.Sea:AddToggle("ToggleDefendVolcano", {
 v171:OnChanged(function(v401)
     _G.AutoDefendVolcano = v401;
 end);
-local v107 = v16.Sea:AddToggle("ToggleMelee", {
+local v107 = Tabs.Sea:AddToggle("ToggleMelee", {
     Title = "",
     Description = "Change to use melee",
     Default = false
@@ -4519,7 +4519,7 @@ local v107 = v16.Sea:AddToggle("ToggleMelee", {
 v107:OnChanged(function(v402)
     _G.UseMelee = v402;
 end);
-local v109 = v16.Sea:AddToggle("ToggleSword", {
+local v109 = Tabs.Sea:AddToggle("ToggleSword", {
     Title = "",
     Description = "Change to use sword",
     Default = false
@@ -4527,7 +4527,7 @@ local v109 = v16.Sea:AddToggle("ToggleSword", {
 v109:OnChanged(function(v403)
     _G.UseSword = v403;
 end);
-local v110 = v16.Sea:AddToggle("ToggleGun", {
+local v110 = Tabs.Sea:AddToggle("ToggleGun", {
     Title = "",
     Description = "Chang to use gun",
     Default = false
@@ -4637,7 +4637,7 @@ spawn(function()
         end
     end
 end);
-local v175 = v16.Sea:AddToggle("ToggleKillAura", {
+local v175 = Tabs.Sea:AddToggle("ToggleKillAura", {
     Title = "Farm golems aurora",
     Description = "Auto protect volcano",
     Default = false
@@ -4664,7 +4664,7 @@ spawn(function()
         end
     end
 end);
-local v176 = v16.Sea:AddToggle("ToggleCollectBone", {
+local v176 = Tabs.Sea:AddToggle("ToggleCollectBone", {
     Title = "Get bones",
     Description = "Auto gets bones when done volcano",
     Default = false
@@ -4683,7 +4683,7 @@ spawn(function()
         end
     end
 end);
-local v177 = v16.Sea:AddToggle("ToggleCollectEgg", {
+local v177 = Tabs.Sea:AddToggle("ToggleCollectEgg", {
     Title = "Gets eggs",
     Description = "Auto gets eggs when defense volcano done",
     Default = false
