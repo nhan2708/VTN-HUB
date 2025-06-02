@@ -4466,7 +4466,7 @@ local v169 = Tabs.Sea:AddParagraph({
 spawn(function()
     pcall(function()
         while wait() do
-            if ggame:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland") then
+            if game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland") then
                 v169:SetDesc("volcano island: ✅️");
             else
                 v169:SetDesc("volcano island: ❌️");
@@ -4482,6 +4482,9 @@ local v170 = Tabs.Sea:AddToggle("ToggleTPVolcano", {
 v170:OnChanged(function(v399)
     _G.TweenToPrehistoric = v399;
 end);
+
+local v17 = Fluent.Options;
+
 v17.ToggleTPVolcano:SetValue(false);
 spawn(function()
     local v400;
