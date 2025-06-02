@@ -2375,6 +2375,8 @@ function Click()
     game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
 end
 
+
+--[[
 function GetBladeHit()
     local CombatFrameworkLib = debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework))
     local CmrFwLib = CombatFrameworkLib[2]
@@ -2429,6 +2431,116 @@ spawn(function()
         end
     end
 end)
+
+]]
+
+function AttackNoCoolDown()
+    local v228 = {};
+    local v229 = game:GetService("Workspace").Enemies:GetChildren();
+    local v230 = FindEnemiesInRange(v228, v229);
+    if not v230 then
+        return;
+    end
+    local v231 = GetEquippedTool();
+    if not v231 then
+        return;
+    end
+    pcall(function()
+        local v477 = game:GetService("ReplicatedStorage");
+        local v478 = v477:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterAttack");
+        local v479 = v477:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterHit");
+        if (# v228 > 0) then
+            v478:FireServer(1e-9);
+            v479:FireServer(v230, v228);
+        else
+            task.wait(1e-9);
+        end
+    end);
+end
+Type = 1;
+spawn(function()
+    while wait() do
+        if (Type == 1) then
+            Pos = CFrame.new(0, 40, 0);
+        elseif (Type == 2) then
+            Pos = CFrame.new(- 40, 40, 0);
+        elseif (Type == 3) then
+            Pos = CFrame.new(40, 40, 0);
+        elseif (Type == 4) then
+            Pos = CFrame.new(0, 40, 40);
+        elseif (Type == 5) then
+            Pos = CFrame.new(0, 40, - 40);
+        end
+    end
+end);
+spawn(function()
+    while wait() do
+        Type = 1;
+        wait(0.2);
+        Type = 2;
+        wait(0.2);
+        Type = 3;
+        wait(0.2);
+        Type = 4;
+        wait(0.2);
+        Type = 5;
+        wait(0.2);
+    end
+end);
+function AutoHaki()
+    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso");
+    end
+end
+function to(v232)
+    repeat
+        wait(_G.Fast_Delay);
+        game.Players.LocalPlayer.Character.Humanoid:ChangeState(15);
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v232;
+        task.wait();
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v232;
+    until (v232.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 2000
+end
+function to(v233)
+    pcall(function()
+        if (((v233.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >= 2000) and not Auto_Raid and (game.Players.LocalPlayer.Character.Humanoid.Health > 0)) then
+            if (NameMon == "FishmanQuest") then
+                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame);
+                wait();
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(61163.8515625, 11.6796875, 1819.7841796875));
+            elseif (Mon == "God's Guard") then
+                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame);
+                wait();
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 4607.82275, 872.54248, - 1667.55688));
+            elseif (NameMon == "SkyExp1Quest") then
+                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame);
+                wait();
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 7894.6176757813, 5547.1416015625, - 380.29119873047));
+            elseif (NameMon == "ShipQuest1") then
+                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame);
+                wait();
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125));
+            elseif (NameMon == "ShipQuest2") then
+                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame);
+                wait();
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125));
+            elseif (NameMon == "FrostQuest") then
+                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame);
+                wait();
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 6508.5581054688, 89.034996032715, - 132.83953857422));
+            else
+                repeat
+                    wait(_G.Fast_Delay);
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v233;
+                    wait(0.05);
+                    game.Players.LocalPlayer.Character.Head:Destroy();
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v233;
+                until ((v233.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2500) and (game.Players.LocalPlayer.Character.Humanoid.Health > 0)
+                wait();
+            end
+        end
+    end);
+end
 
 
 --Attack Mastery
@@ -5329,7 +5441,6 @@ else
     end)
 end)
 
-local v168 = Tabs.Status:AddSection("volcano");
 local v169 = Tabs.Status:AddParagraph({
     Title = "PrehistoricIsland",
     Content = "Status: "
