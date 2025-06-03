@@ -30,7 +30,7 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(530, 350),
     Acrylic = true,
-    Theme = "Black",
+    Theme = "Pink",
     MinimizeKey = Enum.KeyCode.End
 })
 local Tabs = {
@@ -2373,86 +2373,88 @@ end
 -- ⚙️ Cấu hình mặc định
 
 -- 🔧 Hàm lấy vũ khí hiện tại
-function GetBladeHit()
-    local success, CombatFrameworkLib = pcall(function()
-        return debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework))
-    end)
-    if not success then return end
+_G.FastAttack = true
+_G.FastAttackDelay = 0.05
 
-    local CmrFwLib = CombatFrameworkLib[2]
-    if not CmrFwLib or not CmrFwLib.activeController then return end
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local plr = Players.LocalPlayer
 
-    local p13 = CmrFwLib.activeController
-    local weapon = p13.blades and p13.blades[1]
-    if not weapon then return end
-
-    while weapon and weapon.Parent ~= game.Players.LocalPlayer.Character do
-        weapon = weapon.Parent
-        if not weapon then return end
-    end
-    return weapon
-end
-
--- 🗡️ Hàm tấn công không chờ thời gian hồi
-function AttackHit()
-    local plr = game.Players.LocalPlayer
-
-    local success, CombatFrameworkLib = pcall(function()
+-- Lấy activeController mỗi lần để tránh lỗi mất reference
+function GetActiveController()
+    local success, data = pcall(function()
         return debug.getupvalues(require(plr.PlayerScripts.CombatFramework))
     end)
-    if not success then return end
+    if success and data and data[2] and data[2].activeController then
+        return data[2].activeController
+    end
+    return nil
+end
 
-    local CmrFwLib = CombatFrameworkLib[2]
-    if not CmrFwLib or not CmrFwLib.activeController then return end
+-- Lấy vũ khí hiện tại từ blades
+function GetCurrentBlade(controller)
+    if not controller or not controller.blades then return nil end
+    local blade = controller.blades[1]
+    if not blade then return nil end
 
-    local AC = CmrFwLib.activeController
+    while blade and blade.Parent ~= plr.Character do
+        blade = blade.Parent
+        if not blade then return nil end
+    end
+    return blade
+end
 
-    for i = 1, 1 do
-        local bladehit = {}
-        local riglib = require(game.ReplicatedStorage.CombatFramework.RigLib)
-        local rawhits = riglib.getBladeHits(plr.Character, {plr.Character.HumanoidRootPart}, 60)
+-- Đánh liên tục
+function AttackHit()
+    local controller = GetActiveController()
+    if not controller then return end
 
-        local seen = {}
-        for _, v in pairs(rawhits) do
-            if v and v.Parent and v.Parent:FindFirstChild("HumanoidRootPart") and not seen[v.Parent] then
-                table.insert(bladehit, v.Parent.HumanoidRootPart)
-                seen[v.Parent] = true
+    local RigLib = require(ReplicatedStorage.CombatFramework.RigLib)
+    local hits = RigLib.getBladeHits(plr.Character, {plr.Character.HumanoidRootPart}, 60)
+
+    local hitTargets = {}
+    local seen = {}
+
+    for _, v in pairs(hits) do
+        if v and v.Parent and v.Parent:FindFirstChild("HumanoidRootPart") and not seen[v.Parent] then
+            table.insert(hitTargets, v.Parent.HumanoidRootPart)
+            seen[v.Parent] = true
+        end
+    end
+
+    if #hitTargets > 0 then
+        pcall(function()
+            controller.timeToNextAttack = 0
+            controller.attacking = false
+            controller.blocking = false
+            controller.timeToNextBlock = 0
+            controller.increment = 3
+            controller.hitboxMagnitude = 120
+            controller.focusStart = 0
+
+            local blade = GetCurrentBlade(controller)
+            if blade then
+                ReplicatedStorage.RigControllerEvent:FireServer("weaponChange", tostring(blade))
+                ReplicatedStorage.RigControllerEvent:FireServer("hit", hitTargets, 1, "")
             end
-        end
-
-        if #bladehit > 0 then
-            pcall(function()
-                AC.timeToNextAttack = 0
-                AC.attacking = false
-                AC.blocking = false
-                AC.timeToNextBlock = 0
-                AC.increment = 3
-                AC.hitboxMagnitude = 120
-                AC.focusStart = 0
-
-                local blade = GetBladeHit()
-                if blade then
-                    game.ReplicatedStorage.RigControllerEvent:FireServer("weaponChange", tostring(blade))
-                    game.ReplicatedStorage.RigControllerEvent:FireServer("hit", bladehit, i, "")
-                end
-            end)
-        end
+        end)
     end
 end
 
--- 🔁 Luồng chạy chính tự động tấn công nếu bật FastAttack
+-- Luồng chính
 spawn(function()
     while task.wait(0.1) do
         if _G.FastAttack then
             pcall(function()
                 repeat
-                    task.wait(_G.FastAttackDelay or 0.05)
+                    task.wait(_G.FastAttackDelay)
                     AttackHit()
                 until not _G.FastAttack
             end)
         end
     end
 end)
+
 
 
 --Attack Mastery
