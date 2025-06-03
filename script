@@ -2384,62 +2384,74 @@ function Click()
     game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
 end
 
-_G.FastAttack = true
-_G.FastAttackDelay = 0.1
+local Setting = {
+  TimeToNextAttack = 0.175,--the best i think u can change it
+  NextAttack = 0,
+  Distance = 60,
+  AttackMobs = true,
+  AttackPlayers = true
+}
 
-function GetBladeHit()
-    local CombatFrameworkLib = debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework))
-    if not CombatFrameworkLib or not CombatFrameworkLib[2] then return nil end
+local BladeHits = {}
+local Player = game:GetService("Players").LocalPlayer
+local OnHit = false
 
-    local p13 = CombatFrameworkLib[2].activeController
-    if not p13 or not p13.blades or #p13.blades == 0 then return nil end
+local function GetBladeHitsMob()
+  BladeHits = {}
 
-    local weapon = p13.blades[1]
-    while weapon and weapon.Parent ~= game.Players.LocalPlayer.Character do
-        weapon = weapon.Parent
+  for _, Enemy in game:GetService("Workspace").Enemies:GetChildren() do
+    if Enemy:FindFirstChild("HumanoidRootPart") and Player:DistanceFromCharacter(Enemy:FindFirstChild("HumanoidRootPart").Position) < Setting.Distance then
+      table.insert(BladeHits, Enemy.HumanoidRootPart)
     end
-    return weapon
+  end
+
+  return BladeHits
 end
 
-function AttackHit()
-    local CombatFrameworkLib = debug.getupvalues(require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework))
-    local CmrFwLib = CombatFrameworkLib[2]
-    local plr = game.Players.LocalPlayer
-    for i = 1, 1 do
-        local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(plr.Character,{plr.Character.HumanoidRootPart},60)
-        local cac = {}
-        local hash = {}
-        for k, v in pairs(bladehit) do
-            if v.Parent:FindFirstChild("HumanoidRootPart") and not hash[v.Parent] then
-                table.insert(cac, v.Parent.HumanoidRootPart)
-                hash[v.Parent] = true
+local function GetBladeHitsPlayer()
+  BladeHits = {}
+
+  for _, Character in game:GetService("Workspace").Characters:GetChildren() do
+    if Character.Name ~= Player.Name and Character:FindFirstChild("HumanoidRootPart") and Player:DistanceFromCharacter(Character:FindFirstChild("HumanoidRootPart").Position) < Setting.Distance then
+      table.insert(BladeHits, Character.HumanoidRootPart)
+    end
+  end
+
+  return BladeHits
+end
+
+local function Attack()
+    spawn(function()
+        if not OnHit then
+          OnHit = true
+          game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterAttack"):FireServer(Setting.NextAttack)
+            if Setting.AttackMobs then
+                local MobHits = GetBladeHitsMob()
+                if #MobHits > 0 then
+                    for _, mob in MobHits do
+                        game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterHit"):FireServer(mob)
+                    end
+                end
             end
+            if Setting.AttackPlayers then
+                local PlayerHits = GetBladeHitsPlayer()
+                if #PlayerHits > 0 then
+                    for _, Plr in PlayerHits do
+                        game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterHit"):FireServer(Plr)
+                    end
+                end
+            end
+            task.wait(Setting.TimeToNextAttack)
+            OnHit = false
         end
-        bladehit = cac
-        if #bladehit > 0 then
-            pcall(function()
-                CmrFwLib.activeController.timeToNextAttack = 1
-                CmrFwLib.activeController.attacking = false
-                CmrFwLib.activeController.blocking = false
-                CmrFwLib.activeController.timeToNextBlock = 0
-                CmrFwLib.activeController.increment = 3
-                CmrFwLib.activeController.hitboxMagnitude = 120
-                CmrFwLib.activeController.focusStart = 0
-                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange",tostring(GetBladeHit()))
-                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladehit, i, "")
-            end)
-        end
-    end
+    end)
 end
+
 spawn(function()
-    while wait(.1) do
-        if _G.FastAttack then
-            pcall(function()
-                repeat task.wait(_G.FastAttackDelay)
-                    AttackHit()
-                until not _G.FastAttack
-            end)
-        end
+    while wait(0.05) do
+        pcall(function()
+            Attack()
+        end)
     end
 end)
 
