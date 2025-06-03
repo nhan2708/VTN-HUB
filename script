@@ -2677,9 +2677,10 @@ local Farming = Tabs.Main:AddSection("Farming")
         end
     end)
     Options.ToggleLevel:SetValue(false)
-spawn(function()
+
+            spawn(function()
         while wait() do
-            if _G.AutoLevel then
+            if _G.AutoFarm then
                 pcall(function()
                     local QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
                     CheckQuest()
@@ -2708,7 +2709,7 @@ spawn(function()
                                     if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
                                         if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) then
                                             repeat task.wait()
-                                                EquipTool(_G.SelectWeapon)
+                                                EquipTool(SelectWeapon)
                                                 
                                                 PosMon = v.HumanoidRootPart.CFrame
                                                 topos(v.HumanoidRootPart.CFrame * CFrame.new(0, 30, 0))
@@ -2720,7 +2721,7 @@ spawn(function()
                                                 StartBring = true
                                                 game:GetService'VirtualUser':CaptureController()
                                                 game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
-                                            until not _G.AutoLevel or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                                            until not _G.AutoFarm or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
                                         else
                                             StartBring = false
                                             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
@@ -2741,7 +2742,7 @@ spawn(function()
                                         if v.Name == Mon then
                                             if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) then
                                                 repeat task.wait()
-                                                    EquipTool(_G.SelectWeapon)
+                                                    EquipTool(SelectWeapon)
                                                      AutoHaki()                                            
                                                     PosMon = v.HumanoidRootPart.CFrame
                                                     topos(v.HumanoidRootPart.CFrame * CFrame.new(0, 30, 0))
@@ -2774,6 +2775,7 @@ spawn(function()
             end
         end
     end)
+  
                 
                       
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -4840,7 +4842,7 @@ if Second_Sea then
                                 if v.Name == "Core" and v.Humanoid.Health > 0 then
                                     repeat task.wait()
                                         AutoHaki()         
-                                        EquipTool(_G.SelectWeapon)           
+                                        EquipTool(SelectWeapon)           
                                         topos(CFrame.new(448.46756, 199.356781, -441.389252))                                  
                                         game:GetService("VirtualUser"):CaptureController()
                                         game:GetService("VirtualUser"):Button1Down(Vector2.new(1280,672))
@@ -5016,6 +5018,40 @@ spawn(function()
                         -- Nhắm mục tiêu và tấn công
                         mouse.Target = v:FindFirstChild("HumanoidRootPart")
                         mouse:Click()
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+
+-- Toggle kéo mob lại gần (Bring Mob)
+local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
+ToggleBringMob:OnChanged(function(Value)
+    _G.BringMob = Value
+end)
+Options.ToggleBringMob:SetValue(true)
+
+-- Hàm kéo mob lại gần
+spawn(function()
+    while wait(0.2) do
+        pcall(function()
+            if _G.BringMob then
+                -- Lặp qua tất cả các mob trong game
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        if v.Name == "Factory Staff" or v.Name == MonFarm then
+                            -- Kiểm tra khoảng cách và kéo mob lại gần vị trí farm
+                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
+                                v.Head.CanCollide = false
+                                v.HumanoidRootPart.CanCollide = false
+                                v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
+                                v.HumanoidRootPart.CFrame = FarmPos
+                                -- Cập nhật SimulationRadius
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                            end
+                        end
                     end
                 end
             end
@@ -6837,7 +6873,7 @@ spawn(function()
                 if v.Name and (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 then
                     if v.Humanoid.Health > 0 then
                         repeat wait()
-                            EquipTool(_G.SelectWeapon)
+                            EquipTool(SelectWeapon)
                             if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
                                 local args = { [1] = "Buso" }
                                 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
