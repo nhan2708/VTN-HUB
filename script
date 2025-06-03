@@ -2451,27 +2451,12 @@ local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
 				end
 				local AC = CbFw2.activeController
 				for i = 1, 1 do 
-					--[[ 
-                    local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
-                        plr.Character,
-                        {plr.Character.HumanoidRootPart},
-                        60
-                    )
-                    ]]
                     local cac = {}
                     for k,v in pairs(game.Workspace.Characters:GetChildren()) do
                         if v:FindFirstChild('Humanoid') and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 50 and tostring(v.Name) == AttackPlayers then
                             table.insert(cac, v.HumanoidRootPart)
                         end
                     end
-                    --[[
-                    for k, v in pairs(bladehit) do
-                        if v.Parent:FindFirstChild("HumanoidRootPart") and (v.Parent:FindFirstChild("HumanoidRootPart").Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 50 and v.Parent:FindFirstChild("Humanoid").Health > 0 and string.find(tostring(v.Parent),'Lv') and not hash[v.Parent] then
-                            table.insert(cac, v.Parent.HumanoidRootPart)
-                            hash[v.Parent] = true
-                        end
-                    end
-                    ]]
 					bladehit = cac
 					if #bladehit > 0 then
 						local u8 = debug.getupvalue(AC.attack, 5)
@@ -2509,21 +2494,6 @@ local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
 			else
 				local AC = CbFw2.activeController
 				for i = 1, 1 do
-					--[[
-                    local cac = {}
-                    for k,v in pairs(game.Workspace.Enemies:GetChildren()) do
-						if Select_List_Boss == 'Core' and Start_Kill_Boss and v:FindFirstChild("HumanoidRootPart") then
-							table.insert(cac, v.HumanoidRootPart)
-						elseif List.Quest and Quest == 'Evo Race V3' then
-							if v:FindFirstChild('Humanoid') and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 70 then
-								table.insert(cac, v.HumanoidRootPart)
-							end
-						else
-							if v:FindFirstChild('Humanoid') and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 70 and string.find(tostring(v.Humanoid.DisplayName),'Lv.') then
-								table.insert(cac, v.HumanoidRootPart)
-							end
-						end
-                    end]]
 					local L_88_ = game.Players.LocalPlayer
 					local bladehit = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
                         L_88_.Character, {
@@ -2563,41 +2533,19 @@ local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
 			end
 		end)
 	end
-	spawn(function()
-		while task.wait() do
-			pcall(function()
-				if not Start_Farm_Mastery_Fruit and not Start_Farm_Mastery_Gun or Start_Farm_Bone or Start_Kill_Boss and List.Boss or List.Quest and Stop_Fast_Attack then
-					if game.Players.LocalPlayer.Character.Stun.Value == 0 and Auto_Farm_Kaitun and not Stop_Attack then
-						AttackNoCD()
-						wait(0.17)
-						--[[
-						game:GetService("RunService").Stepped:wait()
-						if time_all_x >= 20 then
-							if not Farm_Attack then
-								wait(0.05)
-							end
-							if time_all_x >= 22 then
-								if not Farm_Attack then
-									wait(0.05)
-								end
-								time_all_x = 0
-							end
-						end
-						if FarmPlayer and game:GetService("Players").LocalPlayer.PlayerGui.Main.SafeZone.Visible == true then
-							wait(.2)
-						end
-						wait()
-						if Farm_Bone then
-							wati(.1)
-						end
-						]]
-					end
-				else
-					wait(.1)
+spawn(function()
+	while task.wait(0.15) do
+		pcall(function()
+			local char = game.Players.LocalPlayer.Character
+			if char and char:FindFirstChild("Stun") and char.Stun.Value == 0 then
+				if not Stop_Attack then
+					AttackNoCD()
 				end
-			end)
-		end
-	end)
+			end
+		end)
+	end
+end)
+
 
 
 
