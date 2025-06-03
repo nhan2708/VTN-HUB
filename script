@@ -4796,31 +4796,24 @@ ToggleFast:OnChanged(function(Value)
 end)
 Options.ToggleFast:SetValue(true)
 
-local CameraShaker = require(game.ReplicatedStorage.Util.CameraShaker)
-CombatFrameworkR = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
-y = debug.getupvalues(CombatFrameworkR)[2]
 spawn(function()
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if _G.FastNe then
-            if typeof(y) == "table" then
-                pcall(function()
-                    CameraShaker:Stop()
-                    y.activeController.timeToNextAttack = (math.huge^math.huge^math.huge)
-                    y.activeController.timeToNextAttack = 0
-                    y.activeController.hitboxMagnitude = 60
-                    y.activeController.active = false
-                    y.activeController.timeToNextBlock = 0
-                    y.activeController.focusStart = 1655503339.0980349
-                    y.activeController.increment = 1
-                    y.activeController.blocking = false
-                    y.activeController.attacking = false
-                    y.activeController.humanoid.AutoRotate = true
-                end)
+    while wait(0.2) do
+        pcall(function()
+            if _G.FastNe then
+                -- Tấn công nhanh liên tục khi FastNe bật
+                local mouse = game.Players.LocalPlayer:GetMouse()
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        -- Nhắm mục tiêu và tấn công
+                        mouse.Target = v:FindFirstChild("HumanoidRootPart")
+                        mouse:Click()
+                    end
+                end
             end
-        end
-    end)
-end) 
- 
+        end)
+    end
+end)
+
     local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob",Description = "fix gom quái", Default = true })
    ToggleBringMob:OnChanged(function(Value)
         _G.BringMob = Value
