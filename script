@@ -2423,29 +2423,32 @@ end
 local function Attack()
     spawn(function()
         if not OnHit then
-          OnHit = true
-          game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterAttack"):FireServer(Setting.NextAttack)
+            OnHit = true
+
+            -- Luân phiên giữa các lần tấn công từ 0 đến 3 (giả sử có 4 bước combo)
+            Setting.NextAttack = (Setting.NextAttack + 1) % 4
+            game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterAttack"):FireServer(Setting.NextAttack)
+
             if Setting.AttackMobs then
                 local MobHits = GetBladeHitsMob()
-                if #MobHits > 0 then
-                    for _, mob in MobHits do
-                        game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterHit"):FireServer(mob)
-                    end
+                for _, mob in ipairs(MobHits) do
+                    game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterHit"):FireServer(mob)
                 end
             end
+
             if Setting.AttackPlayers then
                 local PlayerHits = GetBladeHitsPlayer()
-                if #PlayerHits > 0 then
-                    for _, Plr in PlayerHits do
-                        game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterHit"):FireServer(Plr)
-                    end
+                for _, Plr in ipairs(PlayerHits) do
+                    game:GetService("ReplicatedStorage").Modules.Net:WaitForChild("RE/RegisterHit"):FireServer(Plr)
                 end
             end
+
             task.wait(Setting.TimeToNextAttack)
             OnHit = false
         end
     end)
 end
+
 
 spawn(function()
     while wait(0.05) do
