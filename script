@@ -2377,71 +2377,64 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
--- Cache service để nhanh hơn
--- Cache service để nhanh hơn
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
+local CombatFramework = require(LocalPlayer.PlayerScripts.CombatFramework)
+local RigLib = require(ReplicatedStorage.CombatFramework.RigLib)
+local RigControllerEvent = ReplicatedStorage.RigControllerEvent
 
-local Player = Players.LocalPlayer
-local RegisterAttack = ReplicatedStorage.Modules.Net:WaitForChild("RE/RegisterAttack")
-local RegisterHit    = ReplicatedStorage.Modules.Net:WaitForChild("RE/RegisterHit")
+-- Lấy CombatFramework Library
+local FrameworkLib = debug.getupvalues(CombatFramework)
+local Controller = FrameworkLib[2]
 
--- Cấu hình
-local Setting = {
-    TimeToNextAttack = 0.175, -- delay giữa mỗi attack
-    NextAttack = 0,
-    Distance = 60,
-    AttackMobs = true,
-    AttackPlayers = true,
-}
-
-local OnHit = false
-
--- Hàm chung để lấy đối tượng trong phạm vi
-local function GetTargets(folder, ignoreSelf)
-    local targets = {}
-    for _, obj in ipairs(folder:GetChildren()) do
-        local hrp = obj:FindFirstChild("HumanoidRootPart")
-        if hrp and Player:DistanceFromCharacter(hrp.Position) < Setting.Distance then
-            if not ignoreSelf or obj.Name ~= Player.Name then
-                table.insert(targets, hrp)
-            end
-        end
+-- Lấy vũ khí hiện tại
+local function GetBlade()
+    local weapon = Controller.activeController.blades[1]
+    while weapon and weapon.Parent ~= LocalPlayer.Character do
+        weapon = weapon.Parent
     end
-    return targets
+    return weapon
 end
 
--- Hàm Attack
-local function Attack()
-    if OnHit then return end
-    OnHit = true
+-- Hàm đánh
+local function AttackHit()
+    local bladehit = RigLib.getBladeHits(LocalPlayer.Character, {LocalPlayer.Character.HumanoidRootPart}, 60)
+    local targets, seen = {}, {}
 
-    -- Combo 4 bước: 0 → 1 → 2 → 3 → lặp lại
-    Setting.NextAttack = (Setting.NextAttack + 1) % 4
-    RegisterAttack:FireServer(Setting.NextAttack)
-
-    if Setting.AttackMobs then
-        for _, mob in ipairs(GetTargets(Workspace.Enemies, false)) do
-            RegisterHit:FireServer(mob)
+    for _, v in pairs(bladehit) do
+        local hrp = v.Parent:FindFirstChild("HumanoidRootPart")
+        if hrp and not seen[v.Parent] then
+            table.insert(targets, hrp)
+            seen[v.Parent] = true
         end
     end
 
-    if Setting.AttackPlayers then
-        for _, plr in ipairs(GetTargets(Workspace.Characters, true)) do
-            RegisterHit:FireServer(plr)
-        end
+    if #targets > 0 then
+        pcall(function()
+            local active = Controller.activeController
+            active.timeToNextAttack = 0
+            active.attacking = false
+            active.blocking = false
+            active.timeToNextBlock = 0
+            active.increment = 3
+            active.hitboxMagnitude = 120
+            active.focusStart = 0
+            RigControllerEvent:FireServer("weaponChange", tostring(GetBlade()))
+            RigControllerEvent:FireServer("hit", targets, 1, "")
+        end)
     end
-
-    task.delay(Setting.TimeToNextAttack, function()
-        OnHit = false
-    end)
 end
 
--- Loop chính
+-- Auto Attack Loop
 task.spawn(function()
-    while task.wait(0.05) do
-        Attack()
+    while task.wait(0.1) do
+        if _G.FastAttack then
+            repeat
+                task.wait(_G.FastAttackDelay or 0.05)
+                AttackHit()
+            until not _G.FastAttack
+        end
     end
 end)
 
