@@ -2378,14 +2378,14 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ------AttackNoCD  
 -- Cache service để nhanh hơn
+-- Cache service để nhanh hơn
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 
 local Player = Players.LocalPlayer
-local Net = ReplicatedStorage.Modules.Net
-local RegisterAttack = Net:WaitForChild("RE"):WaitForChild("RegisterAttack")
-local RegisterHit = Net:WaitForChild("RE"):WaitForChild("RegisterHit")
+local RegisterAttack = ReplicatedStorage.Modules.Net:WaitForChild("RE/RegisterAttack")
+local RegisterHit    = ReplicatedStorage.Modules.Net:WaitForChild("RE/RegisterHit")
 
 -- Cấu hình
 local Setting = {
@@ -2444,6 +2444,7 @@ task.spawn(function()
         Attack()
     end
 end)
+
 
 --Attack Mastery
 
