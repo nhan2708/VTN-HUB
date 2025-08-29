@@ -190,18 +190,17 @@ Info=Window:AddTab({ Title="thông tin" }),
 
 Main1=Window:AddTab({ Title="Fram Other" }),
     Sea=Window:AddTab({ Title="sea event" }),
-    Item=Window:AddTab({ Title="Stack Fram" }),
+    Item=Window:AddTab({ Title="Item" }),
     Setting=Window:AddTab({ Title="Setting" }),
     Status=Window:AddTab({ Title="Status" }),
     Stats=Window:AddTab({ Title="Stats" }),
     Player=Window:AddTab({ Title="Player" }),
-    Teleport=Window:AddTab({ Title="dịch chuyển" }),
-    Visual=Window:AddTab({ Title="giả" }),
-    Fruit=Window:AddTab({ Title="trái" }),
-    Raid=Window:AddTab({ Title="đi Raid" }),
-    Race=Window:AddTab({ Title="up tộc" }),
+    Teleport=Window:AddTab({ Title="Teleport" }),
+    Fruit=Window:AddTab({ Title="Fruit and ESP" }),
+    Raid=Window:AddTab({ Title="Raid" }),
+    Race=Window:AddTab({ Title="Race" }),
     Shop=Window:AddTab({ Title="Shop" }),
-    Misc=Window:AddTab({ Title="linh tinh" }),
+    Misc=Window:AddTab({ Title="Sever" }),
 }
 local Options = Fluent.Options
 local id = game.PlaceId
@@ -853,7 +852,7 @@ QuestLv=1
 NameMon="Serpent Hunter"
 CFrameQ=CFrame.new(-16665.19140625, 104.59640502929688, 1579.6943359375)
 CFrameMon=CFrame.new(-16621.4140625, 121.40631103515625, 1290.6881103515625)
-elseif Lv==2575 or Lv<=2599 or SelectMonster=="Skull Slayer" or Lv==2600 then
+elseif Lv==2575 or Lv<=2599 or SelectMonster=="Skull Slayer" or Lv==2600 or Lv>2600 then
 Ms="Skull Slayer"
 NameQuest="TikiQuest3"
 QuestLv=2
