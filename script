@@ -3549,13 +3549,13 @@ spawn(function()
     while wait() do
         pcall(function()
             if string.len(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"))==88 then
-                Mob_Kill_Cake_Prince:SetDesc("Spawner: "..string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"),39,41).."")
+                Mob_Kill_Cake_Prince:SetDesc("Kill: "..string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"),39,41).."")
             elseif string.len(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"))==87 then
-                Mob_Kill_Cake_Prince:SetDesc("Spawner: "..string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"),39,40).."")
+                Mob_Kill_Cake_Prince:SetDesc("Kill: "..string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"),39,40).."")
             elseif string.len(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"))==86 then
-                Mob_Kill_Cake_Prince:SetDesc("Spawner: "..string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"),39,39).." ")
+                Mob_Kill_Cake_Prince:SetDesc("Kill: "..string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"),39,39).." ")
             else
-                Mob_Kill_Cake_Prince:SetDesc("Cake Prince : âœ…ï¸")
+                Mob_Kill_Cake_Prince:SetDesc("Cake Prince : spawned")
             end
         end)
     end
@@ -8921,13 +8921,16 @@ spawn(function()
     pcall(function()
         while wait() do
             if game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland") then
-                Prehistoric:SetDesc("Volcano Island:🔴")
-            else
                 Prehistoric:SetDesc("Volcano Island:🟢")
+            else
+                Prehistoric:SetDesc("Volcano Island:🔴")
             end
         end
     end)
 end)
+
+
+
 local ToggleTPVolcano = Tabs.Sea:AddToggle("ToggleTPVolcano", { 
     Title="Teleport Volcano Island", 
     Description="", 
