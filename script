@@ -186,9 +186,9 @@ Window = Fluent:CreateWindow({
 local Tabs = {
 
 Info=Window:AddTab({ Title="thông tin" }),
-    Main=Window:AddTab({ Title="main fram" }),
+    Main=Window:AddTab({ Title="Main Farm" }),
 
-Main1=Window:AddTab({ Title="Fram Other" }),
+Main1=Window:AddTab({ Title="Farm Other" }),
     Sea=Window:AddTab({ Title="sea event" }),
     Item=Window:AddTab({ Title="Item" }),
     Setting=Window:AddTab({ Title="Setting" }),
@@ -2368,7 +2368,7 @@ spawn(function()
         end
     end
 end)
-local AutoFram = Tabs.Main:AddSection("Auto Fram")
+local AutoFram = Tabs.Main:AddSection("Auto Farm")
 local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
     Title = "Select Weapon",
     Description = "",
@@ -2675,9 +2675,9 @@ spawn(function()
         end
     end
 end)
-local Mastery = Tabs.Main:AddSection("Auto Fram Mastery")
+local Mastery = Tabs.Main:AddSection("Auto Farm Mastery")
 local DropdownMastery = Tabs.Main:AddDropdown("DropdownMastery", {
-    Title = "Select Fram",
+    Title = "Select Farm",
     Description = "",
     Values = {"Level", "Level No Quest", "Near Mob", "Bone", "Cake", "Ecto"},
     Multi = false,
@@ -3839,7 +3839,7 @@ local boss = Tabs.Main:AddSection("Fram Boss")
         SelectMaterial=Value
     end)
     local ToggleMaterial = Tabs.Main:AddToggle("ToggleMaterial", {
-        Title="Auto Fram MateriaList",
+        Title="Auto Farm MateriaList",
         Description="", 
         Default=false })
     ToggleMaterial:OnChanged(function(Value)
@@ -4545,7 +4545,7 @@ spawn(function()
             end)
         end
     end)
-    local ToggleElite = Tabs.Main:AddToggle("ToggleElite", {Title="Auto Fram Elite",Description="", Default=false })
+    local ToggleElite = Tabs.Main:AddToggle("ToggleElite", {Title="Auto Farm Elite",Description="", Default=false })
     ToggleElite:OnChanged(function(Value)
        _G.AutoElite=Value
        end)
@@ -6052,7 +6052,7 @@ if Sea2 then
         end)
     end
 local ToggleAutoFarmSwan = Tabs.Main1:AddToggle("ToggleAutoFarmSwan", {
-    Title="Auto Fram Swan",
+    Title="Auto Farm Swan",
     Description="",
     Default=false
 })
@@ -9186,14 +9186,3 @@ spawn(function()
         end
     end
 end)
-local lastNotificationTime = 0
-local notificationCooldown = 10
-local currentTime = tick()
-if currentTime - lastNotificationTime >= notificationCooldown then
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "cat egg v4 ultimate",
-        Text = "loding thành công 🇻🇳🇻🇳🇻🇳",
-        Duration = 1
-    })
-    lastNotificationTime = currentTime
-end
