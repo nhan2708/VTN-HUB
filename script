@@ -6229,37 +6229,6 @@ if Sea2 then
     end)
 end
 
-local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title = "Enabled Bring Mob", Default = true })
-ToggleBringMob:OnChanged(function(Value)
-    _G.BringMob = Value
-end)
-Options.ToggleBringMob:SetValue(true)
-
--- Hàm kéo mob lại gần
-spawn(function()
-    while wait(0.2) do
-        pcall(function()
-            if _G.BringMob then
-                -- Lặp qua tất cả các mob trong game
-                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                        if v.Name == "Factory Staff" or v.Name == MonFarm then
-                            -- Kiểm tra khoảng cách và kéo mob lại gần vị trí farm
-                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 500 then
-                                v.Head.CanCollide = false
-                                v.HumanoidRootPart.CanCollide = false
-                                v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
-                                v.HumanoidRootPart.CFrame = FarmPos
-                                -- Cập nhật SimulationRadius
-                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                            end
-                        end
-                    end
-                end
-            end
-        end)
-    end
-end)
 local ToggleAutoT = Tabs.Setting:AddToggle("ToggleAutoT", {Title="Auto On V3", Description="", Default=false })
 ToggleAutoT:OnChanged(function(Value)
     _G.AutoT=Value
@@ -6290,25 +6259,21 @@ spawn(function()
         end)
     end
 end)
-local ToggleAutoKen = Tabs.Setting:AddToggle("ToggleAutoKen", {Title="Auto Ken", Description="", Default=false })
-ToggleAutoKen:OnChanged(function(Value)
-    _G.AutoKen=Value
-    if Value then
-        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
-    else
-        game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", false) 
-    end
-end)
-Options.ToggleAutoKen:SetValue(false)
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.AutoKen then
-                game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken", true)
-            end
+    local ToggleAutoOb = Tabs.Setting:AddToggle("ToggleAutoOb", {Title = " Auto turn on Obversation",Description = "", Default = false })
+    ToggleAutoOb:OnChanged(function(Value)
+        _G.Observation = Value
         end)
-    end
-end)
+    spawn(function()
+        while wait() do
+            if _G.Observation then
+                if not game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui:FindFirstChild("ImageLabel") then
+                    game:GetService("VirtualUser"):SetKeyDown("0x65")
+                    wait(2)
+                    game:GetService("VirtualUser"):SetKeyUp("0x65")
+                end
+            end
+        end
+    end)
 local ToggleSaveSpawn = Tabs.Setting:AddToggle("ToggleSaveSpawn", {Title="Save Set Spawn", Description="", Default=false })
 ToggleSaveSpawn:OnChanged(function(Value)
     _G.SaveSpawn=Value
@@ -6333,91 +6298,101 @@ spawn(function()
     end
 end)
 Tabs.Setting:AddButton({
-    Title = "fix lag",
-    Description = "",
-    Callback = function()
-        local a = false
-        local b = game
-        local c = b.Workspace
-        local d = b.Lighting
-        local e = c.Terrain
-        e.WaterWaveSize = 0
-        e.WaterWaveSpeed = 0
-        e.WaterReflectance = 0
-        e.WaterTransparency = 0
-        d.GlobalShadows = false
-        d.FogEnd = 9e9
-        d.Brightness = 0
+        Title = "Fps Booster",
+        Description = "",
+        Callback = function()
+            FPSBooster()
+        end
+    })
+
+    function FPSBooster()
+        local decalsyeeted = true
+        local g = game
+        local w = g.Workspace
+        local l = g.Lighting
+        local t = w.Terrain
+        sethiddenproperty(l,"Technology",2)
+        sethiddenproperty(t,"Decoration",false)
+        t.WaterWaveSize = 0
+        t.WaterWaveSpeed = 0
+        t.WaterReflectance = 0
+        t.WaterTransparency = 0
+        l.GlobalShadows = false
+        l.FogEnd = 9e9
+        l.Brightness = 0
         settings().Rendering.QualityLevel = "Level01"
-        for _, f in pairs(b:GetDescendants()) do
-            if f:IsA("Part") or f:IsA("Union") or f:IsA("CornerWedgePart") or f:IsA("TrussPart") then
-                f.Material = "Plastic"
-                f.Reflectance = 0
-            elseif f:IsA("Decal") or f:IsA("Texture") and a then
-                f.Transparency = 1
-            elseif f:IsA("ParticleEmitter") or f:IsA("Trail") then
-                f.Lifetime = NumberRange.new(0)
-            elseif f:IsA("Explosion") then
-                f.BlastPressure = 1
-                f.BlastRadius = 1
-            elseif f:IsA("Fire") or f:IsA("SpotLight") or f:IsA("Smoke") or f:IsA("Sparkles") then
-                f.Enabled = false
-            elseif f:IsA("MeshPart") then
-                f.Material = "Plastic"
-                f.Reflectance = 0
-                f.TextureID = 10385902758728957
+        for i, v in pairs(g:GetDescendants()) do
+            if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+                v.Material = "Plastic"
+                v.Reflectance = 0
+            elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
+                v.Transparency = 1
+            elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+                v.Lifetime = NumberRange.new(0)
+            elseif v:IsA("Explosion") then
+                v.BlastPressure = 1
+                v.BlastRadius = 1
+            elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+                v.Enabled = false
+            elseif v:IsA("MeshPart") then
+                v.Material = "Plastic"
+                v.Reflectance = 0
+                v.TextureID = 10385902758728957
             end
         end
-        for _, g in pairs(d:GetChildren()) do
-            if g:IsA("BlurEffect") or g:IsA("SunRaysEffect") or g:IsA("ColorCorrectionEffect") or g:IsA("BloomEffect") or g:IsA("DepthOfFieldEffect") then
-                g.Enabled = true
+        for i, e in pairs(l:GetChildren()) do
+            if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+                e.Enabled = false
             end
         end
     end
-})
-local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title="gom quái",Description="", Default=true})
+local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title="gom quái", Description="", Default=true})
 ToggleBringMob:OnChanged(function(Value)
     _G.BringMob = Value
 end)
 Options.ToggleBringMob:SetValue(false)
-spawn(function()
-    while wait() do
-        pcall(function()
-            for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                if _G.BringMob and bringmob then
-                    if v.Name == MonFarm and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                        if v.Name == "Factory Staff" then
-                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 1000000000 then
-                                v.Head.CanCollide = false
-                                v.HumanoidRootPart.CanCollide = false
-                                v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                v.HumanoidRootPart.CFrame = FarmPos
-                                if v.Humanoid:FindFirstChild("Animator") then
-                                    v.Humanoid.Animator:Destroy()
-                                end
-                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                            end
-                        elseif v.Name == MonFarm then
-                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 10000000000 then
-                                v.HumanoidRootPart.CFrame = FarmPos
-                                v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                v.HumanoidRootPart.Transparency = 1
-                                v.Humanoid.JumpPower = 0
-                                v.Humanoid.WalkSpeed = 0
-                                if v.Humanoid:FindFirstChild("Animator") then
-                                    v.Humanoid.Animator:Destroy()
-                                end
-                                v.HumanoidRootPart.CanCollide = false
-                                v.Head.CanCollide = false
-                                v.Humanoid:ChangeState(11)
-                                v.Humanoid:ChangeState(14)
-                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                            end
-                        end
-                    end
-                end
-            end
-        end)
+
+-- Hàm xử lý mob
+local function HandleMob(v)
+    if not (v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart")) then
+        return
+    end
+    if v.Humanoid.Health <= 0 then return end
+    if v.Name ~= MonFarm and v.Name ~= "Factory Staff" then return end
+
+    local distance = (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude
+    if distance > 1000 then return end -- giới hạn khoảng cách check để đỡ lag
+
+    -- gom mob
+    if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude > 5 then
+        v.HumanoidRootPart.CFrame = FarmPos
+    end
+    v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+    v.HumanoidRootPart.CanCollide = false
+    v.Head.CanCollide = false
+    v.HumanoidRootPart.Transparency = 1
+
+    -- disable AI
+    if v.Humanoid:FindFirstChild("Animator") then
+        v.Humanoid.Animator:Destroy()
+    end
+    v.Humanoid.JumpPower = 0
+    v.Humanoid.WalkSpeed = 0
+    v.Humanoid:ChangeState(11)
+    v.Humanoid:ChangeState(14)
+
+    -- mở rộng SimulationRadius
+    sethiddenproperty(LocalPlayer, "SimulationRadius", math.huge)
+end
+
+-- Vòng lặp chính
+RunService.Heartbeat:Connect(function()
+    if _G.BringMob and bringmob then
+        for _, v in ipairs(Enemies:GetChildren()) do
+            pcall(function()
+                HandleMob(v)
+            end)
+        end
     end
 end)
 local ToggleRemoveNotify = Tabs.Setting:AddToggle("ToggleRemoveNotify", {Title="xoá thông báo",Description="", Default=false })
