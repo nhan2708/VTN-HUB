@@ -6346,71 +6346,51 @@ Tabs.Setting:AddButton({
             end
         end
     end
-
-    local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title="gom quái", Description="", Default=true})
+local ToggleBringMob = Tabs.Setting:AddToggle("ToggleBringMob", {Title="gom quái",Description="lag", Default=true})
 ToggleBringMob:OnChanged(function(Value)
     _G.BringMob = Value
 end)
 Options.ToggleBringMob:SetValue(false)
-
--- Hàm xử lý mob an toàn
-local function HandleMob(v)
-    local humanoid = v:FindFirstChildOfClass("Humanoid")
-    local hrp = v:FindFirstChild("HumanoidRootPart")
-    local head = v:FindFirstChild("Head")
-
-    -- Check điều kiện tồn tại
-    if not humanoid or not hrp or humanoid.Health <= 0 then return end
-    if v.Name ~= MonFarm and v.Name ~= "Factory Staff" then return end
-    if not FarmPos or not FarmPos.Position then return end
-
-    local distance = (hrp.Position - FarmPos.Position).Magnitude
-    if distance > 1000 then return end -- hạn chế khoảng cách check
-
-    -- gom mob
-    if (hrp.Position - FarmPos.Position).Magnitude > 5 then
-        hrp.CFrame = FarmPos
-    end
-
-    -- chỉnh thuộc tính
-    hrp.Size = Vector3.new(60, 60, 60)
-    hrp.CanCollide = false
-    hrp.Transparency = 1
-
-    if head then
-        head.CanCollide = false
-    end
-
-    -- tắt AI
-    local animator = humanoid:FindFirstChildOfClass("Animator")
-    if animator then
-        animator:Destroy()
-    end
-
-    humanoid.JumpPower = 0
-    humanoid.WalkSpeed = 0
-    humanoid:ChangeState(11)
-    humanoid:ChangeState(14)
-
-    -- mở rộng SimulationRadius (nếu API hỗ trợ)
-    pcall(function()
-        sethiddenproperty(LocalPlayer, "SimulationRadius", math.huge)
-    end)
-end
-
--- Vòng lặp chính (có delay để đỡ lag)
-task.spawn(function()
-    while task.wait(0.1) do -- 0.1s / lần
-        if _G.BringMob and bringmob then
-            for _, v in ipairs(Enemies:GetChildren()) do
-                pcall(function()
-                    HandleMob(v)
-                end)
+spawn(function()
+    while wait() do
+        pcall(function()
+            for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                if _G.BringMob and bringmob then
+                    if v.Name == MonFarm and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        if v.Name == "Factory Staff" then
+                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 1000000000 then
+                                v.Head.CanCollide = false
+                                v.HumanoidRootPart.CanCollide = false
+                                v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                v.HumanoidRootPart.CFrame = FarmPos
+                                if v.Humanoid:FindFirstChild("Animator") then
+                                    v.Humanoid.Animator:Destroy()
+                                end
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                            end
+                        elseif v.Name == MonFarm then
+                            if (v.HumanoidRootPart.Position - FarmPos.Position).Magnitude <= 10000000000 then
+                                v.HumanoidRootPart.CFrame = FarmPos
+                                v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                v.HumanoidRootPart.Transparency = 1
+                                v.Humanoid.JumpPower = 0
+                                v.Humanoid.WalkSpeed = 0
+                                if v.Humanoid:FindFirstChild("Animator") then
+                                    v.Humanoid.Animator:Destroy()
+                                end
+                                v.HumanoidRootPart.CanCollide = false
+                                v.Head.CanCollide = false
+                                v.Humanoid:ChangeState(11)
+                                v.Humanoid:ChangeState(14)
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                            end
+                        end
+                    end
+                end
             end
-        end
+        end)
     end
 end)
-
 local ToggleRemoveNotify = Tabs.Setting:AddToggle("ToggleRemoveNotify", {Title="xoá thông báo",Description="", Default=false })
 ToggleRemoveNotify:OnChanged(function(Value)
     RemoveNotify=Value
