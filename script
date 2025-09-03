@@ -176,11 +176,11 @@ hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Respa
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 Window = Fluent:CreateWindow({
     Title = "VTN HUB [premium]",
-    SubTitle="by VTN", 
+    SubTitle="version 1.0", 
     TabWidth=155, 
-    Theme="Light",
+    Theme="Black",
     Acrylic=false,
-    Size=UDim2.fromOffset(555, 320), 
+    Size=UDim2.fromOffset(530, 350), 
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 local Tabs = {
@@ -230,8 +230,8 @@ function GoSubmergedIsland()
 
     for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
         if string.find(v.Name, "Submarine Captain") and v:FindFirstChild("HumanoidRootPart") then
-            -- Bay đến NPC bằng tween2
-            tween2(v.HumanoidRootPart.CFrame + Vector3.new(0,3,0))
+            -- Bay đến NPC bằng Tween2 (truyền CFrame)
+            Tween2(v.HumanoidRootPart.CFrame + Vector3.new(0,3,0))
             task.wait(0.5)
 
             -- Mở hội thoại
@@ -243,6 +243,7 @@ function GoSubmergedIsland()
         end
     end
 end
+
 
 function CheckLevel()
 local Lv = game:GetService("Players").LocalPlayer.Data.Level.Value
