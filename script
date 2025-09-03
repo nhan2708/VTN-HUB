@@ -222,44 +222,34 @@ elseif placeId==7449423635 then
 Sea3=true
 end
 
--- Di chuyển mượt đến một vị trí Vector3
-function MoveTo(Pos)
-    local plr = game.Players.LocalPlayer
-    local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
-
-    local ts = game:GetService("TweenService")
-    local distance = (hrp.Position - Pos).Magnitude
-    local speed = 350 -- tốc độ bay (stud/giây)
-    local tweenInfo = TweenInfo.new(distance / speed, Enum.EasingStyle.Linear)
-    local tween = ts:Create(hrp, tweenInfo, {CFrame = CFrame.new(Pos)})
-    
+TweenSpeed = 350
+function Tween(KG)
+    local Distance = (KG.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+    local Speed = TweenSpeed  
+    local tweenInfo = TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear)
+    local tween = game:GetService("TweenService"):Create(
+        game.Players.LocalPlayer.Character.HumanoidRootPart,
+        tweenInfo,
+        {CFrame = KG}
+    )
     tween:Play()
-    tween.Completed:Wait() -- đợi bay xong
-end
-
-
-function GoSubmergedIsland()
-    local plr = game.Players.LocalPlayer
-    local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
-
-    for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-        if string.find(v.Name, "Submarine Captain") and v:FindFirstChild("HumanoidRootPart") then
-            -- Bay đến ngay trên đầu NPC
-            MoveTo(v.HumanoidRootPart.Position + Vector3.new(0, 3, 0))
-            task.wait(0.5)
-
-            -- Mở hội thoại
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartDialogue", v)
-            task.wait(0.2)
-            -- Chọn dịch chuyển
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("DialogueButton", 1)
-            break
-        end
+    if _G.StopTween then
+        tween:Cancel()
     end
 end
 
+-- Bay thẳng xuống đảo Submerged (không cần NPC)
+function GoToSubmergedIsland()
+    local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127) -- tọa độ trong đảo
+
+    -- Bay ngang trên cao (tránh nước)
+    local highCFrame = CFrame.new(islandCFrame.Position.X, 500, islandCFrame.Position.Z)
+    Tween(highCFrame)
+    task.wait(0.5)
+
+    -- Tele xuống đảo
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = islandCFrame
+end
 
 
 function CheckLevel()
@@ -907,9 +897,7 @@ QuestLv=1
 NameMon="Reef Bandit"
 CFrameQ=CFrame.new(10780.4971, -2087.72705, 9263.80371)
 CFrameMon=CFrame.new(11054.085, -2082.98413, 9167.8418)
-GoSubmergedIsland()
-task.wait(3) -- đợi dịch chuyển xong
-TP(CFrameQ)
+
 elseif Lv==2625 or Lv<=2649 or SelectMonster=="Coral Pirate" then
 Ms="Coral Pirate"
 NameQuest="SubmergedQuest1"
@@ -917,9 +905,7 @@ QuestLv=2
 NameMon="Coral Pirate"
 CFrameQ=CFrame.new(10780.4971, -2087.72705, 9263.80371)
 CFrameMon=CFrame.new(10724.8877, -2032.03992, 9359.37402)
-GoSubmergedIsland()
-task.wait(3)
-TP(CFrameQ)
+
 elseif Lv==2650 or Lv<=2674 or SelectMonster=="Sea Chanter" then
 Ms="Sea Chanter"
 NameQuest="SubmergedQuest2"
@@ -927,9 +913,7 @@ QuestLv=1
 NameMon="Sea Chanter"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(10619.5537, -2080.86304, 10101.917)
-GoSubmergedIsland()
-task.wait(3) -- đợi dịch chuyển xong
-TP(CFrameQ)
+
 elseif Lv==2675 or Lv<=2750 or SelectMonster=="Ocean Prophet" then
 Ms="Ocean Prophet"
 NameQuest="SubmergedQuest2"
@@ -937,9 +921,7 @@ QuestLv=2
 NameMon="Ocean Prophet"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(11042.5303, -1979.76855, 10198.8184)
-GoSubmergedIsland()
-task.wait(3) -- đợi dịch chuyển xong
-TP(CFrameQ)
+
 end
 end
 end
@@ -2510,6 +2492,10 @@ end)
         if _G.AutoLevel then
         pcall(function()
           CheckLevel()
+          if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2") 
+                   and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > -1500 then
+                    GoToSubmergedIsland()
+                end
           if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==false then
           game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
           Tween(CFrameQ)
