@@ -883,7 +883,7 @@ CFrameMon=CFrame.new(10619.5537, -2080.86304, 10101.917)
 elseif Lv==2675 or Lv<=2750 or SelectMonster=="Ocean Prophet" then
 Ms="Ocean Prophet"
 NameQuest="SubmergedQuest2"
-QuestLv=1
+QuestLv=2
 NameMon="Ocean Prophet"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(11042.5303, -1979.76855, 10198.8184)
