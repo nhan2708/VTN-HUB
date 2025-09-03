@@ -176,7 +176,7 @@ hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Respa
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 Window = Fluent:CreateWindow({
     Title = "VTN HUB [Premium]",
-    SubTitle="version 1.0", 
+    SubTitle="version 2.0", 
     TabWidth=155, 
     Theme="Black",
     Acrylic=false,
@@ -240,15 +240,15 @@ end
 
 -- Bay thẳng xuống đảo Submerged (không cần NPC)
 function GoToSubmergedIsland()
-    local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127) -- tọa độ trong đảo
+    local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127)
 
-    -- Bay ngang trên cao (tránh nước)
+    -- Bước 1: bay ngang trên cao
     local highCFrame = CFrame.new(islandCFrame.Position.X, 500, islandCFrame.Position.Z)
     Tween(highCFrame)
     task.wait(0.5)
 
-    -- Tele xuống đảo
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = islandCFrame
+    -- Bước 2: bay xuống đảo
+    Tween(islandCFrame)
 end
 
 
@@ -2493,9 +2493,9 @@ end)
         pcall(function()
           CheckLevel()
           if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2") 
-                   and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > -1500 then
-                    GoToSubmergedIsland()
-                end
+            and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > -1500 then
+                GoToSubmergedIsland()
+          end
           if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==false then
           game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
           Tween(CFrameQ)
