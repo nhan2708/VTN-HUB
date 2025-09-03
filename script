@@ -852,13 +852,42 @@ QuestLv=1
 NameMon="Serpent Hunter"
 CFrameQ=CFrame.new(-16665.19140625, 104.59640502929688, 1579.6943359375)
 CFrameMon=CFrame.new(-16621.4140625, 121.40631103515625, 1290.6881103515625)
-elseif Lv==2575 or Lv<=2599 or SelectMonster=="Skull Slayer" or Lv==2600 or Lv>2600 then
+elseif Lv==2575 or Lv<=2599 or SelectMonster=="Skull Slayer" then
 Ms="Skull Slayer"
 NameQuest="TikiQuest3"
 QuestLv=2
 NameMon="Skull Slayer"
 CFrameQ=CFrame.new(-16665.19140625, 104.59640502929688, 1579.6943359375)
 CFrameMon=CFrame.new(-16811.5703125, 84.625244140625, 1542.235107421875)
+elseif Lv==2600 or Lv<=2624 or SelectMonster=="Reef Bandit" then
+Ms="Reef Bandit"
+NameQuest="SubmergedQuest1"
+QuestLv=1
+NameMon="Reef Bandit"
+CFrameQ=CFrame.new(10780.4971, -2087.72705, 9263.80371)
+CFrameMon=CFrame.new(11054.085, -2082.98413, 9167.8418)
+elseif Lv==2625 or Lv<=2649 or SelectMonster=="Coral Pirate" then
+Ms="Coral Pirate"
+NameQuest="SubmergedQuest1"
+QuestLv=2
+NameMon="Coral Pirate"
+CFrameQ=CFrame.new(10780.4971, -2087.72705, 9263.80371)
+CFrameMon=CFrame.new(10724.8877, -2032.03992, 9359.37402)
+elseif Lv==2650 or Lv<=2674 or SelectMonster=="Sea Chanter" then
+Ms="Sea Chanter"
+NameQuest="SubmergedQuest2"
+QuestLv=1
+NameMon="Sea Chanter"
+CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
+CFrameMon=CFrame.new(10619.5537, -2080.86304, 10101.917)
+elseif Lv==2675 or Lv<=2750 or SelectMonster=="Ocean Prophet" then
+Ms="Ocean Prophet"
+NameQuest="SubmergedQuest2"
+QuestLv=1
+NameMon="Ocean Prophet"
+CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
+CFrameMon=CFrame.new(11042.5303, -1979.76855, 10198.8184)
+
 end
 end
 end
@@ -6362,6 +6391,7 @@ spawn(function()
                                 v.Head.CanCollide = false
                                 v.HumanoidRootPart.CanCollide = false
                                 v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+
                                 v.HumanoidRootPart.CFrame = FarmPos
                                 if v.Humanoid:FindFirstChild("Animator") then
                                     v.Humanoid.Animator:Destroy()
