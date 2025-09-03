@@ -176,7 +176,7 @@ hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Respa
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 Window = Fluent:CreateWindow({
     Title = "VTN HUB [Premium]",
-    SubTitle="version 2.0", 
+    SubTitle="version 1.0", 
     TabWidth=155, 
     Theme="Black",
     Acrylic=false,
@@ -239,17 +239,24 @@ function Tween(KG)
 end
 
 -- Bay thẳng xuống đảo Submerged (không cần NPC)
+-- Đi xuống đảo Submerged an toàn
 function GoToSubmergedIsland()
     local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127)
 
-    -- Bước 1: bay ngang trên cao
+    -- Bước 1: Bay lên cao
+    local upCFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 500, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+    Tween(upCFrame)
+    task.wait(0.5)
+
+    -- Bước 2: Bay ngang tới vị trí X,Z của đảo nhưng Y=500
     local highCFrame = CFrame.new(islandCFrame.Position.X, 500, islandCFrame.Position.Z)
     Tween(highCFrame)
     task.wait(0.5)
 
-    -- Bước 2: bay xuống đảo
-    Tween(islandCFrame)
+    -- Bước 3: Tele thẳng xuống trong đảo (không đi qua nước)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = islandCFrame
 end
+
 
 
 function CheckLevel()
