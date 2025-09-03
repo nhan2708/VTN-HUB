@@ -231,6 +231,27 @@ function TP(Pos)
     end
 end
 
+function ClickNPC(NPCName)
+    local plr = game.Players.LocalPlayer
+    local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
+        if string.find(v.Name, NPCName) and v:FindFirstChild("HumanoidRootPart") then
+            -- Teleport đến NPC
+            hrp.CFrame = v.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
+            wait(0.5)
+
+            -- Gửi sự kiện click
+            local args = {
+                [1] = v
+            }
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartDialogue", unpack(args))
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("DialogueButton", 1)
+        end
+    end
+end
+
 function CheckLevel()
 local Lv = game:GetService("Players").LocalPlayer.Data.Level.Value
 if Sea1 then
@@ -876,6 +897,8 @@ QuestLv=1
 NameMon="Reef Bandit"
 CFrameQ=CFrame.new(10780.4971, -2087.72705, 9263.80371)
 CFrameMon=CFrame.new(11054.085, -2082.98413, 9167.8418)
+ClickNPC("Submarine Captain")
+wait(3) -- đợi dịch chuyển xong
 TP(CFrameQ)
 elseif Lv==2625 or Lv<=2649 or SelectMonster=="Coral Pirate" then
 Ms="Coral Pirate"
@@ -884,6 +907,8 @@ QuestLv=2
 NameMon="Coral Pirate"
 CFrameQ=CFrame.new(10780.4971, -2087.72705, 9263.80371)
 CFrameMon=CFrame.new(10724.8877, -2032.03992, 9359.37402)
+ClickNPC("Submarine Captain")
+wait(3)
 TP(CFrameQ)
 elseif Lv==2650 or Lv<=2674 or SelectMonster=="Sea Chanter" then
 Ms="Sea Chanter"
@@ -892,6 +917,8 @@ QuestLv=1
 NameMon="Sea Chanter"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(10619.5537, -2080.86304, 10101.917)
+ClickNPC("Submarine Captain")
+wait(3) -- đợi dịch chuyển xong
 TP(CFrameQ)
 elseif Lv==2675 or Lv<=2750 or SelectMonster=="Ocean Prophet" then
 Ms="Ocean Prophet"
@@ -900,6 +927,8 @@ QuestLv=2
 NameMon="Ocean Prophet"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(11042.5303, -1979.76855, 10198.8184)
+ClickNPC("Submarine Captain")
+wait(3) -- đợi dịch chuyển xong
 TP(CFrameQ)
 end
 end
