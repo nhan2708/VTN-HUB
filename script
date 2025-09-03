@@ -176,7 +176,7 @@ hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Respa
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 Window = Fluent:CreateWindow({
     Title = "VTN HUB [Premium]",
-    SubTitle="version 2.0", 
+    SubTitle="version 1.0", 
     TabWidth=155, 
     Theme="Black",
     Acrylic=false,
@@ -231,7 +231,19 @@ function Tween(CF)
     local tweenInfo = TweenInfo.new(Distance/TweenSpeed, Enum.EasingStyle.Linear)
     local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, {CFrame = CF})
     tween:Play()
-    tween.Completed:Wait() -- Đợi bay xong rồi mới làm tiếp
+
+    local finished = false
+    tween.Completed:Connect(function()
+        finished = true
+    end)
+
+    while not finished do
+        if _G.StopTween then
+            tween:Cancel()
+            break
+        end
+        task.wait()
+    end
 end
 
 -- Đi xuống đảo Submerged
@@ -242,19 +254,20 @@ function GoToSubmergedIsland()
     local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127)
 
     -- Bước 1: Bay lên cao
-    local upCFrame = CFrame.new(hrp.Position.X, 50, hrp.Position.Z)
+    local upCFrame = CFrame.new(hrp.Position.X, 500, hrp.Position.Z)
     Tween(upCFrame)
+    if _G.StopTween then return end
     task.wait(0.3)
 
-    -- Bước 2: Bay ngang tới X,Z của đảo (Y=500)
-    local highCFrame = CFrame.new(islandCFrame.Position.X, 50, islandCFrame.Position.Z)
+    -- Bước 2: Bay ngang tới trên đầu đảo (Y=500)
+    local highCFrame = CFrame.new(islandCFrame.Position.X, 500, islandCFrame.Position.Z)
     Tween(highCFrame)
+    if _G.StopTween then return end
     task.wait(0.3)
 
-    -- Bước 3: Tele thẳng xuống đảo (sau khi bay đã xong)
+    -- Bước 3: Tele thẳng vào đảo (an toàn, không mất máu)
     hrp.CFrame = islandCFrame
 end
-
 
 
 
