@@ -176,7 +176,7 @@ hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Respa
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 Window = Fluent:CreateWindow({
     Title = "VTN HUB [Premium]",
-    SubTitle="version 2.0", 
+    SubTitle="version 1.0", 
     TabWidth=155, 
     Theme="Black",
     Acrylic=false,
@@ -200,7 +200,7 @@ Main1=Window:AddTab({ Title="Farm Other" }),
     Raid=Window:AddTab({ Title="Raid" }),
     Race=Window:AddTab({ Title="Race" }),
     Shop=Window:AddTab({ Title="Shop" }),
-    Misc=Window:AddTab({ Title="Sever" }),
+    Misc=Window:AddTab({ Title="Mics" }),
 }
 local Options = Fluent.Options
 local id = game.PlaceId
@@ -222,45 +222,34 @@ elseif placeId==7449423635 then
 Sea3=true
 end
 
-TweenSpeed = 350
+TweenSpeed = 350 -- tốc độ bay
+
 function Tween(CF)
-    local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local plr = game.Players.LocalPlayer
+    local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
 
     local Distance = (CF.Position - hrp.Position).Magnitude
     local tweenInfo = TweenInfo.new(Distance/TweenSpeed, Enum.EasingStyle.Linear)
     local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, {CFrame = CF})
     tween:Play()
-
-    -- Đợi Tween xong hoặc bị hủy
-    local success = pcall(function()
-        tween.Completed:Wait()
-    end)
-    if not success or _G.StopTween then
-        tween:Cancel()
-    end
+    tween.Completed:Wait()
 end
 
--- Bay xuống đảo Submerged (không chồng tele)
+-- Đi đến NPC rồi xuống đảo
 function GoToSubmergedIsland()
-    local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
+    local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127) -- đảo mới
 
-    local islandCFrame = CFrame.new(11520.8008, -2154.98584, 9829.5127)
+    -- Bay lên cao để tránh nước
+    local highPos = CFrame.new(islandCFrame.Position.X, 50, islandCFrame.Position.Z)
+    Tween(highPos)
 
-    -- 1. Bay lên cao
-    local upCFrame = CFrame.new(hrp.Position.X, 500, hrp.Position.Z)
-    Tween(upCFrame)
-    if _G.StopTween then return end
+    task.wait(0.5)
 
-    -- 2. Bay ngang (Y=500)
-    local highCFrame = CFrame.new(islandCFrame.Position.X, 500, islandCFrame.Position.Z)
-    Tween(highCFrame)
-    if _G.StopTween then return end
-
-    -- 3. Tele cuối cùng (Tween đã xong hoàn toàn)
-    hrp.CFrame = islandCFrame
+    -- Tele thẳng xuống đảo
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = islandCFrame
 end
+
 
 
 
