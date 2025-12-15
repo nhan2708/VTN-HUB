@@ -1,3 +1,68 @@
+
+-- UI replaced with Fluent (from HEHE.lua) | Logic untouched
+local Fluent = loadstring(game:HttpGet(
+"https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"
+))()
+
+local Window = Fluent:CreateWindow({
+    Title = "VTN HUB [Premium]",
+    SubTitle = "version 2.0",
+    TabWidth = 155,
+    Theme = "Black",
+    Acrylic = false,
+    Size = UDim2.fromOffset(530, 350),
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Info     = Window:AddTab({ Title = "Thông tin" }),
+    Main     = Window:AddTab({ Title = "Main Farm" }),
+    Farm     = Window:AddTab({ Title = "Farm Other" }),
+    Sea      = Window:AddTab({ Title = "Sea Event" }),
+    Item     = Window:AddTab({ Title = "Item" }),
+    Stats    = Window:AddTab({ Title = "Stats" }),
+    Player   = Window:AddTab({ Title = "Player" }),
+    Teleport = Window:AddTab({ Title = "Teleport" }),
+    Fruit    = Window:AddTab({ Title = "Fruit / ESP" }),
+    Raid     = Window:AddTab({ Title = "Raid" }),
+    Race     = Window:AddTab({ Title = "Race" }),
+    Shop     = Window:AddTab({ Title = "Shop" }),
+    Misc     = Window:AddTab({ Title = "Misc" }),
+}
+
+-- Example bindings (logic already exists in matsune)
+Tabs.Main:AddToggle("AutoFarm", {
+    Title = "Auto Farm",
+    Default = false,
+    Callback = function(v)
+        _G.AutoFarm = v
+    end
+})
+
+Tabs.Main:AddToggle("BringMob", {
+    Title = "Bring Mob",
+    Default = false,
+    Callback = function(v)
+        _G.BringMob = v
+    end
+})
+
+Tabs.Main:AddDropdown("Weapon", {
+    Title = "Select Weapon",
+    Values = {"Melee","Sword","Gun","Blox Fruit"},
+    Default = "Melee",
+    Callback = function(v)
+        _G.SelectWeapon = v
+    end
+})
+
+Fluent:Notify({
+    Title = "MATSUNE",
+    Content = "UI Loaded (Logic unchanged)",
+    Duration = 5
+})
+
+
       do
 		ply = game.Players
 		plr = ply.LocalPlayer
