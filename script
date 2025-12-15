@@ -2283,7 +2283,7 @@ function AttackNoCoolDown()
         
         -- 4. Fix lỗi kẹt skill khi dùng Súng hoặc Trái Ác Quỷ
         -- (Dòng này giúp nhân vật xoay người tự động và reset trạng thái đánh)
-        if _G.Fast_Delay or _G.AutoLevel or _G.AutoBone then 
+        if _G.Fast_Delay or _G.AutoLevel or _G.AutoBone or _G.FastAttack then 
              ac.focusStart = 0
              ac.humanoid.AutoRotate = true
         end
