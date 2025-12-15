@@ -1,59 +1,6 @@
 
 _G.FastAttack = true
 
--- Patched Attack (aligned with matsune behavior)
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
-local Enemies = workspace:WaitForChild("Enemies")
-local Characters = workspace:WaitForChild("Characters")
-local Net = ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Net")
-local RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
-local RegisterHit = Net:WaitForChild("RE/RegisterHit")
-
-local Attack = {}
-Attack.Distance = 350
-
-local function Alive(model)
-    return model and model:FindFirstChild("Humanoid") and model.Humanoid.Health > 0
-end
-
-local function CollectTargets()
-    local list = {}
-    local base = nil
-    for _, folder in ipairs({Enemies, Characters}) do
-        for _, v in ipairs(folder:GetChildren()) do
-            local hrp = v:FindFirstChild("HumanoidRootPart")
-            if hrp and Alive(v) and Player:DistanceFromCharacter(hrp.Position) <= Attack.Distance then
-                if v ~= Player.Character then
-                    table.insert(list, {v, hrp})
-                    base = base or hrp
-                end
-            end
-        end
-    end
-    return base, list
-end
-
-function Attack:Hit()
-    local char = Player.Character
-    if not char then return end
-    local tool = char:FindFirstChildOfClass("Tool")
-    if not tool or tool.ToolTip == "Gun" then return end
-
-    local base, targets = CollectTargets()
-    if base and #targets > 0 then
-        RegisterAttack:FireServer(0)
-        RegisterHit:FireServer(base, targets)
-    end
-end
-
-task.spawn(function()
-    while task.wait(0) do
-        if _G.FastAttack then
-            pcall(function()
-                Attack:Hit()
-            end)
         end
     end
 end)
@@ -9276,4 +9223,70 @@ spawn(function()
         end
     end
 end)
+
+
+
+-- FINAL SAFE PATCH (no crash, matsune-like attack)
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+local Enemies = workspace:WaitForChild("Enemies", 10)
+local Characters = workspace:FindFirstChild("Characters")
+
+local Modules = ReplicatedStorage:WaitForChild("Modules", 10)
+local Net = Modules and Modules:WaitForChild("Net", 10)
+local RE = Net and Net:WaitForChild("RE", 10)
+
+local RegisterAttack = RE and RE:WaitForChild("RegisterAttack", 10)
+local RegisterHit = RE and RE:WaitForChild("RegisterHit", 10)
+
+if RegisterAttack and RegisterHit then
+    local Attack = { Distance = 350, Cooldown = 0 }
+    local last = 0
+
+    local function Alive(m)
+        local h = m and m:FindFirstChildOfClass("Humanoid")
+        return h and h.Health > 0
+    end
+
+    local function Collect()
+        local list = {}
+        local base = nil
+        for _, folder in ipairs({Enemies, Characters}) do
+            if folder then
+                for _, v in ipairs(folder:GetChildren()) do
+                    local hrp = v:FindFirstChild("HumanoidRootPart")
+                    if hrp and Alive(v) and Player.Character then
+                        if Player:DistanceFromCharacter(hrp.Position) <= Attack.Distance and v ~= Player.Character then
+                            list[#list+1] = {v, hrp}
+                            base = base or hrp
+                        end
+                    end
+                end
+            end
+        end
+        return base, list
+    end
+
+    RunService.Heartbeat:Connect(function()
+        if not _G.FastAttack then return end
+        if os.clock() - last < 0.05 then return end
+        last = os.clock()
+
+        local char = Player.Character
+        if not char then return end
+        local tool = char:FindFirstChildOfClass("Tool")
+        if not tool or tool.ToolTip == "Gun" then return end
+
+        local base, targets = Collect()
+        if base and #targets > 0 then
+            pcall(function()
+                RegisterAttack:FireServer(0)
+                RegisterHit:FireServer(base, targets)
+            end)
+        end
+    end)
+end
 
