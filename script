@@ -1,5 +1,5 @@
 
-_G.FastAttack = true
+_G.FastAttack = false
 
 
 
