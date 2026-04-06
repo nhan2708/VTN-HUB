@@ -1,6 +1,5 @@
-
 local fenv = getfenv()
-local _v = task.wait(LastCombatTime)
+local _v = task.wait(0)
 local _v1 = game:IsLoaded()
 local genv = getgenv()
 local _ = genv.NightMysticConfig
@@ -36,26 +35,26 @@ local AutoBounty = {
     Movement = {FlySpeed = 350, SkyHeight = 2500},
     Skill = {
         Fruit = {
-            C = {Enabled = true, Hold = LastCombatTime.1, Wait = LastCombatTime.4},
-            V = {Enabled = true, Hold = LastCombatTime.1, Wait = LastCombatTime.4},
-            X = {Enabled = true, Hold = LastCombatTime.1, Wait = LastCombatTime.4},
-            Z = {Enabled = true, Hold = LastCombatTime.1, Wait = LastCombatTime.4}
+            C = {Enabled = true, Hold = 0.1, Wait = 0.4},
+            V = {Enabled = true, Hold = 0.1, Wait = 0.4},
+            X = {Enabled = true, Hold = 0.1, Wait = 0.4},
+            Z = {Enabled = true, Hold = 0.1, Wait = 0.4}
         },
         Gun = {
-            X = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3},
-            Z = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3}
+            X = {Enabled = true, Hold = 0.05, Wait = 0.3},
+            Z = {Enabled = true, Hold = 0.05, Wait = 0.3}
         },
         Melee = {
-            C = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3},
-            X = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3},
-            Z = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3}
+            C = {Enabled = true, Hold = 0.05, Wait = 0.3},
+            X = {Enabled = true, Hold = 0.05, Wait = 0.3},
+            Z = {Enabled = true, Hold = 0.05, Wait = 0.3}
         },
         Sword = {
-            X = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3},
-            Z = {Enabled = true, Hold = LastCombatTime.05, Wait = LastCombatTime.3}
+            X = {Enabled = true, Hold = 0.05, Wait = 0.3},
+            Z = {Enabled = true, Hold = 0.05, Wait = 0.3}
         }
     },
-    Stick = {Back = 3.5, Height = 1.2, Smooth = LastCombatTime.6},
+    Stick = {Back = 3.5, Height = 1.2, Smooth = 0.6},
     Target = {MaxDistance = 30000}
 }
 local blureffect = Instance.new("BlurEffect")
@@ -75,28 +74,28 @@ gui.Parent = CoreGui
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 frame.Name = "MainFrame"
 frame.Parent = gui
-frame.AnchorPoint = Vector2.new(LastCombatTime.5, LastCombatTime.5)
-frame.BackgroundColor3 = Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime)
-frame.Position = UDim2.new(LastCombatTime.5, LastCombatTime, LastCombatTime.42, LastCombatTime)
-frame.Size = UDim2.new(LastCombatTime, 300, LastCombatTime, 380)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+frame.Position = UDim2.new(0.5, 0, 0.42, 0)
+frame.Size = UDim2.new(0, 300, 0, 380)
 frame.Active = true
 frame.Draggable = false
-corner.CornerRadius = UDim.new(LastCombatTime, 10)
+corner.CornerRadius = UDim.new(0, 10)
 corner.Parent = frame
 label.Name = "Logo"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime.5, -140, LastCombatTime.05, LastCombatTime)
-label.Size = UDim2.new(LastCombatTime, 280, LastCombatTime, 110)
+label.Position = UDim2.new(0.5, -140, 0.05, 0)
+label.Size = UDim2.new(0, 280, 0, 110)
 label.Image = "rbxassetid://134827121069757"
 label.ScaleType = Enum.ScaleType.Fit
 label.Name = "BountyLabel"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime.32, LastCombatTime)
-label.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 25)
+label.Position = UDim2.new(0, 0, 0.32, 0)
+label.Size = UDim2.new(1, 0, 0, 25)
 label.Font = Enum.Font.GothamMedium
 label.Text = "Bounty Earned"
 label.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -105,30 +104,30 @@ label.Name = "BountyValue"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime.39, LastCombatTime)
-label.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 25)
+label.Position = UDim2.new(0, 0, 0.39, 0)
+label.Size = UDim2.new(1, 0, 0, 25)
 label.Font = Enum.Font.Gotham
-label.Text = "LastCombatTime"
+label.Text = "0"
 label.TextColor3 = Color3.fromRGB(200, 200, 200)
 label.TextSize = 18
 frame.Name = "Sep1"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-frame.BorderSizePixel = LastCombatTime
-frame.Position = UDim2.new(LastCombatTime.2, LastCombatTime, LastCombatTime.47, LastCombatTime)
-frame.Size = UDim2.new(LastCombatTime.6, LastCombatTime, LastCombatTime, 2)
+frame.BorderSizePixel = 0
+frame.Position = UDim2.new(0.2, 0, 0.47, 0)
+frame.Size = UDim2.new(0.6, 0, 0, 2)
 uigradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(LastCombatTime, Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime)),
-    ColorSequenceKeypoint.new(LastCombatTime.5, Color3.fromRGB(180, LastCombatTime, LastCombatTime)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
 })
 uigradient.Parent = frame
 label.Name = "TotalLabel"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime.53, LastCombatTime)
-label.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 25)
+label.Position = UDim2.new(0, 0, 0.53, 0)
+label.Size = UDim2.new(1, 0, 0, 25)
 label.Font = Enum.Font.GothamMedium
 label.Text = "Total Bounty"
 label.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -137,8 +136,8 @@ label.Name = "TotalValue"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime.6, LastCombatTime)
-label.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 25)
+label.Position = UDim2.new(0, 0, 0.6, 0)
+label.Size = UDim2.new(1, 0, 0, 25)
 label.Font = Enum.Font.Gotham
 label.Text = "Loading..."
 label.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -146,42 +145,42 @@ label.TextSize = 18
 frame.Name = "Sep2"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-frame.BorderSizePixel = LastCombatTime
-frame.Position = UDim2.new(LastCombatTime.2, LastCombatTime, LastCombatTime.68, LastCombatTime)
-frame.Size = UDim2.new(LastCombatTime.6, LastCombatTime, LastCombatTime, 2)
+frame.BorderSizePixel = 0
+frame.Position = UDim2.new(0.2, 0, 0.68, 0)
+frame.Size = UDim2.new(0.6, 0, 0, 2)
 uigradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(LastCombatTime, Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime)),
-    ColorSequenceKeypoint.new(LastCombatTime.5, Color3.fromRGB(180, LastCombatTime, LastCombatTime)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
 })
 uigradient.Parent = frame
 frame.Name = "ButtonContainer"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime.78, LastCombatTime)
-frame.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 50)
+frame.Position = UDim2.new(0, 0, 0.78, 0)
+frame.Size = UDim2.new(1, 0, 0, 50)
 layout.Parent = frame
 layout.FillDirection = Enum.FillDirection.Horizontal
 layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.VerticalAlignment = Enum.VerticalAlignment.Center
-layout.Padding = UDim.new(LastCombatTime, 30)
+layout.Padding = UDim.new(0, 30)
 button.Name = "HopButton"
 button.Parent = frame
 button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 button.BackgroundTransparency = 1
 button.LayoutOrder = 1
-button.Size = UDim2.new(LastCombatTime, 35, LastCombatTime, 35)
+button.Size = UDim2.new(0, 35, 0, 35)
 button.Image = "rbxassetid://15000801352"
 button.ImageColor3 = Color3.fromRGB(255, 255, 255)
 label.Name = "Label"
 label.Parent = button
-label.AnchorPoint = Vector2.new(LastCombatTime.5, LastCombatTime)
+label.AnchorPoint = Vector2.new(0.5, 0)
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime.5, LastCombatTime, 1, 2)
-label.Size = UDim2.new(LastCombatTime, 50, LastCombatTime, 15)
+label.Position = UDim2.new(0.5, 0, 1, 2)
+label.Size = UDim2.new(0, 50, 0, 15)
 label.Font = Enum.Font.Gotham
 label.Text = "Server Hop"
 label.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -191,16 +190,16 @@ button.Parent = frame
 button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 button.BackgroundTransparency = 1
 button.LayoutOrder = 2
-button.Size = UDim2.new(LastCombatTime, 35, LastCombatTime, 35)
+button.Size = UDim2.new(0, 35, 0, 35)
 button.Image = "rbxassetid://101192191207677"
 button.ImageColor3 = Color3.fromRGB(255, 255, 255)
 label.Name = "Label"
 label.Parent = button
-label.AnchorPoint = Vector2.new(LastCombatTime.5, LastCombatTime)
+label.AnchorPoint = Vector2.new(0.5, 0)
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime.5, LastCombatTime, 1, 2)
-label.Size = UDim2.new(LastCombatTime, 50, LastCombatTime, 15)
+label.Position = UDim2.new(0.5, 0, 1, 2)
+label.Size = UDim2.new(0, 50, 0, 15)
 label.Font = Enum.Font.Gotham
 label.Text = "Discord"
 label.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -210,16 +209,16 @@ button.Parent = frame
 button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 button.BackgroundTransparency = 1
 button.LayoutOrder = 3
-button.Size = UDim2.new(LastCombatTime, 35, LastCombatTime, 35)
+button.Size = UDim2.new(0, 35, 0, 35)
 button.Image = "rbxassetid://15480040231"
 button.ImageColor3 = Color3.fromRGB(255, 255, 255)
 label.Name = "Label"
 label.Parent = button
-label.AnchorPoint = Vector2.new(LastCombatTime.5, LastCombatTime)
+label.AnchorPoint = Vector2.new(0.5, 0)
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime.5, LastCombatTime, 1, 2)
-label.Size = UDim2.new(LastCombatTime, 50, LastCombatTime, 15)
+label.Position = UDim2.new(0.5, 0, 1, 2)
+label.Size = UDim2.new(0, 50, 0, 15)
 label.Font = Enum.Font.Gotham
 label.Text = "Skip Player"
 label.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -231,34 +230,34 @@ gui.Parent = CoreGui
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 frame.Name = "MainFrame"
 frame.Parent = gui
-frame.BackgroundColor3 = Color3.fromRGB(5, LastCombatTime, LastCombatTime)
-frame.BackgroundTransparency = LastCombatTime.15
-frame.Position = UDim2.new(LastCombatTime, 15, 1, -180)
-frame.Size = UDim2.new(LastCombatTime, 210, LastCombatTime, 140)
+frame.BackgroundColor3 = Color3.fromRGB(5, 0, 0)
+frame.BackgroundTransparency = 0.15
+frame.Position = UDim2.new(0, 15, 1, -180)
+frame.Size = UDim2.new(0, 210, 0, 140)
 frame.Active = true
 frame.Draggable = true
-corner.CornerRadius = UDim.new(LastCombatTime, 6)
+corner.CornerRadius = UDim.new(0, 6)
 corner.Parent = frame
 frame.Name = "TopBar"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-frame.BackgroundTransparency = LastCombatTime
-frame.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 24)
-frame.BorderSizePixel = LastCombatTime
-corner.CornerRadius = UDim.new(LastCombatTime, 6)
+frame.BackgroundTransparency = 0
+frame.Size = UDim2.new(1, 0, 0, 24)
+frame.BorderSizePixel = 0
+corner.CornerRadius = UDim.new(0, 6)
 corner.Parent = frame
 frame.Name = "BottomCover"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-frame.BorderSizePixel = LastCombatTime
-frame.Position = UDim2.new(LastCombatTime, LastCombatTime, 1, -6)
-frame.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 6)
+frame.BorderSizePixel = 0
+frame.Position = UDim2.new(0, 0, 1, -6)
+frame.Size = UDim2.new(1, 0, 0, 6)
 label.Name = "Title"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 8, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(LastCombatTime, 180, 1, LastCombatTime)
+label.Position = UDim2.new(0, 8, 0, 0)
+label.Size = UDim2.new(0, 180, 1, 0)
 label.Font = Enum.Font.GothamBold
 label.Text = "Night Mystic - Status"
 label.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -268,55 +267,55 @@ button.Name = "CloseButton"
 button.Parent = frame
 button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 button.BackgroundTransparency = 1
-button.Position = UDim2.new(1, -24, LastCombatTime, LastCombatTime)
-button.Size = UDim2.new(LastCombatTime, 24, 1, LastCombatTime)
+button.Position = UDim2.new(1, -24, 0, 0)
+button.Size = UDim2.new(0, 24, 1, 0)
 button.Font = Enum.Font.GothamBold
 button.Text = "X"
-button.TextColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
+button.TextColor3 = Color3.fromRGB(255, 0, 0)
 button.TextSize = 11
 frame.Name = "Separator"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-frame.BorderSizePixel = LastCombatTime
-frame.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 24)
-frame.Size = UDim2.new(1, LastCombatTime, LastCombatTime, 1)
+frame.BorderSizePixel = 0
+frame.Position = UDim2.new(0, 0, 0, 24)
+frame.Size = UDim2.new(1, 0, 0, 1)
 uigradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(LastCombatTime, Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime)),
-    ColorSequenceKeypoint.new(LastCombatTime.5, Color3.fromRGB(255, LastCombatTime, LastCombatTime)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(LastCombatTime, LastCombatTime, LastCombatTime))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
 })
 uigradient.Parent = frame
 frame.Name = "ContentFrame"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 26)
-frame.Size = UDim2.new(1, LastCombatTime, 1, -26)
+frame.Position = UDim2.new(0, 0, 0, 26)
+frame.Size = UDim2.new(1, 0, 1, -26)
 layout.Parent = frame
 layout.SortOrder = Enum.SortOrder.LayoutOrder
-layout.Padding = UDim.new(LastCombatTime, 2)
+layout.Padding = UDim.new(0, 2)
 uipadding.Parent = frame
-uipadding.PaddingLeft = UDim.new(LastCombatTime, 8)
-uipadding.PaddingTop = UDim.new(LastCombatTime, 4)
+uipadding.PaddingLeft = UDim.new(0, 8)
+uipadding.PaddingTop = UDim.new(0, 4)
 frame.Name = "Row"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Size = UDim2.new(1, -16, LastCombatTime, 16)
+frame.Size = UDim2.new(1, -16, 0, 16)
 label.Name = "Icon"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Size = UDim2.new(LastCombatTime, 14, LastCombatTime, 14)
+label.Size = UDim2.new(0, 14, 0, 14)
 label.Image = "rbxassetid://11419719540"
-label.ImageColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 1)
+label.ImageColor3 = Color3.fromRGB(255, 0, 0)
+label.Position = UDim2.new(0, 0, 0, 1)
 label.Name = "Label"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 20, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(1, -20, 1, LastCombatTime)
+label.Position = UDim2.new(0, 20, 0, 0)
+label.Size = UDim2.new(1, -20, 1, 0)
 label.Font = Enum.Font.Gotham
 label.Text = "Target: None"
 label.TextColor3 = Color3.fromRGB(220, 220, 220)
@@ -327,23 +326,23 @@ frame.Name = "Row"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Size = UDim2.new(1, -16, LastCombatTime, 16)
+frame.Size = UDim2.new(1, -16, 0, 16)
 label.Name = "Icon"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Size = UDim2.new(LastCombatTime, 14, LastCombatTime, 14)
+label.Size = UDim2.new(0, 14, 0, 14)
 label.Image = "rbxassetid://11419719540"
-label.ImageColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 1)
+label.ImageColor3 = Color3.fromRGB(255, 0, 0)
+label.Position = UDim2.new(0, 0, 0, 1)
 label.Name = "Label"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 20, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(1, -20, 1, LastCombatTime)
+label.Position = UDim2.new(0, 20, 0, 0)
+label.Size = UDim2.new(1, -20, 1, 0)
 label.Font = Enum.Font.Gotham
-label.Text = "Target Bounty: LastCombatTime"
+label.Text = "Target Bounty: 0"
 label.TextColor3 = Color3.fromRGB(220, 220, 220)
 label.TextSize = 10
 label.TextXAlignment = Enum.TextXAlignment.Left
@@ -351,23 +350,23 @@ frame.Name = "Row"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Size = UDim2.new(1, -16, LastCombatTime, 16)
+frame.Size = UDim2.new(1, -16, 0, 16)
 label.Name = "Icon"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Size = UDim2.new(LastCombatTime, 14, LastCombatTime, 14)
+label.Size = UDim2.new(0, 14, 0, 14)
 label.Image = "rbxassetid://11419719540"
-label.ImageColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 1)
+label.ImageColor3 = Color3.fromRGB(255, 0, 0)
+label.Position = UDim2.new(0, 0, 0, 1)
 label.Name = "Label"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 20, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(1, -20, 1, LastCombatTime)
+label.Position = UDim2.new(0, 20, 0, 0)
+label.Size = UDim2.new(1, -20, 1, 0)
 label.Font = Enum.Font.Gotham
-label.Text = "My Bounty: LastCombatTime"
+label.Text = "My Bounty: 0"
 label.TextColor3 = Color3.fromRGB(220, 220, 220)
 label.TextSize = 10
 label.TextXAlignment = Enum.TextXAlignment.Left
@@ -375,23 +374,23 @@ frame.Name = "Row"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Size = UDim2.new(1, -16, LastCombatTime, 16)
+frame.Size = UDim2.new(1, -16, 0, 16)
 label.Name = "Icon"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Size = UDim2.new(LastCombatTime, 14, LastCombatTime, 14)
+label.Size = UDim2.new(0, 14, 0, 14)
 label.Image = "rbxassetid://11419719540"
-label.ImageColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 1)
+label.ImageColor3 = Color3.fromRGB(255, 0, 0)
+label.Position = UDim2.new(0, 0, 0, 1)
 label.Name = "Label"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 20, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(1, -20, 1, LastCombatTime)
+label.Position = UDim2.new(0, 20, 0, 0)
+label.Size = UDim2.new(1, -20, 1, 0)
 label.Font = Enum.Font.Gotham
-label.Text = "Fps: LastCombatTime Ping: LastCombatTime ms"
+label.Text = "Fps: 0 Ping: 0 ms"
 label.TextColor3 = Color3.fromRGB(220, 220, 220)
 label.TextSize = 10
 label.TextXAlignment = Enum.TextXAlignment.Left
@@ -399,21 +398,21 @@ frame.Name = "Row"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Size = UDim2.new(1, -16, LastCombatTime, 16)
+frame.Size = UDim2.new(1, -16, 0, 16)
 label.Name = "Icon"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Size = UDim2.new(LastCombatTime, 14, LastCombatTime, 14)
+label.Size = UDim2.new(0, 14, 0, 14)
 label.Image = "rbxassetid://11419719540"
-label.ImageColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 1)
+label.ImageColor3 = Color3.fromRGB(255, 0, 0)
+label.Position = UDim2.new(0, 0, 0, 1)
 label.Name = "Label"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 20, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(1, -20, 1, LastCombatTime)
+label.Position = UDim2.new(0, 20, 0, 0)
+label.Size = UDim2.new(1, -20, 1, 0)
 label.Font = Enum.Font.Gotham
 label.Text = "Time Played: 00:00:00"
 label.TextColor3 = Color3.fromRGB(220, 220, 220)
@@ -423,21 +422,21 @@ frame.Name = "Row"
 frame.Parent = frame
 frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BackgroundTransparency = 1
-frame.Size = UDim2.new(1, -16, LastCombatTime, 16)
+frame.Size = UDim2.new(1, -16, 0, 16)
 label.Name = "Icon"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Size = UDim2.new(LastCombatTime, 14, LastCombatTime, 14)
+label.Size = UDim2.new(0, 14, 0, 14)
 label.Image = "rbxassetid://11419719540"
-label.ImageColor3 = Color3.fromRGB(255, LastCombatTime, LastCombatTime)
-label.Position = UDim2.new(LastCombatTime, LastCombatTime, LastCombatTime, 1)
+label.ImageColor3 = Color3.fromRGB(255, 0, 0)
+label.Position = UDim2.new(0, 0, 0, 1)
 label.Name = "Label"
 label.Parent = frame
 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime, 20, LastCombatTime, LastCombatTime)
-label.Size = UDim2.new(1, -20, 1, LastCombatTime)
+label.Position = UDim2.new(0, 20, 0, 0)
+label.Size = UDim2.new(1, -20, 1, 0)
 label.Font = Enum.Font.Gotham
 label.Text = "Server Uptime: 00:00:00"
 label.TextColor3 = Color3.fromRGB(220, 220, 220)
@@ -460,32 +459,32 @@ gui.DisplayOrder = 10
 gui.ResetOnSpawn = false
 frame.Name = "dut dit"
 frame.Parent = gui
-frame.AnchorPoint = Vector2.new(LastCombatTime.1, LastCombatTime.1)
+frame.AnchorPoint = Vector2.new(0.1, 0.1)
 frame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-frame.BackgroundTransparency = LastCombatTime.3
-frame.Position = UDim2.new(LastCombatTime, 20, LastCombatTime.1, -6)
-frame.Size = UDim2.new(LastCombatTime, 50, LastCombatTime, 50)
+frame.BackgroundTransparency = 0.3
+frame.Position = UDim2.new(0, 20, 0.1, -6)
+frame.Size = UDim2.new(0, 50, 0, 50)
 frame.Active = true
 frame.Draggable = true
-corner.CornerRadius = UDim.new(1, LastCombatTime)
+corner.CornerRadius = UDim.new(1, 0)
 corner.Parent = frame
 label.Parent = frame
-label.AnchorPoint = Vector2.new(LastCombatTime.5, LastCombatTime.5)
+label.AnchorPoint = Vector2.new(0.5, 0.5)
 label.BackgroundTransparency = 1
-label.Position = UDim2.new(LastCombatTime.5, LastCombatTime, LastCombatTime.5, LastCombatTime)
-label.Size = UDim2.new(LastCombatTime, 40, LastCombatTime, 40)
+label.Position = UDim2.new(0.5, 0, 0.5, 0)
+label.Size = UDim2.new(0, 40, 0, 40)
 label.Image = "rbxassetid://105245380363493"
 button.Parent = frame
 button.BackgroundTransparency = 1
-button.Size = UDim2.new(1, LastCombatTime, 1, LastCombatTime)
+button.Size = UDim2.new(1, 0, 1, 0)
 button.Font = Enum.Font.SourceSans
 button.Text = ""
 button.TextColor3 = Color3.fromRGB(27, 42, 53)
 local _ = fenv.dCCFu5mmqOQ4HW
-local _v4 = TweenService:Create(frame, TweenInfo.new(LastCombatTime.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = LastCombatTime.5})
-local _v5 = TweenService:Create(frame, TweenInfo.new(LastCombatTime.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = LastCombatTime.3})
+local _v4 = TweenService:Create(frame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.5})
+local _v5 = TweenService:Create(frame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.3})
 local onMouseButton1Down = button.MouseButton1Down:Connect(function(...)
-    local udim2 = TweenService:Create(label, TweenInfo.new(LastCombatTime.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(LastCombatTime, 30, LastCombatTime, 30)})
+    local udim2 = TweenService:Create(label, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 30, 0, 30)})
     local _v10 = udim2:Play()
     local _v11 = _v4:Play()
     gui.Enabled = false
@@ -501,7 +500,7 @@ local onClick = button.MouseButton1Click:Connect(function()
 end)
 local onClick = button.MouseButton1Click:Connect(function()
     label.Text = "Searching..."
-    local _v12 = game:HttpGet((https://games.roblox.com/v1/games/ .. (game.PlaceId .. /servers/Public?sortOrder=Desc&limit=100)))
+    local _v12 = game:HttpGet("https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Desc&limit=100")
     local _ = fenv.Y4Plfy3vaMvSg
     local _v13 = HttpService:JSONDecode(_v12)
 end)
@@ -516,27 +515,27 @@ local _v6 = require(ReplicatedStorage.Util.CameraShaker)
 local _v7 = _v6:Stop()
 local _ = fenv.oEwIdqIokp6FIe
 local _v = task.spawn(function(...)
-    task.wait(LastCombatTime.25)
+    task.wait(0.25)
     local _v14 = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     local _v15 = Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-    task.wait(LastCombatTime.25)
+    task.wait(0.25)
     local _v16 = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     local _v17 = Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-    task.wait(LastCombatTime.25)
+    task.wait(0.25)
     local _v18 = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     local _v19 = Players.LocalPlayer.Character:FindFirstChild("Humanoid")
 end)
-local LastCombatTime = LastCombatTime
+local LastCombatTime = 0
 local _v = task.spawn(function(...)
-    task.wait(LastCombatTime)
+    task.wait(0)
 end)
 local onStepped = RunService.Stepped:Connect(function(deltaTime)
     local _v333350 = Players.LocalPlayer.Character:GetDescendants()
 end)
 local onIdled = Players.LocalPlayer.Idled:Connect(function(...)
-    local _v333351 = VirtualUser:Button2Down(Vector2.new(LastCombatTime, LastCombatTime), workspace.CurrentCamera.CFrame)
+    local _v333351 = VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     task.wait(1)
-    local _v333352 = VirtualUser:Button2Up(Vector2.new(LastCombatTime, LastCombatTime), workspace.CurrentCamera.CFrame)
+    local _v333352 = VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     local _ = fenv.rSn4B2qX1bo4
 end)
 local _v8 = ReplicatedStorage.Remotes.CommF_:InvokeServer(ReplicatedStorage.Remotes.CommF_, "EnablePvp")
