@@ -1,9 +1,6 @@
 
 _G.FastAttack = true
 
-        end
-    end
-end)
 
 
 if _G.FastAttack then
