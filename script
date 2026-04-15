@@ -9285,3 +9285,67 @@ Tabs.Setting:AddButton({
         collectgarbage("collect")
     end
 })
+
+-- ==========================================
+-- [ KÉO THẢ NÚT THU NHỎ UI ]
+-- ==========================================
+task.spawn(function()
+    local UserInputService = game:GetService("UserInputService")
+    local CoreGui = game:GetService("CoreGui")
+    
+    -- Đợi vài giây để UI load xong hoàn toàn
+    task.wait(3)
+    
+    pcall(function()
+        -- Tìm kiếm màn hình UI do Fluent tạo ra (thường nằm trong CoreGui)
+        local screenGui = CoreGui:FindFirstChild("ScreenGui")
+        if not screenGui then return end
+        
+        -- Nút thu nhỏ của Fluent thường là một ImageButton nằm lẻ loi
+        local minimizeButton = nil
+        for _, obj in pairs(screenGui:GetChildren()) do
+            if obj:IsA("ImageButton") then
+                minimizeButton = obj
+                break
+            end
+        end
+
+        if minimizeButton then
+            local dragging
+            local dragInput
+            local dragStart
+            local startPos
+
+            local function update(input)
+                local delta = input.Position - dragStart
+                minimizeButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            end
+
+            minimizeButton.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    dragging = true
+                    dragStart = input.Position
+                    startPos = minimizeButton.Position
+                    
+                    input.Changed:Connect(function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            dragging = false
+                        end
+                    end)
+                end
+            end)
+
+            minimizeButton.InputChanged:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                    dragInput = input
+                end
+            end)
+
+            UserInputService.InputChanged:Connect(function(input)
+                if input == dragInput and dragging then
+                    update(input)
+                end
+            end)
+        end
+    end)
+end)
