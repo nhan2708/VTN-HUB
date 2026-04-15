@@ -118,7 +118,7 @@ Window = Fluent:CreateWindow({
     Theme="Black",
     Acrylic=false,
     Size=UDim2.fromOffset(530, 350), 
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.F1
 })
 local Tabs = {
 
@@ -856,13 +856,29 @@ NameMon="Sea Chanter"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(10619.5537, -2080.86304, 10101.917)
 
-elseif Lv>=2675 or SelectMonster=="Ocean Prophet" then
+elseif Lv>=2675 or Lv<=2699 or SelectMonster=="Ocean Prophet" then
 Ms="Ocean Prophet"
 NameQuest="SubmergedQuest2"
 QuestLv=2
 NameMon="Ocean Prophet"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(11042.5303, -1979.76855, 10198.8184)
+
+elseif Lv >= 2700 and Lv <= 2724 or SelectMonster=="High Disciple" then
+Ms = "High Disciple"
+QuestLv = 1
+NameQuest = "SubmergedQuest3"
+NameMon = "High Disciple"
+CFrameQ = CFrame.new(9636.52441, -1992.19507, 9609.52832)
+CFrameMon = CFrame.new(9828.087890625, -1940.9089355469, 9693.0634765625)
+
+elseif Lv >= 2725 and Lv <= 2800 or SelectMonster=="Grand Devotee" then
+Ms = "Grand Devotee"
+QuestLv = 2
+NameQuest = "SubmergedQuest3"
+NameMon = "Grand Devotee"
+CFrameQ = CFrame.new(9636.52441, -1992.19507, 9609.52832)
+CFrameMon = CFrame.new(9557.5849609375, -1928.0404052734, 9859.1826171875)
 
 end
 end
@@ -2441,8 +2457,8 @@ Button.MouseButton1Click:Connect(function()
     local VirtualInputManager = game:GetService("VirtualInputManager")
     if VirtualInputManager then
         task.defer(function()
-            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
-            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.LeftControl, false, game)
+            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.F1, false, game)
+            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.F1, false, game)
         end)
     end
 end)
@@ -9285,67 +9301,3 @@ Tabs.Setting:AddButton({
         collectgarbage("collect")
     end
 })
-
--- ==========================================
--- [ KÉO THẢ NÚT THU NHỎ UI ]
--- ==========================================
-task.spawn(function()
-    local UserInputService = game:GetService("UserInputService")
-    local CoreGui = game:GetService("CoreGui")
-    
-    -- Đợi vài giây để UI load xong hoàn toàn
-    task.wait(3)
-    
-    pcall(function()
-        -- Tìm kiếm màn hình UI do Fluent tạo ra (thường nằm trong CoreGui)
-        local screenGui = CoreGui:FindFirstChild("ScreenGui")
-        if not screenGui then return end
-        
-        -- Nút thu nhỏ của Fluent thường là một ImageButton nằm lẻ loi
-        local minimizeButton = nil
-        for _, obj in pairs(screenGui:GetChildren()) do
-            if obj:IsA("ImageButton") then
-                minimizeButton = obj
-                break
-            end
-        end
-
-        if minimizeButton then
-            local dragging
-            local dragInput
-            local dragStart
-            local startPos
-
-            local function update(input)
-                local delta = input.Position - dragStart
-                minimizeButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            end
-
-            minimizeButton.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                    dragging = true
-                    dragStart = input.Position
-                    startPos = minimizeButton.Position
-                    
-                    input.Changed:Connect(function()
-                        if input.UserInputState == Enum.UserInputState.End then
-                            dragging = false
-                        end
-                    end)
-                end
-            end)
-
-            minimizeButton.InputChanged:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-                    dragInput = input
-                end
-            end)
-
-            UserInputService.InputChanged:Connect(function(input)
-                if input == dragInput and dragging then
-                    update(input)
-                end
-            end)
-        end
-    end)
-end)
