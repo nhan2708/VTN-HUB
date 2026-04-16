@@ -56,6 +56,8 @@ end
 
 local lastClick = 0
 
+local lastClick = 0
+
 function AttackNoCoolDown()
     local character = lp.Character
     if not character then return end
@@ -78,13 +80,14 @@ function AttackNoCoolDown()
             equippedWeapon:Activate()
         end)
 
-        -- Đã đổi delay thành 0.175
+        -- Dùng VirtualInputManager thay cho VirtualUser
         if os.clock() - lastClick > 0.175 then
             lastClick = os.clock()
             pcall(function()
-                local VirtualUser = game:GetService("VirtualUser")
-                VirtualUser:CaptureController()
-                VirtualUser:ClickButton1(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                local vim = game:GetService("VirtualInputManager")
+                vim:SendMouseButtonEvent(0, 0, 0, true, game, 1)
+                task.wait(0.01)
+                vim:SendMouseButtonEvent(0, 0, 0, false, game, 1)
             end)
         end
         
@@ -114,7 +117,6 @@ function AttackNoCoolDown()
         end
     end
 end
-
 RunService.Heartbeat:Connect(function()
     if _G.FastAttack then
         AttackNoCoolDown()
