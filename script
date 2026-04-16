@@ -54,6 +54,8 @@ local function GetEnemiesInRange(range)
     return targets
 end
 
+local lastClick = 0
+
 function AttackNoCoolDown()
     local character = lp.Character
     if not character then return end
@@ -61,13 +63,19 @@ function AttackNoCoolDown()
     local equippedWeapon = character:FindFirstChildOfClass("Tool")
     if not equippedWeapon then return end
 
-    -- [ PHẦN SỬA LỖI: Ép game nhận diện click chuột cho Melee/Sword ]
+    -- Ép click chuột ảo (Giới hạn 10 lần/s để không bị game khóa dame)
     pcall(function()
         equippedWeapon:Activate()
-        VirtualUser:CaptureController()
-        VirtualUser:Button1Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+        if os.clock() - lastClick > 0.1 then
+            lastClick = os.clock()
+            task.spawn(function()
+                VirtualUser:CaptureController()
+                VirtualUser:Button1Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                task.wait(0.05)
+                VirtualUser:Button1Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            end)
+        end
     end)
-    -- ==============================================================
 
     if equippedWeapon:FindFirstChild("LeftClickRemote") then
         local enemies = GetEnemiesInRange(60)
