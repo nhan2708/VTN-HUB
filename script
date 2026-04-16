@@ -58,14 +58,16 @@ function AttackNoCoolDown()
     local character = lp.Character
     if not character then return end
     
-    local equippedWeapon = nil
-    for _, item in ipairs(character:GetChildren()) do
-        if item:IsA("Tool") then
-            equippedWeapon = item
-            break
-        end
-    end
+    local equippedWeapon = character:FindFirstChildOfClass("Tool")
     if not equippedWeapon then return end
+
+    -- [ PHẦN SỬA LỖI: Ép game nhận diện click chuột cho Melee/Sword ]
+    pcall(function()
+        equippedWeapon:Activate()
+        VirtualUser:CaptureController()
+        VirtualUser:Button1Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+    end)
+    -- ==============================================================
 
     if equippedWeapon:FindFirstChild("LeftClickRemote") then
         local enemies = GetEnemiesInRange(60)
@@ -118,7 +120,7 @@ Window = Fluent:CreateWindow({
     Theme="Black",
     Acrylic=false,
     Size=UDim2.fromOffset(530, 350), 
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.F1
 })
 local Tabs = {
 
@@ -856,13 +858,29 @@ NameMon="Sea Chanter"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(10619.5537, -2080.86304, 10101.917)
 
-elseif Lv>=2675 or SelectMonster=="Ocean Prophet" then
+elseif Lv>=2675 or Lv<=2699 or SelectMonster=="Ocean Prophet" then
 Ms="Ocean Prophet"
 NameQuest="SubmergedQuest2"
 QuestLv=2
 NameMon="Ocean Prophet"
 CFrameQ=CFrame.new(10884.9932, -2085.93896, 10033.3408)
 CFrameMon=CFrame.new(11042.5303, -1979.76855, 10198.8184)
+
+elseif Lv >= 2700 and Lv <= 2724 or SelectMonster=="High Disciple" then
+Ms = "High Disciple"
+QuestLv = 1
+NameQuest = "SubmergedQuest3"
+NameMon = "High Disciple"
+CFrameQ = CFrame.new(9636.52441, -1992.19507, 9609.52832)
+CFrameMon = CFrame.new(9828.087890625, -1940.9089355469, 9693.0634765625)
+
+elseif Lv >= 2725 and Lv <= 2800 or SelectMonster=="Grand Devotee" then
+Ms = "Grand Devotee"
+QuestLv = 2
+NameQuest = "SubmergedQuest3"
+NameMon = "Grand Devotee"
+CFrameQ = CFrame.new(9636.52441, -1992.19507, 9609.52832)
+CFrameMon = CFrame.new(9557.5849609375, -1928.0404052734, 9859.1826171875)
 
 end
 end
@@ -2441,8 +2459,8 @@ Button.MouseButton1Click:Connect(function()
     local VirtualInputManager = game:GetService("VirtualInputManager")
     if VirtualInputManager then
         task.defer(function()
-            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
-            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.LeftControl, false, game)
+            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.F1, false, game)
+            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.F1, false, game)
         end)
     end
 end)
@@ -2536,7 +2554,7 @@ end)
         if _G.AutoLevel then
         pcall(function()
           CheckLevel()
-          if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2") 
+          if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2" or NameQuest == "SubmergedQuest3") 
             and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > -1500 then
                 GoToSubmergedIsland()
           end
