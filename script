@@ -1,3 +1,8 @@
+repeat task.wait(1) until game:IsLoaded()
+repeat task.wait(1) until game:GetService("Players").LocalPlayer
+repeat task.wait(1) until game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+local gui = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("Main", 9e9)
+
 local Lighting = game:GetService("Lighting")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
@@ -56,72 +61,6 @@ end
 
 local lastClick = 0
 
-local lastClick = 0
-
-function AttackNoCoolDown()
-    local character = lp.Character
-    if not character then return end
-    
-    local equippedWeapon = character:FindFirstChildOfClass("Tool")
-    if not equippedWeapon then return end
-
-    if equippedWeapon:FindFirstChild("LeftClickRemote") then
-        local enemies = GetEnemiesInRange(60)
-        local attackCount = 1
-        for _, enemy in ipairs(enemies) do
-            local direction = (enemy.HumanoidRootPart.Position - character:GetPivot().Position).Unit
-            pcall(function()
-                equippedWeapon.LeftClickRemote:FireServer(direction, attackCount)
-            end)
-            attackCount = (attackCount >= 1e9) and 1 or (attackCount + 1)
-        end
-    else
-        pcall(function()
-            equippedWeapon:Activate()
-        end)
-
-        -- Dùng VirtualInputManager thay cho VirtualUser
-        if os.clock() - lastClick > 0.175 then
-            lastClick = os.clock()
-            pcall(function()
-                local vim = game:GetService("VirtualInputManager")
-                vim:SendMouseButtonEvent(0, 0, 0, true, game, 1)
-                task.wait(0.01)
-                vim:SendMouseButtonEvent(0, 0, 0, false, game, 1)
-            end)
-        end
-        
-        local enemies = workspace:FindFirstChild("Enemies")
-        if not enemies then return end
-        
-        local playerPos = character:GetPivot().Position
-        local targets = {}
-        local mainTarget = nil
-        
-        for _, enemy in ipairs(enemies:GetChildren()) do
-            if not enemy:GetAttribute("IsBoat") and IsEntityAlive(enemy) then
-                local head = enemy:FindFirstChild("Head")
-                if head and (playerPos - head.Position).Magnitude <= 60 then
-                    table.insert(targets, {enemy, head})
-                    mainTarget = head
-                end
-            end
-        end
-        
-        if mainTarget then
-            pcall(function()
-                local net = ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Net")
-                net:WaitForChild("RE/RegisterAttack"):FireServer(0)
-                net:WaitForChild("RE/RegisterHit"):FireServer(mainTarget, targets)
-            end)
-        end
-    end
-end
-RunService.Heartbeat:Connect(function()
-    if _G.FastAttack then
-        AttackNoCoolDown()
-    end
-end)
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 Window = Fluent:CreateWindow({
     Title = "VTN HUB [Premium]",
@@ -171,7 +110,7 @@ elseif placeId==100117331123089 then
 Sea3=true
 end
 
-TweenSpeed = 350 -- tốc độ bay
+TweenSpeed = 200 -- tốc độ bay
 
 function TweenNew(CF)
     local plr = game.Players.LocalPlayer
@@ -2100,8 +2039,11 @@ for i,v in pairs(game:GetService("Workspace").Map.MysticIsland:GetChildren()) do
 end
 end
 function Tween2(KG)
-    local Distance = (KG.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    local Speed = 350
+    local plr = game.Players.LocalPlayer -- Thêm dòng này để định nghĩa plr
+    local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end -- Thống nhất chống lỗi nếu nhân vật chưa load
+    local Distance = (KG.Position - hrp.Position).Magnitude
+    local Speed = 200
     local tweenInfo = TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear)
     local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, {
         CFrame = KG
@@ -2119,9 +2061,12 @@ function BKP(Point)
     task.wait()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Point
 end
-TweenSpeed = 350
+TweenSpeed = 200
 function Tween(KG)
-    local Distance = (KG.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+    local plr = game.Players.LocalPlayer -- Thêm dòng này
+    local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end -- Ngăn lỗi crash nếu người chơi chưa chọn phe (Hải tặc/Hải quân)
+    local Distance = (KG.Position - hrp.Position).Magnitude
     local Speed = TweenSpeed  
     local tweenInfo = TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear)
     local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, {
@@ -2208,83 +2153,6 @@ end
 local player = game.Players.LocalPlayer
 local player = game.Players.LocalPlayer
 
-function AttackNoCoolDown()
-    local character = player.Character
-    if not character then return end
-    
-    local equippedWeapon = nil
-    for _, item in ipairs(character:GetChildren()) do
-        if item:IsA("Tool") then
-            equippedWeapon = item
-            break
-        end
-    end
-    
-    if not equippedWeapon then return end
-
-    local function IsEntityAlive(entity)
-        local humanoid = entity and entity:FindFirstChild("Humanoid")
-        return humanoid and entity.Humanoid.Health > 0
-    end
-
-    local function GetEnemiesInRange(range)
-        local enemies = game:GetService("Workspace").Enemies:GetChildren()
-        local playerPos = character:GetPivot().Position
-        local targets = {}
-        
-        for _, enemy in ipairs(enemies) do
-            local primaryPart = enemy:FindFirstChild("HumanoidRootPart")
-            if primaryPart and IsEntityAlive(enemy) and (primaryPart.Position - playerPos).Magnitude <= range then
-                table.insert(targets, enemy)
-            end
-        end
-        return targets
-    end
-
-    if equippedWeapon:FindFirstChild("LeftClickRemote") then
-        local enemiesInRange = GetEnemiesInRange(60)
-        local attackCount = 1
-        
-        for _, enemy in ipairs(enemiesInRange) do
-            local direction = (enemy.HumanoidRootPart.Position - character:GetPivot().Position).Unit
-            pcall(function()
-                equippedWeapon.LeftClickRemote:FireServer(direction, attackCount)
-            end)
-            attackCount = attackCount + 1
-            if attackCount > 1000000000 then attackCount = 1 end
-        end
-    else
-        local enemies = game:GetService("Workspace").Enemies:GetChildren()
-        local playerPos = character:GetPivot().Position
-        local targets = {}
-        local mainTarget = nil
-        
-        for _, enemy in ipairs(enemies) do
-            if not enemy:GetAttribute("IsBoat") and IsEntityAlive(enemy) then
-                local head = enemy:FindFirstChild("Head")
-                if head and (playerPos - head.Position).Magnitude <= 60 then
-                    table.insert(targets, { enemy, head })
-                    mainTarget = head
-                end
-            end
-        end
-        
-        if not mainTarget then return end
-        
-        pcall(function()
-            local storage = game:GetService("ReplicatedStorage")
-            local attackEvent = storage:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterAttack")
-            local hitEvent = storage:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterHit")
-            
-            if #targets > 0 then
-                attackEvent:FireServer(1e-9)
-                hitEvent:FireServer(mainTarget, targets)
-            else
-                task.wait(1e-9)
-            end
-        end)
-    end
-end
 
 Type=1
 spawn(function()
@@ -2379,6 +2247,7 @@ end
 RunService.Heartbeat:Connect(function()
     if _G.FastAttack then
         AttackNoCoolDown()
+        task.wait(0.1)
     end
 end)
 
@@ -2568,42 +2437,82 @@ end)
             and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > -1500 then
                 GoToSubmergedIsland()
           end
-          if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==false then
-          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-          Tween(CFrameQ)
-          if (CFrameQ.Position-game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude<=5 then
-          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,QuestLv)
-          end
-          elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==true then
-          for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health>0 then
-          if v.Name==Ms then
-          repeat wait(_G.Fast_Delay)
-          AttackNoCoolDown()
-          bringmob=true
-          AutoHaki()
-          EquipTool(SelectWeapon)
-          Tween(v.HumanoidRootPart.CFrame*Pos)
-          v.HumanoidRootPart.Size=Vector3.new(60, 60, 60)
-          v.HumanoidRootPart.Transparency=1
-          v.Humanoid.JumpPower=0
-          v.Humanoid.WalkSpeed=0
-          v.HumanoidRootPart.CanCollide=false
-          FarmPos=v.HumanoidRootPart.CFrame
-          MonFarm=v.Name
-          until not _G.AutoLevel or not v.Parent or v.Humanoid.Health<=0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible==false
-          bringmob=true
-        end   
-          end
-          end
-          for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
-          if string.find(v.Name,NameMon) then
-          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position-v.Position).Magnitude>=10 then
-            Tween(v.HumanoidRootPart.CFrame*Pos)
-          end
-          end
-          end
-          end
+          
+          local questVisible = false
+                local QuestTitle = ""
+                pcall(function()
+                    questVisible = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible
+                    if questVisible then
+                        QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+                    end
+                end)
+
+                -- Nếu đang có quest KHÁC thì bỏ quest
+                if questVisible and QuestTitle ~= "" and not string.find(QuestTitle, NameMon) then
+                    bringmob = false
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+                    return
+                end
+
+                -- Chưa có quest → bay tới NPC nhận quest bằng Tween2 (giống di chuyển đảo)
+                if not questVisible then
+                    bringmob = false
+                    Tween2(CFrameQ)
+                    repeat task.wait(0.1) until (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 20 or not _G.AutoLevel
+                    wait(0.2)
+                    if (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 20 then
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+                        wait(0.3)
+                    end
+                    return
+                end
+
+                -- Đã có quest đúng → farm (dùng BKP để đứng cạnh quái, giống island travel)
+                if questVisible and string.find(QuestTitle, NameMon) then
+                local foundMob = false
+                if type(Ms) == "string" then
+                    for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart")
+                            and v.Humanoid.Health > 0 and v.Name == Ms then
+                            foundMob = true
+                            if not _fxEnabled then _fxEnabled = true; StartFXLoop() end
+                            repeat
+                                task.wait(_G.Fast_Delay)
+                                AttackNoCoolDown()
+                                bringmob = true
+                                AutoHaki()
+                                EquipTool(SelectWeapon)
+                                local _mobCF = v.HumanoidRootPart.CFrame * Pos
+                                if (_mobCF.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 5 then
+                                    BKP(_mobCF)
+                                end
+                                v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                v.HumanoidRootPart.Transparency = 1
+                                v.Humanoid.JumpPower = 0
+                                v.Humanoid.WalkSpeed = 0
+                                v.HumanoidRootPart.CanCollide = false
+                                pcall(function() v.Head.CanCollide = false end)
+                                FarmPos = v.HumanoidRootPart.CFrame
+                                MonFarm = v.Name
+                                local qv = false
+                                pcall(function() qv = game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible end)
+                            until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not qv
+                            bringmob = false
+                        end
+                    end
+                end
+
+                if not foundMob then
+                    bringmob = false
+                    -- Debug: mở F9 xem dòng này để biết Ms có khớp tên quái thật ngoài game không
+                    print(("[AutoLevel] Lv=%s Ms=%s NameMon=%s Quest=%s"):format(
+                        tostring(game:GetService("Players").LocalPlayer.Data.Level.Value),
+                        tostring(Ms), tostring(NameMon), tostring(QuestTitle)))
+                    if typeof(CFrameMon) == "CFrame" then
+                        Tween2(CFrameMon)
+                    end
+                end
+            end
           end)
         end
         end
@@ -2768,6 +2677,7 @@ spawn(function()
                 local ChestPosition = Nearest:GetPivot().Position
                 local CFrameTarget = CFrame.new(ChestPosition)
                 Tween2(CFrameTarget) 
+                task.wait(0.5)
             end
         end
     end
@@ -3836,7 +3746,7 @@ end)
     Options.ToggleSpawnCake:SetValue(true)
 end
 spawn(function()
-  while wait() do
+  while wait(1) do
     if _G.SpawnCakePrince then
       local args = {
         [1]="CakePrinceSpawner",
@@ -5998,7 +5908,7 @@ spawn(function()
                                 wait(1.5)
                                 game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
                                 wait(1.5)        
-                                Tweem(game:GetService("Workspace").Map.HellDimension.Torch2.CFrame)
+                                Tween(game:GetService("Workspace").Map.HellDimension.Torch2.CFrame)
                                 wait(1.5)
                                 game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
                                 wait(1.5)     
@@ -6582,7 +6492,7 @@ ToggleF:OnChanged(function(Value)
    SkillF=Value
     end)
 Options.ToggleF:SetValue(true)
-local Usser = Tabs.Info:AddParagraph({
+local User = Tabs.Info:AddParagraph({
     Title="Status",
     Content="VTN"..
         "Name : "..game.Players.LocalPlayer.DisplayName.." (@"..game.Players.LocalPlayer.Name..")\n"..
@@ -7318,7 +7228,7 @@ spawn(function()
                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StoreFruit","Flame-Flame",game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flame Fruit"))
                     end
                     if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falcon Fruit") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Falcon Fruit") then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StoreFruit","Falcon",game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("alcon Fruit"))
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StoreFruit","Falcon",game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Falcon Fruit"))
                     end
                     if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Ice Fruit") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Ice Fruit") then
                         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StoreFruit","Ice-Ice",game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Ice Fruit"))
