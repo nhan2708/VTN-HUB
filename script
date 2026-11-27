@@ -2069,12 +2069,25 @@ function Tween(KG)
     local Distance = (KG.Position - hrp.Position).Magnitude
     local Speed = TweenSpeed  
     local tweenInfo = TweenInfo.new(Distance / Speed, Enum.EasingStyle.Linear)
+    if CurrentFarmTween then pcall(function() CurrentFarmTween:Cancel() end) end
     local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, {
         CFrame = KG
     })
+    CurrentFarmTween = tween
     tween:Play()
     if _G.StopTween then
         tween:Cancel()
+    end
+end
+-- Dừng tween đang bay và giữ nhân vật đứng yên tại chỗ
+function StopCurrentTween()
+    if CurrentFarmTween then pcall(function() CurrentFarmTween:Cancel() end) end
+    CurrentFarmTween = nil
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.AssemblyAngularVelocity = Vector3.zero
     end
 end
 function EquipTool(ToolSe)
@@ -2762,6 +2775,7 @@ end)
     end)
     Options.ToggleLevel:SetValue(false)
     spawn(function()
+        local emptySince = nil
         while task.wait(0.25) do
             if _G.AutoLevel then
                 local success, err = pcall(function()
@@ -2780,10 +2794,10 @@ end)
 
                     if not NameMon or not CFrameQ or not CFrameMon then return end
 
-
-                    -- CHẶNG 1: chưa có đúng nhiệm vụ -> bỏ nhiệm vụ sai, bay về NPC nhận mới
+                    -- CHẶNG 1: nhiệm vụ chưa có / đã hoàn thành -> về NPC nhận nhiệm vụ mới theo list
                     if not LevelQuestValid() then
                         bringmob = false
+                        emptySince = nil
                         if HasAnyQuest() then
                             ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
                             task.wait(0.25)
@@ -2799,23 +2813,36 @@ end)
                         return
                     end
 
-                    -- CHẶNG 2: đã đúng nhiệm vụ -> tìm quái và đánh
-                    local target
+                    -- CHẶNG 2: tìm quái theo tên (Ms), chọn con gần nhất còn sống
+                    local target, bestDist
                     for _, v in ipairs(workspace.Enemies:GetChildren()) do
                         local h = v:FindFirstChildOfClass("Humanoid")
                         local r = v:FindFirstChild("HumanoidRootPart")
                         if v.Name == Ms and h and r and h.Health > 0 then
-                            target = v
-                            break
+                            local d = (r.Position - hrp.Position).Magnitude
+                            if not bestDist or d < bestDist then
+                                target, bestDist = v, d
+                            end
                         end
                     end
 
                     if target then
+                        emptySince = nil
                         local enemyHum = target:FindFirstChildOfClass("Humanoid")
                         local enemyRoot = target:FindFirstChild("HumanoidRootPart")
+                        local badChecks = 0
                         repeat
                             task.wait(_G.Fast_Delay or 0.1)
                             if not _G.AutoLevel then break end
+
+                            -- kiểm tra nhiệm vụ liên tục (cần 3 lần liên tiếp báo xong mới tính)
+                            if LevelQuestValid() then
+                                badChecks = 0
+                            else
+                                badChecks = badChecks + 1
+                                if badChecks >= 3 then break end
+                            end
+
                             AutoHaki()
                             EquipTool(SelectWeapon)
                             AttackNoCoolDown()
@@ -2833,9 +2860,23 @@ end)
                             end
                         end
                     else
-                        -- chưa thấy quái: tới điểm farm chờ spawn
+                        -- Hết quái theo tên: đứng yên tại chỗ, không bay sang bãi khác
                         bringmob = false
-                        Tween(CFrameMon)
+                        if getgenv().LevelGoToSpawnWhenEmpty then
+                            Tween(CFrameMon)
+                        else
+                            StopCurrentTween()
+                        end
+
+                        -- Chế độ "mù" (UI không báo quest): hết quái hồi lâu thì xem như quest xong
+                        local acc = LevelQuestAccepted
+                        if acc and not acc.uiSeen and (acc.kills or 0) > 0 then
+                            emptySince = emptySince or os.clock()
+                            if os.clock() - emptySince > 6 then
+                                acc.kills = getgenv().LevelQuestKills or 6
+                                emptySince = nil
+                            end
+                        end
                     end
                 end)
                 if not success then
@@ -2844,6 +2885,7 @@ end)
             else
                 bringmob = false
                 LevelQuestAccepted = nil
+                emptySince = nil
             end
         end
     end)
