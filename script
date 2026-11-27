@@ -2657,13 +2657,36 @@ function GetFarmEnemy(nameList)
     return nil
 end
 
-function QuestHasMob(mobName)
+-- Đọc tiêu đề quest từ TrackedQuestFrame (giống CheckQuest của file tham chiếu),
+-- dự phòng thêm Main.Quest cũ.
+function GetQuestText()
     local pg = lp:FindFirstChild("PlayerGui")
-    local main = pg and pg:FindFirstChild("Main")
-    local q = main and main:FindFirstChild("Quest")
-    if not q or not q.Visible then return false end
-    local ok, txt = pcall(function() return q.Container.QuestTitle.Title.Text end)
-    return ok and txt and string.find(txt, mobName, 1, true) ~= nil
+    if not pg then return "" end
+    local text = ""
+    local tracked = pg:FindFirstChild("TrackedQuestFrame")
+    local frame = tracked and tracked:FindFirstChild("Frame")
+    local header = frame and frame:FindFirstChild("header")
+    local outer = header and header:FindFirstChild("textLabel")
+    local inner = outer and outer:FindFirstChild("textLabel")
+    if inner and inner:IsA("TextLabel") then text = inner.Text or "" end
+    if text == "" then
+        local main = pg:FindFirstChild("Main")
+        local q = main and main:FindFirstChild("Quest")
+        if q and q.Visible then
+            local ok, txt = pcall(function() return q.Container.QuestTitle.Title.Text end)
+            if ok and txt then text = txt end
+        end
+    end
+    return text
+end
+
+function QuestHasMob(mobName)
+    local text = GetQuestText()
+    return text ~= "" and string.find(text, tostring(mobName), 1, true) ~= nil
+end
+
+function HasAnyQuest()
+    return GetQuestText() ~= ""
 end
 
 -- Kéo quái Bone về điểm cố định (BonesBring)
@@ -2723,15 +2746,11 @@ end)
 
                     if not NameMon or not CFrameQ or not CFrameMon then return end
 
-                    local playerGui = lp:FindFirstChild("PlayerGui")
-                    local mainGui = playerGui and playerGui:FindFirstChild("Main")
-                    local questGui = mainGui and mainGui:FindFirstChild("Quest")
-                    if not questGui then return end
 
                     -- CHẶNG 1: chưa có đúng nhiệm vụ -> bỏ nhiệm vụ sai, bay về NPC nhận mới
                     if not QuestHasMob(NameMon) then
                         bringmob = false
-                        if questGui.Visible then
+                        if HasAnyQuest() then
                             ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
                             task.wait(0.25)
                         end
@@ -3747,9 +3766,7 @@ spawn(function()
                 if not QuestHasMob("Demonic Soul") then
                     _G.BonesBring = false
                     bringmob = false
-                    local pg = lp:FindFirstChild("PlayerGui")
-                    local q = pg and pg:FindFirstChild("Main") and pg.Main:FindFirstChild("Quest")
-                    if q and q.Visible then
+                    if HasAnyQuest() then
                         ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
                         task.wait(0.25)
                     end
