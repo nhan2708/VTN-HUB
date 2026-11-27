@@ -2087,7 +2087,7 @@ function EquipTool(ToolSe)
    spawn(function()
             while task.wait() do
                 pcall(function()
-                    if _G.AutoEvoRace or _G.CastleRaid or _G.CollectAzure or _G.TweenToKitsune or _G.GhostShip or _G.Ship or _G.Auto_Holy_Torch or _G.TeleportPly or _G.Auto_Sea3 or _G.Auto_Sea2 or _G.Tweenfruit or _G.AutoFishCrew or _G.Auto_Saber or _G.AutoShark or _G.Auto_Warden or _G.Auto_RainbowHaki or AutoFarmRace or _G.AutoQuestRace or Auto_Law or AutoTushita or _G.AutoHolyTorch or _G.AutoTerrorshark or _G.farmpiranya or _G.Auto_MusketeerHat or _G.Auto_ObservationV2 or _G.AutoNear or _G.Auto_PoleV1 or _G.Auto_Buddy or _G.Ectoplasm or AutoEvoRace or AutoBartilo or _G.Auto_Canvander or _G.AutoLevel or _G.Auto_DualKatana or Auto_Quest_Yama_3 or Auto_Quest_Yama_2 or Auto_Quest_Yama_1 or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3  or _G.Clip2 or _G.Auto_Regoku or _G.AutoBone or _G.AutoBoneNoQuest or _G.AutoBoss or AutoFarmMasDevilFruit or AutoFarmMasGun or AutoHallowSycthe or AutoTushita or _G.Cake or _G.Auto_SkullGuitar or _G.AutoFarmSwan or _G.AutoEliteor or AutoNextIsland or Musketeer or _G.AutoMaterial or AutoFarmRaceQuest or _G.Factory or _G.Auto_Saw or _G.AutoFrozenDimension or _G.AutoKillTrial or _G.AutoUpgrade or _G.TweenToFrozenDimension then
+                    if _G.AutoEvoRace or _G.CastleRaid or _G.CollectAzure or _G.TweenToKitsune or _G.GhostShip or _G.Ship or _G.Auto_Holy_Torch or _G.TeleportPly or _G.Auto_Sea3 or _G.Auto_Sea2 or _G.Tweenfruit or _G.AutoFishCrew or _G.Auto_Saber or _G.AutoShark or _G.Auto_Warden or _G.Auto_RainbowHaki or AutoFarmRace or _G.AutoQuestRace or Auto_Law or AutoTushita or _G.AutoHolyTorch or _G.AutoTerrorshark or _G.farmpiranya or _G.Auto_MusketeerHat or _G.Auto_ObservationV2 or _G.AutoNear or _G.Auto_PoleV1 or _G.Auto_Buddy or _G.Ectoplasm or AutoEvoRace or AutoBartilo or _G.Auto_Canvander or _G.AutoLevel or _G.Auto_DualKatana or Auto_Quest_Yama_3 or Auto_Quest_Yama_2 or Auto_Quest_Yama_1 or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3  or _G.Clip2 or _G.Auto_Regoku or _G.AutoBone or _G.AutoBoneNoQuest or _G.AutoBoss or AutoFarmMasDevilFruit or AutoFarmMasGun or AutoHallowSycthe or AutoTushita or _G.Cake or _G.Auto_SkullGuitar or _G.AutoFarmSwan or _G.AutoElite or _G.AutoEliteor or AutoNextIsland or Musketeer or _G.AutoMaterial or AutoFarmRaceQuest or _G.Factory or _G.Auto_Saw or _G.AutoFrozenDimension or _G.AutoKillTrial or _G.AutoUpgrade or _G.TweenToFrozenDimension then
                         if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
                             local Noclip = Instance.new("BodyVelocity")
                             Noclip.Name="BodyClip"
@@ -2104,7 +2104,7 @@ function EquipTool(ToolSe)
 spawn(function()
   pcall(function()
     game:GetService("RunService").Stepped:Connect(function()
-      if _G.AutoEvoRace or _G.Auto_RainbowHaki or _G.Auto_SkullGuitar or _G.CastleRaid or _G.CollectAzure or _G.TweenToKitsune or _G.Auto_Sea3 or _G.Auto_Sea2 or _G.GhostShip or _G.Ship or _G.Auto_Holy_Torch or _G.TeleportPly or _G.Tweenfruit or _G.Auto_Saber or _G.Auto_PoleV1 or _G.Auto_MusketeerHat or _G.AutoFishCrew or _G.AutoShark or AutoFarmRace or _G.AutoQuestRace or _G.Auto_Warden or Auto_Law or _G.Auto_DualKatana or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3 or AutoTushita or _G.AutoHolyTorch or _G.Auto_Buddy or _G.AutoTerrorshark or _G.farmpiranya or Auto_Quest_Yama_3 or _G.Auto_ObservationV2 or Auto_Quest_Yama_2 or Auto_Quest_Yama_1 or _G.AutoNear or _G.Ectoplasm or AutoEvoRace or _G.AutoKillTrial or AutoBartilo or AutoFarmMasGun or _G.Auto_Regoku or _G.AutoLevel or _G.Clip2 or _G.AutoBone or _G.Auto_Canvander or _G.AutoBoneNoQuest or _G.AutoBoss or _G.Auto_Saw or AutoFarmMasDevilFruit or AutoHallowSycthe or AutoTushita or _G.Cake or _G.AutoFarmSwan or _G.AutoEliteor or AutoNextIsland or Musketeer or _G.AutoMaterial or _G.Factory or _G.AutoFrozenDimension or AutoFarmRaceQuest or _G.AutoUpgrade or _G.TweenToFrozenDimension then
+      if _G.AutoEvoRace or _G.Auto_RainbowHaki or _G.Auto_SkullGuitar or _G.CastleRaid or _G.CollectAzure or _G.TweenToKitsune or _G.Auto_Sea3 or _G.Auto_Sea2 or _G.GhostShip or _G.Ship or _G.Auto_Holy_Torch or _G.TeleportPly or _G.Tweenfruit or _G.Auto_Saber or _G.Auto_PoleV1 or _G.Auto_MusketeerHat or _G.AutoFishCrew or _G.AutoShark or AutoFarmRace or _G.AutoQuestRace or _G.Auto_Warden or Auto_Law or _G.Auto_DualKatana or Auto_Quest_Tushita_1 or Auto_Quest_Tushita_2 or Auto_Quest_Tushita_3 or AutoTushita or _G.AutoHolyTorch or _G.Auto_Buddy or _G.AutoTerrorshark or _G.farmpiranya or Auto_Quest_Yama_3 or _G.Auto_ObservationV2 or Auto_Quest_Yama_2 or Auto_Quest_Yama_1 or _G.AutoNear or _G.Ectoplasm or AutoEvoRace or _G.AutoKillTrial or AutoBartilo or AutoFarmMasGun or _G.Auto_Regoku or _G.AutoLevel or _G.Clip2 or _G.AutoBone or _G.Auto_Canvander or _G.AutoBoneNoQuest or _G.AutoBoss or _G.Auto_Saw or AutoFarmMasDevilFruit or AutoHallowSycthe or AutoTushita or _G.Cake or _G.AutoFarmSwan or _G.AutoElite or _G.AutoEliteor or AutoNextIsland or Musketeer or _G.AutoMaterial or _G.Factory or _G.AutoFrozenDimension or AutoFarmRaceQuest or _G.AutoUpgrade or _G.TweenToFrozenDimension then
       for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
       if v:IsA("BasePart") then
       v.CanCollide=false
@@ -2685,6 +2685,23 @@ function QuestHasMob(mobName)
     return text ~= "" and string.find(text, tostring(mobName), 1, true) ~= nil
 end
 
+LevelQuestAccepted = nil
+-- Quest hợp lệ nếu tiêu đề chứa tên quái, HOẶC vừa nhận đúng quest này
+-- (tiêu đề UI có thể trễ / khác định dạng nên không được hủy ngay).
+function LevelQuestValid()
+    local text = GetQuestText()
+    if text ~= "" and string.find(text, tostring(NameMon), 1, true) then
+        return true
+    end
+    local acc = LevelQuestAccepted
+    if acc and acc.key == tostring(NameQuest) .. tostring(QuestLv) then
+        if text ~= "" then return true end
+        if os.clock() - acc.t < 4 then return true end
+        LevelQuestAccepted = nil
+    end
+    return false
+end
+
 function HasAnyQuest()
     return GetQuestText() ~= ""
 end
@@ -2748,7 +2765,7 @@ end)
 
 
                     -- CHẶNG 1: chưa có đúng nhiệm vụ -> bỏ nhiệm vụ sai, bay về NPC nhận mới
-                    if not QuestHasMob(NameMon) then
+                    if not LevelQuestValid() then
                         bringmob = false
                         if HasAnyQuest() then
                             ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
@@ -2759,6 +2776,7 @@ end)
                         hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
                         if hrp and (hrp.Position - CFrameQ.Position).Magnitude <= 25 then
                             ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+                            LevelQuestAccepted = { key = tostring(NameQuest) .. tostring(QuestLv), t = os.clock() }
                             task.wait(0.6)
                         end
                         return
@@ -2780,7 +2798,7 @@ end)
                         local enemyRoot = target:FindFirstChild("HumanoidRootPart")
                         repeat
                             task.wait(_G.Fast_Delay or 0.1)
-                            if not _G.AutoLevel or not QuestHasMob(NameMon) then break end
+                            if not _G.AutoLevel or not LevelQuestValid() then break end
                             AutoHaki()
                             EquipTool(SelectWeapon)
                             AttackNoCoolDown()
@@ -2790,7 +2808,7 @@ end)
                             local myHum = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
                             FarmAtExactHeight(enemyRoot, myHum, 17)
                             SetupFarmEnemy(target, enemyRoot, enemyHum)
-                        until not _G.AutoLevel or not target.Parent or enemyHum.Health <= 0 or not QuestHasMob(NameMon)
+                        until not _G.AutoLevel or not target.Parent or enemyHum.Health <= 0 or not LevelQuestValid()
                         bringmob = false
                     else
                         -- chưa thấy quái: tới điểm farm chờ spawn
@@ -2803,6 +2821,7 @@ end)
                 end
             else
                 bringmob = false
+                LevelQuestAccepted = nil
             end
         end
     end)
@@ -4889,49 +4908,87 @@ spawn(function()
     end)
     local ToggleElite = Tabs.Main:AddToggle("ToggleElite", {Title="Auto Farm Elite",Description="", Default=false })
     ToggleElite:OnChanged(function(Value)
-       _G.AutoElite=Value
-       end)
-       Options.ToggleElite:SetValue(false)
-       spawn(function()
-           while task.wait() do
-               if _G.AutoElite then
-                   pcall(function()
-                       game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
-                       if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==true then
-                           if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,"Diablo") or string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,"Deandre") or string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,"Urban") then
-                               if game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban") then
-                                   for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                                       if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health>0 then
-                                           if v.Name=="Diablo" or v.Name=="Deandre" or v.Name=="Urban" then
-                                            repeat wait(_G.Fast_Delay)
-                                                AttackNoCoolDown()
-                                                   EquipTool(SelectWeapon)
-                                                   AutoHaki()
-                                                   Tween2(v.HumanoidRootPart.CFrame*Pos)
-                                                   v.Humanoid.WalkSpeed=0
-                                                   v.HumanoidRootPart.CanCollide=false
-                                                   v.HumanoidRootPart.Size=Vector3.new(60, 60, 60)
-                                               until _G.AutoElite==false or v.Humanoid.Health<=0 or not v.Parent
-                                           end
-                                       end
-                                   end
-                               else
-                                   if game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") then
-                                    Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Diablo").HumanoidRootPart.CFrame*CFrame.new(2,20,2))
-                                   elseif game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") then
-                                    Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Deandre").HumanoidRootPart.CFrame*CFrame.new(2,20,2))
-                                   elseif game:GetService("ReplicatedStorage"):FindFirstChild("Urban") then
-                                    Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Urban").HumanoidRootPart.CFrame*CFrame.new(2,20,2))
-                                   end
-                               end
-                           end
-                       else
-                           game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
-                       end
-                   end)
-               end
-           end
-       end)
+        _G.AutoElite=Value
+        EliteQuestAskedAt = 0
+        if Value==false then
+            bringmob = false
+        end
+    end)
+    Options.ToggleElite:SetValue(false)
+    local ToggleEliteHop = Tabs.Main:AddToggle("ToggleEliteHop", {Title="Hop Server Elite",Description="Tìm server có Elite Hunter mới", Default=false })
+    ToggleEliteHop:OnChanged(function(Value)
+        _G.AutoEliteHop=Value
+    end)
+    Options.ToggleEliteHop:SetValue(false)
+
+    EliteNames = {"Diablo", "Deandre", "Urban"}
+    EliteQuestAskedAt = 0
+    function EliteQuestActive()
+        local text = GetQuestText()
+        for _, n in ipairs(EliteNames) do
+            if text ~= "" and string.find(text, n, 1, true) then return true end
+        end
+        -- vừa xin nhiệm vụ: chờ UI cập nhật
+        return os.clock() - EliteQuestAskedAt < 3
+    end
+
+    spawn(function()
+        while task.wait(0.3) do
+            if _G.AutoElite and Sea3 then
+                pcall(function()
+                    local char = lp.Character
+                    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                    if not hrp then return end
+
+                    if EliteQuestActive() then
+                        local foundEnemy = false
+                        for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
+                            local h = enemy:FindFirstChildOfClass("Humanoid")
+                            local r = enemy:FindFirstChild("HumanoidRootPart")
+                            if table.find(EliteNames, enemy.Name) and h and r and h.Health > 0 then
+                                foundEnemy = true
+                                repeat
+                                    task.wait(_G.Fast_Delay or 0.1)
+                                    if not _G.AutoElite or not enemy.Parent or h.Health <= 0 then break end
+                                    AutoHaki()
+                                    EquipTool(SelectWeapon)
+                                    AttackNoCoolDown()
+                                    local er = enemy:FindFirstChild("HumanoidRootPart")
+                                    if er then
+                                        er.CanCollide = false
+                                        h.WalkSpeed = 0
+                                        h.JumpPower = 0
+                                        pcall(function() sethiddenproperty(lp, "SimulationRadius", math.huge) end)
+                                        local myHum = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
+                                        FarmAtExactHeight(er, myHum, 20)
+                                    end
+                                until not _G.AutoElite or not enemy.Parent or h.Health <= 0
+                                break
+                            end
+                        end
+                        if not foundEnemy then
+                            -- Elite chưa spawn trong Enemies: bay tới model trong ReplicatedStorage
+                            for _, name in ipairs(EliteNames) do
+                                local e = ReplicatedStorage:FindFirstChild(name)
+                                local er = e and e:FindFirstChild("HumanoidRootPart")
+                                if er then
+                                    Tween(er.CFrame * CFrame.new(2, 20, 2))
+                                    break
+                                end
+                            end
+                        end
+                    else
+                        -- Chưa có nhiệm vụ Elite: xin nhiệm vụ mới
+                        local response = ReplicatedStorage.Remotes.CommF_:InvokeServer("EliteHunter")
+                        EliteQuestAskedAt = os.clock()
+                        if _G.AutoEliteHop and response == "I don't have anything for you right now. Come back later." then
+                            Hop()
+                        end
+                    end
+                end)
+            end
+        end
+    end)
     end
 if Sea3 then
     local AutoMysticIsland = Tabs.Sea:AddSection("Auto Mystic Island")
