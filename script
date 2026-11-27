@@ -2193,55 +2193,215 @@ local function GetEnemiesInRange(range)
     return targets
 end
 
-function AttackNoCoolDown()
-    local character = lp.Character
-    if not character then return end
-    
-    local equippedWeapon = nil
-    for _, item in ipairs(character:GetChildren()) do
-        if item:IsA("Tool") then
-            equippedWeapon = item
-            break
+do -- scope riêng để không vượt giới hạn local
+-- Quantum attack core (không phát animation/hiệu ứng đánh cục bộ).
+local QuantumAttackState = {
+    BodyParts = {
+        "RightLowerArm",
+        "RightUpperArm",
+        "LeftLowerArm",
+        "LeftUpperArm",
+        "RightHand",
+        "LeftHand",
+    },
+    MaxHits = 2,
+}
+
+local QuantumNet, QuantumRegisterAttack, QuantumRegisterHit
+local QuantumValidator, QuantumShootGunEvent
+local QuantumValidatorState
+
+local function InitQuantumAttack()
+    if QuantumRegisterAttack and QuantumRegisterHit then
+        return true
+    end
+
+    local modules = ReplicatedStorage:FindFirstChild("Modules")
+    local netModule = modules and modules:FindFirstChild("Net")
+    if not modules or not netModule then
+        return false
+    end
+
+    local ok, result = pcall(function()
+        QuantumNet = require(netModule)
+        QuantumRegisterHit = QuantumNet:RemoteEvent("RegisterHit", true)
+        local netFolder = modules:FindFirstChild("Net")
+        QuantumRegisterAttack = netFolder and netFolder:FindFirstChild("RE/RegisterAttack")
+        QuantumShootGunEvent = netFolder and netFolder:FindFirstChild("RE/ShootGunEvent")
+        QuantumValidator = ReplicatedStorage:FindFirstChild("Remotes")
+            and ReplicatedStorage.Remotes:FindFirstChild("Validator2")
+        return QuantumRegisterHit ~= nil and QuantumRegisterAttack ~= nil
+    end)
+
+    return ok and result == true
+end
+
+local function GetQuantumValidator()
+    if not QuantumValidatorState then
+        local ok, state = pcall(function()
+            local combatController = require(ReplicatedStorage.Modules.Controllers.CombatController)
+            return getupvalue(combatController.Attack, 9)
+        end)
+        if ok then
+            QuantumValidatorState = state
         end
     end
-    if not equippedWeapon then return end
 
-    if equippedWeapon:FindFirstChild("LeftClickRemote") then
-        local enemies = GetEnemiesInRange(60)
-        local attackCount = 1
-        for _, enemy in ipairs(enemies) do
-            local direction = (enemy.HumanoidRootPart.Position - character:GetPivot().Position).Unit
-            pcall(function()
-                equippedWeapon.LeftClickRemote:FireServer(direction, attackCount)
-            end)
-            attackCount = (attackCount >= 1e9) and 1 or (attackCount + 1)
+    local state = QuantumValidatorState
+    if not state then
+        return 0, 0
+    end
+
+    local ok, validator, counter = pcall(function()
+        local v19 = getupvalue(state, 15)
+        local v20 = getupvalue(state, 13)
+        local v21 = getupvalue(state, 16)
+        local v22 = getupvalue(state, 17)
+        local v23 = getupvalue(state, 14)
+        local v24 = getupvalue(state, 18)
+        local v25 = getupvalue(state, 19)
+
+        if not v19 or not v20 or not v21 or not v22 or not v23 or not v24 or not v25 then
+            return 0, 0
         end
-    else
-        local enemies = workspace:FindFirstChild("Enemies")
-        if not enemies then return end
-        
-        local playerPos = character:GetPivot().Position
-        local targets = {}
-        local mainTarget = nil
-        
-        for _, enemy in ipairs(enemies:GetChildren()) do
-            if not enemy:GetAttribute("IsBoat") and IsEntityAlive(enemy) then
-                local head = enemy:FindFirstChild("Head")
-                if head and (playerPos - head.Position).Magnitude <= 60 then
-                    table.insert(targets, {enemy, head})
-                    mainTarget = head
+
+        local n = ((v19 * v23 + v20 * v21) % v22 * v22 + v20 * v23) % v24
+        local n2 = math.floor(n / v22)
+        local n3 = n - n2 * v22
+        local n4 = v25 + 1
+
+        setupvalue(state, 15, n2)
+        setupvalue(state, 13, n3)
+        setupvalue(state, 19, n4)
+
+        return math.floor(n / v24 * 16777215), n4
+    end)
+
+    if ok then
+        return validator, counter
+    end
+    return 0, 0
+end
+
+function AttackNoCoolDown()
+    local character = lp.Character
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local rootPart = character and (character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart)
+    local tool = character and character:FindFirstChildOfClass("Tool")
+
+    if not character or not humanoid or humanoid.Health <= 0 or not rootPart or not tool then
+        return
+    end
+
+    local toolTip = tool.ToolTip
+    if toolTip ~= "Melee" and toolTip ~= "Sword" and toolTip ~= "Blox Fruit" and toolTip ~= "Gun" then
+        return
+    end
+
+    if not InitQuantumAttack() then
+        return
+    end
+
+    -- Quantum-style target selection: alive enemies, nearest first, Buddha hit cap.
+    local buddha = rootPart:FindFirstChild("Buddha") ~= nil
+    local maxHits = buddha and 10 or QuantumAttackState.MaxHits
+    local selectedBodyPart = QuantumAttackState.BodyParts[math.random(1, #QuantumAttackState.BodyParts)]
+    local candidates = {}
+
+    local enemiesFolder = workspace:FindFirstChild("Enemies")
+    if enemiesFolder then
+        for _, enemy in ipairs(enemiesFolder:GetChildren()) do
+            if enemy ~= character and not enemy:GetAttribute("IsBoat") then
+                local enemyHumanoid = enemy:FindFirstChildOfClass("Humanoid")
+                local enemyRoot = enemy:FindFirstChild("HumanoidRootPart") or enemy.PrimaryPart
+                if enemyHumanoid and enemyHumanoid.Health > 0 and enemyRoot then
+                    local distance = (enemyRoot.Position - rootPart.Position).Magnitude
+                    if distance <= 50 then
+                        local hitPart = enemy:FindFirstChild(selectedBodyPart) or enemyRoot
+                        table.insert(candidates, {
+                            Model = enemy,
+                            Part = hitPart,
+                            Distance = distance,
+                        })
+                    end
                 end
             end
         end
-        
-        if mainTarget then
-            pcall(function()
-                local net = ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Net")
-                net:WaitForChild("RE/RegisterAttack"):FireServer(1e-9)
-                net:WaitForChild("RE/RegisterHit"):FireServer(mainTarget, targets)
-            end)
+    end
+
+    table.sort(candidates, function(a, b)
+        return a.Distance < b.Distance
+    end)
+
+    local hits = {}
+    local mainHitPart
+    for index = 1, math.min(#candidates, maxHits) do
+        local target = candidates[index]
+        if target.Model and target.Part then
+            table.insert(hits, { target.Model, target.Part })
+            mainHitPart = mainHitPart or target.Part
         end
     end
+
+    if toolTip == "Gun" then
+        if not QuantumShootGunEvent or not QuantumValidator then
+            return
+        end
+        local target = candidates[1]
+        if not target or not target.Part then
+            return
+        end
+
+        pcall(function()
+            tool.Enabled = true
+            tool:SetAttribute("IsReloading_Client", false)
+            tool:SetAttribute("LocalShotsLeft", 100)
+            tool:SetAttribute("LocalTotalShots", (tool:GetAttribute("LocalTotalShots") or 0) + 1)
+
+            local validator, counter = GetQuantumValidator()
+            QuantumValidator:FireServer(validator, counter)
+
+            if tool:FindFirstChild("RemoteEvent") then
+                tool.RemoteEvent:FireServer("TAP", target.Part.Position)
+            else
+                QuantumShootGunEvent:FireServer(target.Part.Position, { target.Part })
+            end
+        end)
+        return
+    end
+
+    if #hits == 0 or not mainHitPart then
+        return
+    end
+
+    -- Remote fruits use their own click remote in Quantum; do not play local animations.
+    if toolTip == "Blox Fruit" and tool:FindFirstChild("LeftClickRemote") then
+        local fruitRemote = tool.LeftClickRemote
+        pcall(function()
+            for _, target in ipairs(hits) do
+                local targetRoot = target[1]:FindFirstChild("HumanoidRootPart")
+                    or target[1].PrimaryPart
+                if targetRoot then
+                    local direction = (targetRoot.Position - rootPart.Position).Unit
+                    fruitRemote:FireServer(direction, 1)
+                end
+            end
+        end)
+        return
+    end
+
+    pcall(function()
+        QuantumRegisterAttack:FireServer(getgenv().FastAttackDelay or 0.3)
+        -- Intentionally omit Quantum's fn11() animation call.
+        QuantumRegisterHit:FireServer(
+            mainHitPart,
+            hits,
+            nil,
+            nil,
+            tostring(lp.UserId):sub(2, 4) .. tostring(coroutine.running()):sub(11, 15)
+        )
+    end)
+end
 end
 
 RunService.Heartbeat:Connect(function()
@@ -2415,6 +2575,7 @@ task.spawn(function()
         end)
     end
 end)
+
     local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
         Title="cày level",
         Description="",
@@ -2430,93 +2591,96 @@ end)
     Options.ToggleLevel:SetValue(false)
     spawn(function()
         while task.wait() do
-        if _G.AutoLevel then
-        pcall(function()
-          CheckLevel()
-          if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2" or NameQuest == "SubmergedQuest3") 
-            and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > -1500 then
-                GoToSubmergedIsland()
-          end
-          
-          local questVisible = false
-                local QuestTitle = ""
-                pcall(function()
-                    questVisible = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible
-                    if questVisible then
-                        QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+            if _G.AutoLevel then
+                local success, err = pcall(function()
+                    CheckLevel()
+                    
+                    -- Check an toàn cho Character và HumanoidRootPart
+                    local char = game.Players.LocalPlayer.Character
+                    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                    
+                    if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2" or NameQuest == "SubmergedQuest3") 
+                      and hrp and hrp.Position.Y > -1500 then
+                          GoToSubmergedIsland()
                     end
-                end)
-
-                -- Nếu đang có quest KHÁC thì bỏ quest
-                if questVisible and QuestTitle ~= "" and not string.find(QuestTitle, NameMon) then
-                    bringmob = false
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                    return
-                end
-
-                -- Chưa có quest → bay tới NPC nhận quest bằng Tween2 (giống di chuyển đảo)
-                if not questVisible then
-                    bringmob = false
-                    Tween2(CFrameQ)
-                    repeat task.wait(0.1) until (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 20 or not _G.AutoLevel
-                    wait(0.2)
-                    if (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 20 then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
-                        wait(0.3)
-                    end
-                    return
-                end
-
-                -- Đã có quest đúng → farm (dùng BKP để đứng cạnh quái, giống island travel)
-                if questVisible and string.find(QuestTitle, NameMon) then
-                local foundMob = false
-                if type(Ms) == "string" then
-                    for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart")
-                            and v.Humanoid.Health > 0 and v.Name == Ms then
-                            foundMob = true
-                            if not _fxEnabled then _fxEnabled = true; StartFXLoop() end
-                            repeat
-                                task.wait(_G.Fast_Delay)
-                                AttackNoCoolDown()
-                                bringmob = true
-                                AutoHaki()
-                                EquipTool(SelectWeapon)
-                                local _mobCF = v.HumanoidRootPart.CFrame * Pos
-                                if (_mobCF.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 5 then
-                                    BKP(_mobCF)
+                    
+                    -- KIỂM TRA GUI AN TOÀN (Chống treo Infinite Yield)
+                    local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+                    local mainGui = playerGui and playerGui:FindFirstChild("Main")
+                    local questGui = mainGui and mainGui:FindFirstChild("Quest")
+                    
+                    -- Chỉ chạy logic nhận nhiệm vụ nếu Quest GUI đã load xong
+                    if questGui then
+                        if questGui.Visible == true and not string.find(questGui.Container.QuestTitle.Title.Text, NameMon) then
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+                        elseif questGui.Visible == false then
+                            if CFrameQ then
+                                Tween(CFrameQ)
+                                if hrp and (CFrameQ.Position - hrp.Position).Magnitude <= 8 then
+                                    hrp.CFrame = CFrameQ
+                                    task.wait(0.2)
+                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+                                    task.wait(1) 
                                 end
-                                v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                v.HumanoidRootPart.Transparency = 1
-                                v.Humanoid.JumpPower = 0
-                                v.Humanoid.WalkSpeed = 0
-                                v.HumanoidRootPart.CanCollide = false
-                                pcall(function() v.Head.CanCollide = false end)
-                                FarmPos = v.HumanoidRootPart.CFrame
-                                MonFarm = v.Name
-                                local qv = false
-                                pcall(function() qv = game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible end)
-                            until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not qv
-                            bringmob = false
+                            end
+                        elseif questGui.Visible == true and string.find(questGui.Container.QuestTitle.Title.Text, NameMon) then
+                            local mobSpawned = false
+                            local farmPosOffset = Pos or CFrame.new(0, 30, 0)
+                            
+                            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                    if v.Name == Ms then
+                                        mobSpawned = true
+                                        repeat task.wait(_G.Fast_Delay or 0.1)
+                                            AttackNoCoolDown()
+                                            bringmob = true
+                                            AutoHaki()
+                                            EquipTool(SelectWeapon)
+                                            Tween(v.HumanoidRootPart.CFrame * farmPosOffset)
+                                            
+                                            v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                            v.HumanoidRootPart.Transparency = 1
+                                            v.Humanoid.JumpPower = 0
+                                            v.Humanoid.WalkSpeed = 0
+                                            v.HumanoidRootPart.CanCollide = false
+                                            FarmPos = v.HumanoidRootPart.CFrame
+                                            MonFarm = v.Name
+                                            
+                                            -- Check lại UI trong vòng lặp đánh quái đề phòng người chơi chết bị mất UI
+                                            local currentMain = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
+                                            local currentQuest = currentMain and currentMain:FindFirstChild("Quest")
+                                            local isQuestVisible = currentQuest and currentQuest.Visible or false
+                                            
+                                        until not _G.AutoLevel or not v or not v.Parent or not v:FindFirstChild("Humanoid") or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or not isQuestVisible
+                                        bringmob = false
+                                    end   
+                                end
+                            end
+                            
+                            -- Bay ra bãi quái nếu quái chưa spawn
+                            if not mobSpawned then
+                                if CFrameMon ~= nil then
+                                    Tween(CFrameMon * farmPosOffset)
+                                else
+                                    for _, sp in pairs(game:GetService("Workspace").EnemySpawns:GetChildren()) do
+                                        if sp.Name == Ms or sp.Name == NameMon then
+                                            Tween(sp.CFrame * farmPosOffset)
+                                            break
+                                        end
+                                    end
+                                end
+                            end
                         end
                     end
-                end
-
-                if not foundMob then
-                    bringmob = false
-                    -- Debug: mở F9 xem dòng này để biết Ms có khớp tên quái thật ngoài game không
-                    print(("[AutoLevel] Lv=%s Ms=%s NameMon=%s Quest=%s"):format(
-                        tostring(game:GetService("Players").LocalPlayer.Data.Level.Value),
-                        tostring(Ms), tostring(NameMon), tostring(QuestTitle)))
-                    if typeof(CFrameMon) == "CFrame" then
-                        Tween2(CFrameMon)
-                    end
+                end)
+                
+                if not success then
+                    warn("Lỗi AutoLevel: ", err)
                 end
             end
-          end)
         end
-        end
-        end)        
+    end)
+
     local ToggleMobAura = Tabs.Main:AddToggle("ToggleMobAura", {
         Title="đánh quái gần",
         Description="",
