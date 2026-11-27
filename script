@@ -2686,17 +2686,34 @@ function QuestHasMob(mobName)
 end
 
 LevelQuestAccepted = nil
--- Quest hợp lệ nếu tiêu đề chứa tên quái, HOẶC vừa nhận đúng quest này
--- (tiêu đề UI có thể trễ / khác định dạng nên không được hủy ngay).
+function MainQuestVisible()
+    local pg = lp:FindFirstChild("PlayerGui")
+    local main = pg and pg:FindFirstChild("Main")
+    local q = main and main:FindFirstChild("Quest")
+    return q and q.Visible or false
+end
+
+-- Quest hợp lệ khi:
+--  * tiêu đề UI chứa tên quái, hoặc
+--  * vừa nhận đúng quest này và UI vẫn còn hiển thị quest, hoặc
+--  * UI không báo gì (chế độ "mù"): tin quest cho tới khi giết đủ LevelQuestKills quái.
+-- UI từng hiện rồi biến mất = quest đã xong.
+-- Chỉ được gọi giữa các lần giết quái, KHÔNG dùng để ngắt trận đánh đang diễn ra.
 function LevelQuestValid()
     local text = GetQuestText()
+    local uiHas = text ~= "" or MainQuestVisible()
+    local acc = LevelQuestAccepted
+    local key = tostring(NameQuest) .. tostring(QuestLv)
+
     if text ~= "" and string.find(text, tostring(NameMon), 1, true) then
+        if acc and acc.key == key then acc.uiSeen = true end
         return true
     end
-    local acc = LevelQuestAccepted
-    if acc and acc.key == tostring(NameQuest) .. tostring(QuestLv) then
-        if text ~= "" then return true end
+    if acc and acc.key == key then
+        if uiHas then acc.uiSeen = true; return true end
+        if acc.uiSeen then LevelQuestAccepted = nil; return false end
         if os.clock() - acc.t < 4 then return true end
+        if acc.kills < (getgenv().LevelQuestKills or 6) then return true end
         LevelQuestAccepted = nil
     end
     return false
@@ -2776,7 +2793,7 @@ end)
                         hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
                         if hrp and (hrp.Position - CFrameQ.Position).Magnitude <= 25 then
                             ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
-                            LevelQuestAccepted = { key = tostring(NameQuest) .. tostring(QuestLv), t = os.clock() }
+                            LevelQuestAccepted = { key = tostring(NameQuest) .. tostring(QuestLv), t = os.clock(), kills = 0, uiSeen = false }
                             task.wait(0.6)
                         end
                         return
@@ -2798,7 +2815,7 @@ end)
                         local enemyRoot = target:FindFirstChild("HumanoidRootPart")
                         repeat
                             task.wait(_G.Fast_Delay or 0.1)
-                            if not _G.AutoLevel or not LevelQuestValid() then break end
+                            if not _G.AutoLevel then break end
                             AutoHaki()
                             EquipTool(SelectWeapon)
                             AttackNoCoolDown()
@@ -2808,8 +2825,13 @@ end)
                             local myHum = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
                             FarmAtExactHeight(enemyRoot, myHum, 17)
                             SetupFarmEnemy(target, enemyRoot, enemyHum)
-                        until not _G.AutoLevel or not target.Parent or enemyHum.Health <= 0 or not LevelQuestValid()
+                        until not _G.AutoLevel or not target.Parent or enemyHum.Health <= 0
                         bringmob = false
+                        if enemyHum.Health <= 0 or not target.Parent then
+                            if LevelQuestAccepted then
+                                LevelQuestAccepted.kills = (LevelQuestAccepted.kills or 0) + 1
+                            end
+                        end
                     else
                         -- chưa thấy quái: tới điểm farm chờ spawn
                         bringmob = false
