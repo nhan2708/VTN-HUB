@@ -2576,6 +2576,121 @@ task.spawn(function()
     end
 end)
 
+
+-- ===== Helper farm (port từ file tham chiếu) =====
+local FarmJumpSettings = setmetatable({}, {__mode = "k"})
+function SetFarmNoJump(humanoid, enabled)
+    if not humanoid then return end
+    if enabled then
+        if not FarmJumpSettings[humanoid] then
+            FarmJumpSettings[humanoid] = {
+                JumpPower = humanoid.JumpPower,
+                JumpHeight = humanoid.JumpHeight,
+                JumpingEnabled = humanoid:GetStateEnabled(Enum.HumanoidStateType.Jumping)
+            }
+        end
+        humanoid.Jump = false
+        humanoid.JumpPower = 0
+        humanoid.JumpHeight = 0
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+    else
+        local old = FarmJumpSettings[humanoid]
+        if old then
+            humanoid.JumpPower = old.JumpPower
+            humanoid.JumpHeight = old.JumpHeight
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, old.JumpingEnabled)
+            FarmJumpSettings[humanoid] = nil
+        end
+    end
+end
+
+-- Đứng chính xác `height` studs phía trên quái, không nhảy.
+function FarmAtExactHeight(enemyRoot, humanoid, height)
+    local character = lp.Character
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    if not root or not enemyRoot or not enemyRoot.Parent or not humanoid then return end
+    SetFarmNoJump(humanoid, true)
+    local targetCFrame = CFrame.new(enemyRoot.Position + Vector3.new(0, height or 17, 0))
+    Tween(targetCFrame)
+    if (root.Position - targetCFrame.Position).Magnitude < 60 then
+        root.CFrame = targetCFrame
+        root.AssemblyLinearVelocity = Vector3.zero
+        root.AssemblyAngularVelocity = Vector3.zero
+        humanoid.Jump = false
+    end
+end
+
+function SetupFarmEnemy(enemy, enemyRoot, humanoid)
+    enemyRoot.CanCollide = false
+    humanoid.WalkSpeed = 0
+    humanoid.JumpPower = 0
+    local head = enemy:FindFirstChild("Head")
+    if head then head.CanCollide = false end
+    pcall(function() sethiddenproperty(lp, "SimulationRadius", math.huge) end)
+end
+
+BoneMobNames = {
+    ["Reborn Skeleton"] = true,
+    ["Living Zombie"] = true,
+    ["Demonic Soul"] = true,
+    ["Posessed Mummy"] = true
+}
+BoneMobPos = {
+    ["Reborn Skeleton"] = CFrame.new(-8769.58984, 142.13063, 6055.27637),
+    ["Living Zombie"] = CFrame.new(-10156.4531, 138.652481, 5964.5752),
+    ["Demonic Soul"] = CFrame.new(-9525.17188, 172.13063, 6152.30566),
+    ["Posessed Mummy"] = CFrame.new(-9570.88281, 5.81831884, 6187.86279)
+}
+BonePos = CFrame.new(-9506.234375, 172.130615234375, 6117.0771484375)
+BoneQuestPos = CFrame.new(-9517, 172, 6078)
+
+function GetFarmEnemy(nameList)
+    local folder = workspace:FindFirstChild("Enemies")
+    if not folder then return nil end
+    for _, enemy in ipairs(folder:GetChildren()) do
+        local hum = enemy:FindFirstChildOfClass("Humanoid")
+        local r = enemy:FindFirstChild("HumanoidRootPart")
+        if nameList[enemy.Name] and hum and r and hum.Health > 0 then
+            return enemy
+        end
+    end
+    return nil
+end
+
+function QuestHasMob(mobName)
+    local pg = lp:FindFirstChild("PlayerGui")
+    local main = pg and pg:FindFirstChild("Main")
+    local q = main and main:FindFirstChild("Quest")
+    if not q or not q.Visible then return false end
+    local ok, txt = pcall(function() return q.Container.QuestTitle.Title.Text end)
+    return ok and txt and string.find(txt, mobName, 1, true) ~= nil
+end
+
+-- Kéo quái Bone về điểm cố định (BonesBring)
+spawn(function()
+    while task.wait(0.2) do
+        if _G.BonesBring then
+            pcall(function()
+                for _, v in ipairs(workspace.Enemies:GetChildren()) do
+                    local pos = BoneMobPos[v.Name]
+                    if pos and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
+                        v.HumanoidRootPart.CFrame = pos
+                        if v:FindFirstChild("Head") then v.Head.CanCollide = false end
+                        v.Humanoid.Sit = false
+                        v.Humanoid:ChangeState(11)
+                        v.HumanoidRootPart.CanCollide = false
+                        v.Humanoid.JumpPower = 0
+                        v.Humanoid.WalkSpeed = 0
+                        local animator = v.Humanoid:FindFirstChild("Animator")
+                        if animator then animator:Destroy() end
+                        pcall(function() sethiddenproperty(lp, "SimulationRadius", math.huge) end)
+                    end
+                end
+            end)
+        end
+    end
+end)
+
     local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {
         Title="cày level",
         Description="",
@@ -2590,93 +2705,85 @@ end)
     end)
     Options.ToggleLevel:SetValue(false)
     spawn(function()
-        while task.wait() do
+        while task.wait(0.25) do
             if _G.AutoLevel then
                 local success, err = pcall(function()
                     CheckLevel()
-                    
-                    -- Check an toàn cho Character và HumanoidRootPart
-                    local char = game.Players.LocalPlayer.Character
+                    local char = lp.Character
                     local hrp = char and char:FindFirstChild("HumanoidRootPart")
-                    
-                    if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2" or NameQuest == "SubmergedQuest3") 
-                      and hrp and hrp.Position.Y > -1500 then
-                          GoToSubmergedIsland()
+                    local hum = char and char:FindFirstChildOfClass("Humanoid")
+                    if not hrp or not hum or hum.Health <= 0 then return end
+
+                    -- Level 2600+: xuống Submerged Island trước
+                    if (NameQuest == "SubmergedQuest1" or NameQuest == "SubmergedQuest2" or NameQuest == "SubmergedQuest3")
+                      and hrp.Position.Y > -1500 then
+                        GoToSubmergedIsland()
+                        return
                     end
-                    
-                    -- KIỂM TRA GUI AN TOÀN (Chống treo Infinite Yield)
-                    local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+
+                    if not NameMon or not CFrameQ or not CFrameMon then return end
+
+                    local playerGui = lp:FindFirstChild("PlayerGui")
                     local mainGui = playerGui and playerGui:FindFirstChild("Main")
                     local questGui = mainGui and mainGui:FindFirstChild("Quest")
-                    
-                    -- Chỉ chạy logic nhận nhiệm vụ nếu Quest GUI đã load xong
-                    if questGui then
-                        if questGui.Visible == true and not string.find(questGui.Container.QuestTitle.Title.Text, NameMon) then
-                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                        elseif questGui.Visible == false then
-                            if CFrameQ then
-                                Tween(CFrameQ)
-                                if hrp and (CFrameQ.Position - hrp.Position).Magnitude <= 8 then
-                                    hrp.CFrame = CFrameQ
-                                    task.wait(0.2)
-                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
-                                    task.wait(1) 
-                                end
-                            end
-                        elseif questGui.Visible == true and string.find(questGui.Container.QuestTitle.Title.Text, NameMon) then
-                            local mobSpawned = false
-                            local farmPosOffset = Pos or CFrame.new(0, 30, 0)
-                            
-                            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                                if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                                    if v.Name == Ms then
-                                        mobSpawned = true
-                                        repeat task.wait(_G.Fast_Delay or 0.1)
-                                            AttackNoCoolDown()
-                                            bringmob = true
-                                            AutoHaki()
-                                            EquipTool(SelectWeapon)
-                                            Tween(v.HumanoidRootPart.CFrame * farmPosOffset)
-                                            
-                                            v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                            v.HumanoidRootPart.Transparency = 1
-                                            v.Humanoid.JumpPower = 0
-                                            v.Humanoid.WalkSpeed = 0
-                                            v.HumanoidRootPart.CanCollide = false
-                                            FarmPos = v.HumanoidRootPart.CFrame
-                                            MonFarm = v.Name
-                                            
-                                            -- Check lại UI trong vòng lặp đánh quái đề phòng người chơi chết bị mất UI
-                                            local currentMain = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
-                                            local currentQuest = currentMain and currentMain:FindFirstChild("Quest")
-                                            local isQuestVisible = currentQuest and currentQuest.Visible or false
-                                            
-                                        until not _G.AutoLevel or not v or not v.Parent or not v:FindFirstChild("Humanoid") or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or not isQuestVisible
-                                        bringmob = false
-                                    end   
-                                end
-                            end
-                            
-                            -- Bay ra bãi quái nếu quái chưa spawn
-                            if not mobSpawned then
-                                if CFrameMon ~= nil then
-                                    Tween(CFrameMon * farmPosOffset)
-                                else
-                                    for _, sp in pairs(game:GetService("Workspace").EnemySpawns:GetChildren()) do
-                                        if sp.Name == Ms or sp.Name == NameMon then
-                                            Tween(sp.CFrame * farmPosOffset)
-                                            break
-                                        end
-                                    end
-                                end
-                            end
+                    if not questGui then return end
+
+                    -- CHẶNG 1: chưa có đúng nhiệm vụ -> bỏ nhiệm vụ sai, bay về NPC nhận mới
+                    if not QuestHasMob(NameMon) then
+                        bringmob = false
+                        if questGui.Visible then
+                            ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
+                            task.wait(0.25)
+                        end
+                        Tween(CFrameQ)
+                        task.wait(0.2)
+                        hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+                        if hrp and (hrp.Position - CFrameQ.Position).Magnitude <= 25 then
+                            ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv)
+                            task.wait(0.6)
+                        end
+                        return
+                    end
+
+                    -- CHẶNG 2: đã đúng nhiệm vụ -> tìm quái và đánh
+                    local target
+                    for _, v in ipairs(workspace.Enemies:GetChildren()) do
+                        local h = v:FindFirstChildOfClass("Humanoid")
+                        local r = v:FindFirstChild("HumanoidRootPart")
+                        if v.Name == Ms and h and r and h.Health > 0 then
+                            target = v
+                            break
                         end
                     end
+
+                    if target then
+                        local enemyHum = target:FindFirstChildOfClass("Humanoid")
+                        local enemyRoot = target:FindFirstChild("HumanoidRootPart")
+                        repeat
+                            task.wait(_G.Fast_Delay or 0.1)
+                            if not _G.AutoLevel or not QuestHasMob(NameMon) then break end
+                            AutoHaki()
+                            EquipTool(SelectWeapon)
+                            AttackNoCoolDown()
+                            bringmob = true
+                            FarmPos = enemyRoot.CFrame
+                            MonFarm = target.Name
+                            local myHum = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
+                            FarmAtExactHeight(enemyRoot, myHum, 17)
+                            SetupFarmEnemy(target, enemyRoot, enemyHum)
+                        until not _G.AutoLevel or not target.Parent or enemyHum.Health <= 0 or not QuestHasMob(NameMon)
+                        bringmob = false
+                    else
+                        -- chưa thấy quái: tới điểm farm chờ spawn
+                        bringmob = false
+                        Tween(CFrameMon)
+                    end
                 end)
-                
                 if not success then
                     warn("Lỗi AutoLevel: ", err)
                 end
+            else
+                bringmob = false
             end
         end
     end)
@@ -3628,85 +3735,89 @@ ToggleBone:OnChanged(function(Value)
     end
 end)
 Options.ToggleBone:SetValue(false)
-local BoneCFrame = CFrame.new(-9515.75, 174.8521728515625, 6079.40625)
 spawn(function()
-    while wait() do
+    while task.wait(0.15) do
         if _G.AutoBone then
             pcall(function()
-                local QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-                if not string.find(QuestTitle, "Demonic Soul") then
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+                local char = lp.Character
+                local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                if not hrp then return end
+
+                -- Nhận HauntedQuest2 (Demonic Soul) nếu chưa có
+                if not QuestHasMob("Demonic Soul") then
+                    _G.BonesBring = false
+                    bringmob = false
+                    local pg = lp:FindFirstChild("PlayerGui")
+                    local q = pg and pg:FindFirstChild("Main") and pg.Main:FindFirstChild("Quest")
+                    if q and q.Visible then
+                        ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
+                        task.wait(0.25)
+                    end
+                    if (hrp.Position - BoneQuestPos.Position).Magnitude > 8 then
+                        Tween(BoneQuestPos)
+                        return
+                    end
+                    ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", "HauntedQuest2", 1)
+                    task.wait(0.35)
+                    return
                 end
-                if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==false then
-                 Tween(BoneCFrame)
-                if (BoneCFrame.Position-game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude<=3 then    
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest","HauntedQuest2",1)
-                    end
-                elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==true then
-                    if game:GetService("Workspace").Enemies:FindFirstChild("Reborn Skeleton") or game:GetService("Workspace").Enemies:FindFirstChild("Living Zombie") or game:GetService("Workspace").Enemies:FindFirstChild("Demonic Soul") or game:GetService("Workspace").Enemies:FindFirstChild("Posessed Mummy") then
-                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                            if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health>0 then
-                                if v.Name=="Reborn Skeleton" or v.Name=="Living Zombie" or v.Name=="Demonic Soul" or v.Name=="Posessed Mummy" then
-                                    if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Demonic Soul") then
-                                        repeat wait(_G.Fast_Delay)
-                                            AttackNoCoolDown()
-                                            AutoHaki()
-                                            bringmob=true
-                                            EquipTool(SelectWeapon)
-                                            Tween(v.HumanoidRootPart.CFrame*Pos)
-                                            v.HumanoidRootPart.Size=Vector3.new(60, 60, 60)
-                                            v.HumanoidRootPart.Transparency=1
-                                            v.Humanoid.JumpPower=0
-                                            v.Humanoid.WalkSpeed=0
-                                            v.HumanoidRootPart.CanCollide=false
-                                            FarmPos=v.HumanoidRootPart.CFrame
-                                            MonFarm=v.Name
-                                        until not _G.AutoBone or v.Humanoid.Health<=0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible==false
-                                    else
-                                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                                        bringmob=true
-                                    end
-                                end
-                            end
-                        end
-                    else
-                    end
+
+                local enemy = GetFarmEnemy(BoneMobNames)
+                if enemy then
+                    local enemyHum = enemy:FindFirstChildOfClass("Humanoid")
+                    local enemyRoot = enemy:FindFirstChild("HumanoidRootPart")
+                    repeat
+                        task.wait(_G.Fast_Delay or 0.1)
+                        if not _G.AutoBone or not enemy.Parent or enemyHum.Health <= 0 then break end
+                        AutoHaki()
+                        EquipTool(SelectWeapon)
+                        AttackNoCoolDown()
+                        _G.BonesBring = true
+                        FarmPos = enemyRoot.CFrame
+                        MonFarm = enemy.Name
+                        SetupFarmEnemy(enemy, enemyRoot, enemyHum)
+                        Tween(enemyRoot.CFrame * CFrame.new(0, 25, 0))
+                    until not _G.AutoBone or not enemy.Parent or enemyHum.Health <= 0
+                    _G.BonesBring = false
+                else
+                    _G.BonesBring = false
+                    Tween(BonePos)
                 end
             end)
+        else
+            _G.BonesBring = false
         end
     end
 end)
-local BoneNoQuest = CFrame.new(-9515.75, 174.8521728515625, 6079.40625)
+local BoneNoQuest = BonePos
 spawn(function()
-    while wait() do
+    while task.wait(0.15) do
         if _G.AutoBoneNoQuest then
             pcall(function()
-                Tween(BoneNoQuest)
-                if (BoneNoQuest.Position-game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude<=3 then
-                end
-                if game:GetService("Workspace").Enemies:FindFirstChild("Reborn Skeleton") or game:GetService("Workspace").Enemies:FindFirstChild("Living Zombie") or game:GetService("Workspace").Enemies:FindFirstChild("Demonic Soul") or game:GetService("Workspace").Enemies:FindFirstChild("Posessed Mummy") then
-                    for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                        if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health>0 then
-                            if v.Name=="Reborn Skeleton" or v.Name=="Living Zombie" or v.Name=="Demonic Soul" or v.Name=="Posessed Mummy" then
-                                repeat wait(_G.Fast_Delay)
-                                    AttackNoCoolDown()
-                                    AutoHaki()
-                                    bringmob=true
-                                    EquipTool(SelectWeapon)
-                                    Tween(v.HumanoidRootPart.CFrame*Pos)
-                                    v.HumanoidRootPart.Size=Vector3.new(60, 60, 60)
-                                    v.HumanoidRootPart.Transparency=1
-                                    v.Humanoid.JumpPower=0
-                                    v.Humanoid.WalkSpeed=0
-                                    v.HumanoidRootPart.CanCollide=false
-                                    FarmPos=v.HumanoidRootPart.CFrame
-                                    MonFarm=v.Name
-                                until not _G.AutoBoneNoQuest or v.Humanoid.Health<=0 or not v.Parent
-                            end
-                        end
-                    end
+                local enemy = GetFarmEnemy(BoneMobNames)
+                if enemy then
+                    local enemyHum = enemy:FindFirstChildOfClass("Humanoid")
+                    local enemyRoot = enemy:FindFirstChild("HumanoidRootPart")
+                    repeat
+                        task.wait(_G.Fast_Delay or 0.1)
+                        if not _G.AutoBoneNoQuest or not enemy.Parent or enemyHum.Health <= 0 then break end
+                        AutoHaki()
+                        EquipTool(SelectWeapon)
+                        AttackNoCoolDown()
+                        _G.BonesBring = true
+                        FarmPos = enemyRoot.CFrame
+                        MonFarm = enemy.Name
+                        SetupFarmEnemy(enemy, enemyRoot, enemyHum)
+                        Tween(enemyRoot.CFrame * CFrame.new(0, 25, 0))
+                    until not _G.AutoBoneNoQuest or not enemy.Parent or enemyHum.Health <= 0
+                    _G.BonesBring = false
+                else
+                    _G.BonesBring = false
+                    Tween(BoneNoQuest)
                 end
             end)
+        else
+            if not _G.AutoBone then _G.BonesBring = false end
         end
     end
 end)
