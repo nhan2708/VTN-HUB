@@ -7735,13 +7735,24 @@ ToggleRandomFruit:OnChanged(function(Value)
 end)
 Options.ToggleRandomFruit:SetValue(false)
 spawn(function()
-    pcall(function()
-        while wait() do
-            if _G.Random_Auto then
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Cousin","Buy")
-            end 
+    -- pcall nằm TRONG vòng lặp: một lần lỗi không làm chết cả vòng quay
+    while task.wait(0.2) do
+        if _G.Random_Auto then
+            local ok, result = pcall(function()
+                return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Cousin", "Buy")
+            end)
+            if not ok then
+                task.wait(1)
+            elseif type(result) == "string" then
+                local r = string.lower(result)
+                -- hết tiền / đang trong thời gian chờ: nghỉ lâu hơn rồi thử lại
+                if string.find(r, "not enough", 1, true) or string.find(r, "cooldown", 1, true)
+                   or string.find(r, "wait", 1, true) or string.find(r, "limit", 1, true) then
+                    task.wait(3)
+                end
+            end
         end
-    end)
+    end
 end)
 
 local ToggleCollect = Tabs.Fruit:AddToggle("ToggleCollect", {Title="Collect Fruit",Description="", Default=false })
