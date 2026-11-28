@@ -7446,6 +7446,7 @@ elseif Sea3 then
         "Tiki Outpost",
        }
     end
+if type(IslandList) ~= "table" then IslandList = {"WindMill"} end
 local DropdownIsland = Tabs.Teleport:AddDropdown("DropdownIsland",{
     Title="chọn đảo",
     Description="",
@@ -7565,14 +7566,35 @@ Tabs.Teleport:AddButton({
         end
     })
    
-local Remote_GetFruits = game.ReplicatedStorage:FindFirstChild("Remotes").CommF_:InvokeServer("GetFruits");
+local Remote_GetFruits
+do
+    local ok, res = pcall(function()
+        return game.ReplicatedStorage:FindFirstChild("Remotes").CommF_:InvokeServer("GetFruits")
+    end)
+    if ok and type(res) == "table" then Remote_GetFruits = res end
+end
 Table_DevilFruitSniper={}
 ShopDevilSell={}
-for i, v in next, Remote_GetFruits do
-    table.insert(Table_DevilFruitSniper, v.Name)
-    if v.OnSale then 
-        table.insert(ShopDevilSell, v.Name)
+if Remote_GetFruits then
+    for i, v in pairs(Remote_GetFruits) do
+        if type(v) == "table" and v.Name then
+            table.insert(Table_DevilFruitSniper, v.Name)
+            if v.OnSale then
+                table.insert(ShopDevilSell, v.Name)
+            end
+        end
     end
+end
+-- Dự phòng khi server không trả danh sách: dropdown vẫn hiển thị được
+if #Table_DevilFruitSniper == 0 then
+    Table_DevilFruitSniper = {
+        "Rocket-Rocket","Spin-Spin","Blade-Blade","Spring-Spring","Bomb-Bomb","Smoke-Smoke","Spike-Spike",
+        "Flame-Flame","Ice-Ice","Sand-Sand","Dark-Dark","Eagle-Eagle","Diamond-Diamond","Light-Light",
+        "Rubber-Rubber","Ghost-Ghost","Magma-Magma","Quake-Quake","Buddha-Buddha","Love-Love","Creation-Creation",
+        "Spider-Spider","Sound-Sound","Phoenix-Phoenix","Portal-Portal","Rumble-Rumble","Pain-Pain",
+        "Blizzard-Blizzard","Gravity-Gravity","Mammoth-Mammoth","T-Rex-T-Rex","Dough-Dough","Shadow-Shadow",
+        "Venom-Venom","Control-Control","Gas-Gas","Spirit-Spirit","Leopard-Leopard","Yeti-Yeti","Kitsune-Kitsune","Dragon-Dragon"
+    }
 end
 _G.SelectFruit=nil
 _G.PermanentFruit=nil
@@ -7765,17 +7787,21 @@ Options.ToggleEspPlayer:SetValue(false)
 local ToggleEspFruit = Tabs.Fruit:AddToggle("ToggleEspFruit", {Title="trái ác quỷ",Description="", Default=false })
 ToggleEspFruit:OnChanged(function(Value)
     DevilFruitESP=Value
-    while DevilFruitESP do wait()
-        UpdateDevilChams() 
-    end
+    task.spawn(function()
+        while DevilFruitESP do wait()
+            pcall(UpdateDevilChams)
+        end
+    end)
 end)
 Options.ToggleEspFruit:SetValue(false)
 local ToggleEspIsland = Tabs.Fruit:AddToggle("ToggleEspIsland", {Title="đảo",Description="", Default=false })
 ToggleEspIsland:OnChanged(function(Value)
     IslandESP=Value
-    while IslandESP do wait()
-        UpdateIslandESP() 
-    end
+    task.spawn(function()
+        while IslandESP do wait()
+            pcall(UpdateIslandESP)
+        end
+    end)
 end)
 Options.ToggleEspIsland:SetValue(false)
 local ToggleEspFlower = Tabs.Fruit:AddToggle("ToggleEspFlower", {Title="hoa",Description="", Default=false })
@@ -7806,10 +7832,12 @@ end)
 local ToggleEspRealFruit = Tabs.Fruit:AddToggle("ToggleEspRealFruit", {Title="Real Fruit", Description="", Default=false })
 ToggleEspRealFruit:OnChanged(function(Value)
     RealFruitEsp=Value
-    while RealFruitEsp do 
-        wait()
-        UpdateRealFruitEsp() 
-    end
+    task.spawn(function()
+        while RealFruitEsp do
+            wait()
+            pcall(UpdateRealFruitEsp)
+        end
+    end)
 end)
 Options.ToggleEspRealFruit:SetValue(false)
 function UpdateRealFruitEsp() 
@@ -7907,10 +7935,12 @@ end
 local ToggleIslandMirageEsp = Tabs.Fruit:AddToggle("ToggleIslandMirageEsp", {Title="đảo bí ẩn", Description="", Default=false })
 ToggleIslandMirageEsp:OnChanged(function(Value)
     IslandMirageEsp=Value
-    while IslandMirageEsp do 
-        wait()
-        UpdateIslandMirageEsp() 
-    end
+    task.spawn(function()
+        while IslandMirageEsp do
+            wait()
+            pcall(UpdateIslandMirageEsp)
+        end
+    end)
 end)
 Options.ToggleIslandMirageEsp:SetValue(false)
 function isnil(thing)
