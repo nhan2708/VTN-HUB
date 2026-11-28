@@ -7039,63 +7039,46 @@ ToggleFruit:OnChanged(function(Value)
     _G.Auto_Stats_Devil_Fruit=Value
     end)
 Options.ToggleFruit:SetValue(false)
+-- Số điểm stat còn lại (nil nếu không đọc được)
+function GetStatPoints()
+    local ok, v = pcall(function() return lp.Data.Points.Value end)
+    if ok and type(v) == "number" then return v end
+    return nil
+end
+
+-- Danh sách stat theo toggle: { cờ, tên stat gửi lên server }
+local StatToggles = {
+    { "Auto_Stats_Melee",       "Melee" },
+    { "Auto_Stats_Defense",     "Defense" },
+    { "Auto_Stats_Sword",       "Sword" },
+    { "Auto_Stats_Gun",         "Gun" },
+    { "Auto_Stats_Devil_Fruit", "Demon Fruit" },
+}
+
 spawn(function()
-    while wait() do
-        if _G.Auto_Stats_Devil_Fruit then
-            local args = {
-                [1]="AddPoint",
-                [2]="Demon Fruit",
-                [3]=3
-            }
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    while wait(0.2) do
+        local anyOn = false
+        for _, st in ipairs(StatToggles) do
+            if _G[st[1]] then anyOn = true break end
         end
-    end
-end)
-spawn(function()
-    while wait() do
-        if _G.Auto_Stats_Gun then
-            local args = {
-                [1]="AddPoint",
-                [2]="Gun",
-                [3]=3
-            }
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-        end
-    end
-end)
-spawn(function()
-    while wait() do
-        if _G.Auto_Stats_Sword then
-            local args = {
-                [1]="AddPoint",
-                [2]="Sword",
-                [3]=3
-            }
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-        end
-    end
-end)
-spawn(function()
-    while wait() do
-        if _G.Auto_Stats_Defense then
-            local args = {
-                [1]="AddPoint",
-                [2]="Defense",
-                [3]=3
-            }
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-        end
-    end
-end)
-spawn(function()
-    while wait() do
-        if _G.Auto_Stats_Melee then
-            local args = {
-                [1]="AddPoint",
-                [2]="Melee",
-                [3]=3
-            }
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if anyOn then
+            local points = GetStatPoints()
+            if points ~= nil and points <= 0 then
+                -- hết điểm: dừng add, chờ lên level có điểm mới
+                wait(1)
+            else
+                for _, st in ipairs(StatToggles) do
+                    if _G[st[1]] then
+                        points = GetStatPoints()
+                        if points ~= nil and points <= 0 then break end
+                        local amount = 3
+                        if points ~= nil and points < amount then amount = points end
+                        pcall(function()
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AddPoint", st[2], amount)
+                        end)
+                    end
+                end
+            end
         end
     end
 end)
